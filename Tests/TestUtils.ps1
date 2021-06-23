@@ -1,4 +1,4 @@
-﻿. .\Utils.ps1
+﻿. ..\PSSDKMan\Utils.ps1
 
 function Mock-Check-Candidate-Grails {
     Mock Check-Candidate-Present -verifiable -parameterFilter { $Candidate -eq 'grails' }
@@ -34,9 +34,9 @@ function Mock-Api-Call-Default-Grails-2.2 {
 
 function Mock-Api-Call-Grails-1.1.1-Available($Available) {
     if ( $Available ) {
-        Mock Invoke-API-Call { return $true } -parameterFilter { $Path -eq 'candidates/grails/1.1.1' }
+        Mock Invoke-API-Call { return $true } -parameterFilter { $Path -eq 'candidates/validate/grails/1.1.1/cygwin' }
     } else {
-        Mock Invoke-API-Call { return $false } -parameterFilter { $Path -eq 'candidates/grails/1.1.1' }
+        Mock Invoke-API-Call { return $false } -parameterFilter { $Path -eq 'candidates/validate/grails/1.1.1/cygwin' }
     }
 }
 

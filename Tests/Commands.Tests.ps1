@@ -1,6 +1,6 @@
-. .\Commands.ps1
-. .\Utils.ps1
-. .\Init.ps1
+. ..\PSSDKMan\Commands.ps1
+. ..\PSSDKMan\Utils.ps1
+. ..\PSSDKMan\Init.ps1
 . .\TestUtils.ps1
 
 Describe 'gvm' {

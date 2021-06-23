@@ -1,5 +1,5 @@
-. .\Utils.ps1
-. .\Init.ps1
+. ..\PSSDKMan\Utils.ps1
+. ..\PSSDKMan\Init.ps1
 . .\TestUtils.ps1
 
 Describe 'Init-Posh-Gvm' {
