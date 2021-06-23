@@ -453,9 +453,7 @@ function Unzip-Archive($Archive, $Target) {
     } elseif ( $Script:UNZIP_ON_PATH ) {
         unzip.exe -oq $Archive -d $Target
     } else {
-        # use the windows shell as general fallback (no working on Windows Server Core because there is no shell)
-        $shell = New-Object -com shell.application
-        $shell.namespace($Target).copyhere($shell.namespace($Archive).items(), 0x10)
+        Expand-Archive -Path $Archive -DestinationPath $Target -Force
     }
 }
 
