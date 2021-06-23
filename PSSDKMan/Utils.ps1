@@ -428,15 +428,17 @@ function Install-Remote-Version($Candidate, $Version) {
     Unzip-Archive $archive $Script:PGVM_TEMP_PATH
 
 	# check if unzip successfully
-	if ( !(Test-Path "$Script:PGVM_TEMP_PATH\*-$Version") ) {
+	if ( ((Get-ChildItem -Directory $Script:PGVM_TEMP_PATH).count -gt 1) -and !(Test-Path "$Script:PGVM_TEMP_PATH\*-$Version") ) {
 		throw "Could not unzip the archive of $Candidate $Version. Please delete archive from $Script:PGVM_ARCHIVES_PATH (or delete all with 'gvm flush archives'"
 	}
 
+    # needed to create the folder ahead. Else the copy process failed on the first try
+    New-Item -ItemType Directory "$Global:PGVM_DIR\$Candidate\$Version" | Out-Null
     # move to target location
     # Move was replaced by copy and remove because of random access denied errors
     # when Unzip was done by via -com shell.application
     # Move-Item "$Script:PGVM_TEMP_PATH\*-$Version" "$Global:PGVM_DIR\$Candidate\$Version"
-    Copy-Item "$Script:PGVM_TEMP_PATH\*-$Version" "$Global:PGVM_DIR\$Candidate\$Version" -Recurse
+    Copy-Item -Path "$Script:PGVM_TEMP_PATH\$((Get-ChildItem -Directory $Script:PGVM_TEMP_PATH).name)\*" -Destination "$Global:PGVM_DIR\$Candidate\$Version" -Recurse
     Remove-Item "$Script:PGVM_TEMP_PATH\*-$Version" -Recurse -Force
     Write-Output "Done installing!"
 }
