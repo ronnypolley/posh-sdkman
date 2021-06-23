@@ -428,7 +428,7 @@ function Install-Remote-Version($Candidate, $Version) {
     Unzip-Archive $archive $Script:PGVM_TEMP_PATH
 
 	# check if unzip successfully
-	if ( ((Get-ChildItem -Directory $Script:PGVM_TEMP_PATH).count -gt 1) -and !(Test-Path "$Script:PGVM_TEMP_PATH\*-$Version") ) {
+	if ( ((Get-ChildItem -Directory $Script:PGVM_TEMP_PATH).count -gt 1) -or !(Test-Path "$Script:PGVM_TEMP_PATH\*-$Version") ) {
 		throw "Could not unzip the archive of $Candidate $Version. Please delete archive from $Script:PGVM_ARCHIVES_PATH (or delete all with 'gvm flush archives'"
 	}
 
