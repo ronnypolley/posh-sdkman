@@ -1,7 +1,7 @@
 name: Pester
 on:
   push:
-    branches: [ develop, main, feature/include_github_actions ]
+    branches: [ develop, main, feature/*, hotfix/*, release/* ]
   pull_request:
     branches: [ main ]
 jobs:
