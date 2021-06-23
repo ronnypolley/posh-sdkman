@@ -37,7 +37,7 @@ function Check-GVM-API-Version() {
     Write-Verbose 'Checking GVM-API version'
     try {
         $apiVersion = Get-GVM-API-Version
-        $gvmRemoteVersion = Invoke-API-Call "app/version"
+        $gvmRemoteVersion = Invoke-API-Call "broker/download/sdkman/version/stable"
 
         if ( $gvmRemoteVersion -gt $apiVersion) {
             if ( $Global:PGVM_AUTO_SELFUPDATE ) {
@@ -189,7 +189,7 @@ function Check-Candidate-Version-Available($Candidate, $Version) {
         return Invoke-API-Call "candidates/$Candidate/default"
     }
 
-    $VersionAvailable = Invoke-API-Call "candidates/$Candidate/$Version"
+    $VersionAvailable = Invoke-API-Call "candidates/validate/$Candidate/$Version/cygwin"
 
     if ( $VersionAvailable -eq 'valid' ) {
         return $Version
@@ -348,8 +348,8 @@ function Init-Candidate-Cache() {
 function Update-Candidates-Cache() {
     Write-Verbose 'Update candidates-cache from GVM-API'
     Check-Online-Mode
-    Invoke-Api-Call 'app/version' $Script:GVM_API_VERSION_PATH
-    Invoke-API-Call 'candidates' $Script:PGVM_CANDIDATES_PATH
+    Invoke-Api-Call 'broker/download/sdkman/version/stable' $Script:GVM_API_VERSION_PATH
+    Invoke-API-Call 'candidates/all' $Script:PGVM_CANDIDATES_PATH
 }
 
 function Write-Offline-Version-List($Candidate) {
@@ -386,7 +386,7 @@ function Write-Version-List($Candidate) {
 
     $current = Get-Current-Candidate-Version $Candidate
     $versions = (Get-Installed-Candidate-Version-List $Candidate) -join ','
-    Invoke-API-Call "candidates/$Candidate/list?platform=posh&current=$current&installed=$versions" | Write-Output
+    Invoke-API-Call "candidates/$Candidate/cygwin/versions/list?current=$current&installed=$versions" | Write-Output
 }
 
 function Install-Local-Version($Candidate, $Version, $LocalPath) {
@@ -414,7 +414,7 @@ function Install-Remote-Version($Candidate, $Version) {
     } else {
 		Check-Online-Mode
         Write-Output "`nDownloading: $Candidate $Version`n"
-        Download-File "$Script:PGVM_SERVICE/download/$Candidate/$Version`?platform=posh" $archive
+        Download-File "$Script:PGVM_SERVICE/broker/download/$Candidate/$Version`/cygwin" $archive
     }
 
     Write-Output "Installing: $Candidate $Version"
