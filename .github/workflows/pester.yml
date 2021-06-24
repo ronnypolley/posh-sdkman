@@ -15,6 +15,7 @@ jobs:
     - name: Run Pester tests (pwsh)
       run: |
         Write-host $PSVersionTable.PSVersion.Major $PSVersionTable.PSRemotingProtocolVersion.Minor
+        Write-host "$Get-Module -Name Pester"
         Invoke-Pester -Path "Tests"
         if ($Error[0].Fullyqualifiederrorid -eq 'PesterAssertionFailed') {exit 1}
       shell: pwsh
@@ -26,6 +27,7 @@ jobs:
     - name: Run Pester tests (PowerShell)
       run: |
         Write-host $PSVersionTable.PSVersion.Major $PSVersionTable.PSRemotingProtocolVersion.Minor
+        Write-host "$Get-Module -Name Pester"
         Invoke-Pester -Path "Tests"
         if ($Error[0].Fullyqualifiederrorid -eq 'PesterAssertionFailed') {exit 1}
       shell: powershell
