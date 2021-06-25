@@ -47,7 +47,7 @@ function Mock-PSDK-Dir {
     New-Item -ItemType Directory "$Global:PSDK_DIR\grails" | Out-Null
 }
 
-function Reset-PGVM-Dir {
+function Reset-PSDK-Dir {
     $link = "$Global:PSDK_DIR\grails\current"
     if ( Test-Path $link ) {
         (Get-Item $link).Delete()
@@ -77,5 +77,5 @@ function Mock-Dispatcher-Test([switch]$Offline) {
 }
 
 function Reset-Dispatcher-Test {
-    Reset-PGVM-Dir
+    Reset-PSDK-Dir
 }

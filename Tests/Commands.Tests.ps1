@@ -27,7 +27,7 @@ Describe 'gvm' {
         }
 
         AfterAll {
-            Reset-PGVM-Dir
+            Reset-PSDK-Dir
         }
     }
 
@@ -40,7 +40,7 @@ Describe 'gvm' {
             Mock Show-Help
         }
 
-        BeforeEach{
+        BeforeEach {
             gvm
         }
         
@@ -79,7 +79,7 @@ Describe 'gvm' {
         }
 
         AfterAll {
-            Reset-PGVM-DIR
+            Reset-PSDK-Dir
         }
     }
 
@@ -104,7 +104,7 @@ Describe 'gvm' {
         }
 
         AfterAll {
-            Reset-PGVM-DIR
+            Reset-PSDK-Dir
         }
     }
 
@@ -657,7 +657,7 @@ Describe 'Uninstall-Candidate-Version' {
         }
 
         AfterAll {
-            Reset-PGVM-Dir
+            Reset-PSDK-Dir
         }
     }
 
@@ -682,7 +682,7 @@ Describe 'Uninstall-Candidate-Version' {
         }
 
         AfterAll {
-            Reset-PGVM-Dir
+            Reset-PSDK-Dir
         }
     }
 }

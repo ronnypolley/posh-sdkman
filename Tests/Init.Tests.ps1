@@ -43,7 +43,7 @@ Describe 'Init-Posh-SDK' {
         }
 
         AfterAll {
-            Reset-PGVM-Dir
+            Reset-PSDK-Dir
         }
     }
 
@@ -91,7 +91,7 @@ Describe 'Init-Posh-SDK' {
         }
 
         AfterAll {
-            Reset-PGVM-Dir
+            Reset-PSDK-Dir
         }
     }
 }

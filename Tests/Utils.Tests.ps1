@@ -555,7 +555,7 @@ Describe 'Get-Current-Candidate-Version reads the currently linked version' {
         }
 
         AfterAll {
-            Reset-PGVM-DIR
+            Reset-PSDK-Dir
         }
     }
 
@@ -571,7 +571,7 @@ Describe 'Get-Current-Candidate-Version reads the currently linked version' {
         }
 
         AfterAll {
-            Reset-PGVM-Dir
+            Reset-PSDK-Dir
         }
     }
 }
@@ -590,7 +590,7 @@ Describe 'Get-Env-Candidate-Version reads the version set in $Candidate-Home' {
 
         AfterAll {
             Reset-Grails-Home
-            Reset-PGVM-Dir
+            Reset-PSDK-Dir
         }
     }
 
@@ -609,7 +609,7 @@ Describe 'Get-Env-Candidate-Version reads the version set in $Candidate-Home' {
 
         AfterAll {
             Reset-Grails-Home
-            Reset-PGVM-Dir
+            Reset-PSDK-Dir
         }
     }
 }
@@ -643,7 +643,7 @@ Describe 'Is-Candidate-Version-Locally-Available check the path exists' {
         it 'returns $false' {
             Mock-PSDK-Dir
             Is-Candidate-Version-Locally-Available grails 1.1.1 | Should -Be $false
-            Reset-PGVM-Dir
+            Reset-PSDK-Dir
         }
 
     }
@@ -654,7 +654,7 @@ Describe 'Is-Candidate-Version-Locally-Available check the path exists' {
             Mock-PSDK-Dir
             New-Item -ItemType Directory "$Global:PSDK_DIR\grails\1.1.1" | Out-Null
             Is-Candidate-Version-Locally-Available grails 1.1.1 | Should -Be $true
-            Reset-PGVM-Dir
+            Reset-PSDK-Dir
         }
 
     }
@@ -675,7 +675,7 @@ Describe 'Get-Installed-Candidate-Version-List' {
         }
 
         AfterAll {
-            Reset-PGVM-Dir
+            Reset-PSDK-Dir
         }
     }
 }
@@ -704,7 +704,7 @@ Describe 'Set-Env-Candidate-Version' {
         AfterAll {
             $env:Path = $Global:backupPATH
             Reset-Grails-Home
-            Reset-PGVM-Dir
+            Reset-PSDK-Dir
         }
     }
 }
@@ -723,7 +723,7 @@ Describe 'Set-Linked-Candidate-Version' {
         }
 
         AfterAll {
-            Reset-PGVM-Dir
+            Reset-PSDK-Dir
         }
     }
 }
@@ -743,7 +743,7 @@ Describe 'Set-Junction-Via-Mklink' {
 
         AfterAll {
             (Get-Item "$Global:PSDK_DIR\grails\bla").Delete()
-            Reset-PGVM-Dir
+            Reset-PSDK-Dir
         }
     }
 
@@ -762,7 +762,7 @@ Describe 'Set-Junction-Via-Mklink' {
 
         AfterAll {
             (Get-Item "$Global:PSDK_DIR\grails\bla").Delete()
-            Reset-PGVM-Dir
+            Reset-PSDK-Dir
         }
     }
 }
@@ -782,7 +782,7 @@ Describe 'Get-Junction-Target' {
 
         AfterAll {
             (Get-Item "$Global:PSDK_DIR\grails\bla").Delete()
-            Reset-PGVM-Dir
+            Reset-PSDK-Dir
         }
     }
 
@@ -797,7 +797,7 @@ Describe 'Get-Junction-Target' {
         }
 
         AfterAll {
-            Reset-PGVM-Dir
+            Reset-PSDK-Dir
         }
     }
 }
@@ -966,7 +966,7 @@ Describe 'Handle-Broadcast' {
 
 
         AfterAll {
-            Reset-PGVM-Dir
+            Reset-PSDK-Dir
         }
     }
 
@@ -989,7 +989,7 @@ Describe 'Handle-Broadcast' {
         }
 
         AfterAll {
-            Reset-PGVM-Dir
+            Reset-PSDK-Dir
         }
     }
 
@@ -1012,7 +1012,7 @@ Describe 'Handle-Broadcast' {
         }
 
         AfterAll {
-            Reset-PGVM-Dir
+            Reset-PSDK-Dir
         }
     }
 
@@ -1035,7 +1035,7 @@ Describe 'Handle-Broadcast' {
         }
 
         AfterAll {
-            Reset-PGVM-Dir
+            Reset-PSDK-Dir
         }
     }
 
@@ -1058,7 +1058,7 @@ Describe 'Handle-Broadcast' {
         }
 
         AfterAll {
-            Reset-PGVM-Dir
+            Reset-PSDK-Dir
         }
     }
 
@@ -1081,7 +1081,7 @@ Describe 'Handle-Broadcast' {
         }
 
         AfterAll {
-            Reset-PGVM-Dir
+            Reset-PSDK-Dir
         }
     }
 }
@@ -1098,7 +1098,7 @@ Describe 'Init-Candidate-Cache' {
         }
 
         AfterAll {
-            Reset-PGVM-Dir
+            Reset-PSDK-Dir
         }
     }
 
@@ -1117,7 +1117,7 @@ Describe 'Init-Candidate-Cache' {
         }
 
         AfterAll {
-            Reset-PGVM-Dir
+            Reset-PSDK-Dir
         }
     }
 }
@@ -1142,7 +1142,7 @@ Describe 'Update-Candidate-Cache' {
         }
 
         AfterAll {
-            Reset-PGVM-Dir
+            Reset-PSDK-Dir
         }
     }
 }
@@ -1240,7 +1240,7 @@ Describe 'Install-Remote-Version' {
         }
 
         AfterAll {
-            Reset-PGVM-DIR
+            Reset-PSDK-Dir
         }
     }
 
@@ -1268,7 +1268,7 @@ Describe 'Install-Remote-Version' {
         }
 
         AfterAll {
-            Reset-PGVM-DIR
+            Reset-PSDK-Dir
         }
     }
 
@@ -1294,7 +1294,7 @@ Describe 'Install-Remote-Version' {
         }
 
         AfterAll {
-            Reset-PGVM-DIR
+            Reset-PSDK-Dir
         }
     }
 }
