@@ -6,7 +6,7 @@ BeforeAll {
 }
 
 Describe 'gvm' {
-    Context 'No posh-gvm dir available' {
+    Context 'No posh-sdk dir available' {
         BeforeAll {
             $Script:SDK_FORCE_OFFLINE = $true
             Mock-PSDK-Dir
@@ -16,7 +16,7 @@ Describe 'gvm' {
             Mock Show-Help
         }
 
-        It 'initalize posh-gvm' {
+        It 'initalize posh-sdk' {
             gvm
             Assert-VerifiableMock
         }
@@ -31,7 +31,7 @@ Describe 'gvm' {
         }
     }
 
-    Context 'Posh-gvm dir available' {
+    Context 'posh-sdk dir available' {
         BeforeAll {
             $Script:SDK_FORCE_OFFLINE = $true
             Mock-PSDK-Dir
@@ -44,7 +44,7 @@ Describe 'gvm' {
             gvm
         }
         
-        It 'initalize posh-gvm' {
+        It 'initalize posh-sdk' {
             Assert-VerifiableMock
         }
         
@@ -58,7 +58,7 @@ Describe 'gvm' {
 
     }
 
-    Context 'posh-gvm is forced offline' {
+    Context 'posh-sdk is forced offline' {
         BeforeAll {
             Mock-PSDK-Dir
             Mock Init-Candidate-Cache -verifiable
@@ -83,7 +83,7 @@ Describe 'gvm' {
         }
     }
 
-    Context 'posh-gvm offline command called' {
+    Context 'posh-sdk offline command called' {
         BeforeAll {
             Mock-PSDK-Dir
             Mock Init-Candidate-Cache -verifiable
@@ -108,7 +108,7 @@ Describe 'gvm' {
         }
     }
 
-    Context 'posh-gvm online and command i called' {
+    Context 'posh-sdk online and command i called' {
         BeforeAll {
             Mock-Dispatcher-Test
             Mock Install-Candidate-Version -verifiable -parameterFilter { $Candidate -eq 'grails' -and $Version -eq '2.2.2' -and $InstallPath -eq '\bla' }
@@ -125,7 +125,7 @@ Describe 'gvm' {
         }
     }
 
-    Context 'posh-gvm online and command install called' {
+    Context 'posh-sdk online and command install called' {
         BeforeAll {
             Mock-Dispatcher-Test
             Mock Install-Candidate-Version -verifiable -parameterFilter { $Candidate -eq 'grails' -and $Version -eq '2.2.2' -and $InstallPath -eq '' }
@@ -142,7 +142,7 @@ Describe 'gvm' {
         }
     }
 
-    Context 'posh-gvm online and command uninstall called' {
+    Context 'posh-sdk online and command uninstall called' {
         BeforeAll {
             Mock-Dispatcher-Test
             Mock Uninstall-Candidate-Version -verifiable -parameterFilter { $Candidate -eq 'grails' -and $Version -eq '2.2.2' }
@@ -159,7 +159,7 @@ Describe 'gvm' {
         }
     }
 
-    Context 'posh-gvm online and command rm called' {
+    Context 'posh-sdk online and command rm called' {
         BeforeAll {
             Mock-Dispatcher-Test
             Mock Uninstall-Candidate-Version -verifiable -parameterFilter { $Candidate -eq 'grails' -and $Version -eq '2.2.1' }
@@ -176,7 +176,7 @@ Describe 'gvm' {
         }
     }
 
-    Context 'posh-gvm online and command ls called' {
+    Context 'posh-sdk online and command ls called' {
         BeforeAll {
             Mock-Dispatcher-Test
             Mock List-Candidate-Versions -verifiable -parameterFilter { $Candidate -eq 'grails' }
@@ -193,7 +193,7 @@ Describe 'gvm' {
         }
     }
 
-    Context 'posh-gvm online and command list called' {
+    Context 'posh-sdk online and command list called' {
         BeforeAll {
             Mock-Dispatcher-Test
             Mock List-Candidate-Versions -verifiable -parameterFilter { $Candidate -eq 'grails' }
@@ -210,7 +210,7 @@ Describe 'gvm' {
         }
     }
 
-    Context 'posh-gvm online and command u called' {
+    Context 'posh-sdk online and command u called' {
         BeforeAll {
             Mock-Dispatcher-Test
             Mock Use-Candidate-Version -verifiable -parameterFilter { $Candidate -eq 'grails' -and $Version -eq '2.2.1' }
@@ -227,7 +227,7 @@ Describe 'gvm' {
         }
     }
 
-    Context 'posh-gvm online and command use called' {
+    Context 'posh-sdk online and command use called' {
         BeforeAll {
             Mock-Dispatcher-Test
             Mock Use-Candidate-Version -verifiable -parameterFilter { $Candidate -eq 'grails' -and $Version -eq '2.2.1' }
@@ -244,7 +244,7 @@ Describe 'gvm' {
         }
     }
 
-    Context 'posh-gvm online and command d called' {
+    Context 'posh-sdk online and command d called' {
         BeforeAll {
             Mock-Dispatcher-Test
             Mock Set-Default-Version -verifiable -parameterFilter { $Candidate -eq 'grails' -and $Version -eq '2.2.1' }
@@ -261,7 +261,7 @@ Describe 'gvm' {
         }
     }
 
-    Context 'posh-gvm online and command default called' {
+    Context 'posh-sdk online and command default called' {
         BeforeAll {
             Mock-Dispatcher-Test
             Mock Set-Default-Version -verifiable -parameterFilter { $Candidate -eq 'grails' -and $Version -eq '2.2.1' }
@@ -278,7 +278,7 @@ Describe 'gvm' {
         }
     }
 
-    Context 'posh-gvm online and command c called' {
+    Context 'posh-sdk online and command c called' {
         BeforeAll {
             Mock-Dispatcher-Test
             Mock Show-Current-Version -verifiable -parameterFilter { $Candidate -eq 'grails' }
@@ -295,7 +295,7 @@ Describe 'gvm' {
         }
     }
 
-    Context 'posh-gvm online and command current called' {
+    Context 'posh-sdk online and command current called' {
         BeforeAll {
             Mock-Dispatcher-Test
             Mock Show-Current-Version -verifiable -parameterFilter { $Candidate -eq 'grails' }
@@ -312,7 +312,7 @@ Describe 'gvm' {
         }
     }
 
-    Context 'posh-gvm online and command v called' {
+    Context 'posh-sdk online and command v called' {
         BeforeAll {
             Mock-Dispatcher-Test
             Mock Show-Posh-Gvm-Version -verifiable
@@ -329,7 +329,7 @@ Describe 'gvm' {
         }
     }
 
-    Context 'posh-gvm online and command version called' {
+    Context 'posh-sdk online and command version called' {
         BeforeAll {
             Mock-Dispatcher-Test
             Mock Show-Posh-Gvm-Version -verifiable
@@ -346,7 +346,7 @@ Describe 'gvm' {
         }
     }
 
-    Context 'posh-gvm online and command b called' {
+    Context 'posh-sdk online and command b called' {
         BeforeAll {
             Mock-Dispatcher-Test
             Mock Show-Broadcast-Message -verifiable
@@ -363,7 +363,7 @@ Describe 'gvm' {
         }
     }
 
-    Context 'posh-gvm online and command broadcast called' {
+    Context 'posh-sdk online and command broadcast called' {
         BeforeAll {
             Mock-Dispatcher-Test
             Mock Show-Broadcast-Message -verifiable
@@ -380,7 +380,7 @@ Describe 'gvm' {
         }
     }
 
-    Context 'posh-gvm online and command h called' {
+    Context 'posh-sdk online and command h called' {
         BeforeAll {
             Mock-Dispatcher-Test
             Mock Show-Help -verifiable
@@ -397,7 +397,7 @@ Describe 'gvm' {
         }
     }
 
-    Context 'posh-gvm online and command help called' {
+    Context 'posh-sdk online and command help called' {
         BeforeAll {
             Mock-Dispatcher-Test
             Mock Show-Help -verifiable
@@ -414,7 +414,7 @@ Describe 'gvm' {
         }
     }
 
-    Context 'posh-gvm online and command offline called' {
+    Context 'posh-sdk online and command offline called' {
         BeforeAll {
             Mock-Dispatcher-Test -Offline
             Mock Set-Offline-Mode -verifiable -parameterFilter { $Flag -eq 'enable' }
@@ -431,7 +431,7 @@ Describe 'gvm' {
         }
     }
 
-    Context 'posh-gvm online and command selfupdate called' {
+    Context 'posh-sdk online and command selfupdate called' {
         BeforeAll {
             Mock-Dispatcher-Test
             Mock Invoke-Self-Update -verifiable
@@ -448,7 +448,7 @@ Describe 'gvm' {
         }
     }
 
-    Context 'posh-gvm online and command flush called' {
+    Context 'posh-sdk online and command flush called' {
         BeforeAll {
             Mock-Dispatcher-Test
             Mock Flush-Cache -verifiable -parameterFilter { $DataType -eq 'version' }
