@@ -69,7 +69,7 @@ function Get-Posh-SDK-Version() {
 function Is-New-Posh-SDK-Version-Available() {
     try {
         $localVersion = (Get-Posh-SDK-Version).Trim()
-        $currentVersion = (Invoke-RestMethod $Script:PGVM_VERSION_SERVICE).Trim()
+        $currentVersion = (Invoke-RestMethod $Script:PSDK_VERSION_SERVICE).Trim()
 
         Write-Verbose "posh-gvm version check $currentVersion > $localVersion = $($currentVersion -gt $localVersion)"
 

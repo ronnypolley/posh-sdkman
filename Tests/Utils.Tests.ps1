@@ -180,7 +180,7 @@ Describe 'Check-Posh-SDK-Version' {
 Describe 'Is-New-Posh-SDK-Version-Available' {
     Context 'New version available' {
         BeforeAll {
-            $Script:PGVM_VERSION_SERVICE = 'blub'
+            $Script:PSDK_VERSION_SERVICE = 'blub'
             $Script:PGVM_VERSION_PATH = 'TestDrive:VERSION.txt'
             Set-Content $Script:PGVM_VERSION_PATH '1.1.1'
 
@@ -195,7 +195,7 @@ Describe 'Is-New-Posh-SDK-Version-Available' {
 
     Context 'No new version available' {
         BeforeAll {
-            $Script:PGVM_VERSION_SERVICE = 'blub'
+            $Script:PSDK_VERSION_SERVICE = 'blub'
             $Script:PGVM_VERSION_PATH = 'TestDrive:VERSION.txt'
             Set-Content $Script:PGVM_VERSION_PATH '1.1.1'
 
@@ -210,7 +210,7 @@ Describe 'Is-New-Posh-SDK-Version-Available' {
 
     Context 'Version service error' {
         BeforeAll { 
-            $Script:PGVM_VERSION_SERVICE = 'blub'
+            $Script:PSDK_VERSION_SERVICE = 'blub'
             $Script:PGVM_VERSION_PATH = 'TestDrive:VERSION.txt'
             Set-Content $Script:PGVM_VERSION_PATH '1.1.1'
 
