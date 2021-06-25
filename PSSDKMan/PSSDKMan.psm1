@@ -50,6 +50,6 @@ Push-Location $psScriptRoot
 . .\TabExpansion.ps1
 Pop-Location
 
-Init-Posh-Gvm
+Init-Posh-SDK
 
 Export-ModuleMember 'gvm'

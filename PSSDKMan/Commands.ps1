@@ -5,7 +5,7 @@
 
     if ( !( Test-Path $Global:PSDK_DIR ) ) {
         Write-Warning "$Global:PSDK_DIR does not exists. Reinitialize posh-gvm"
-        Init-Posh-Gvm
+        Init-Posh-SDK
     }
 
     $Script:GVM_AVAILABLE = $true

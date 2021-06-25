@@ -1,5 +1,5 @@
 #region Initialization
-function Init-Posh-Gvm() {
+function Init-Posh-SDK() {
     Write-Verbose 'Init posh-gvm'
 
     $ErrorActionPreference = 'Stop'

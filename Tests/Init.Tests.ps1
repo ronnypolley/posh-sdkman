@@ -4,7 +4,7 @@ BeforeAll {
     . .\TestUtils.ps1
 }
 
-Describe 'Init-Posh-Gvm' {
+Describe 'Init-Posh-SDK' {
     Context 'PGVM-Dir with only a grails folder' {
         BeforeAll {
             Mock-PSDK-Dir
@@ -19,7 +19,7 @@ Describe 'Init-Posh-Gvm' {
         }
 
         BeforeEach {
-            Init-Posh-Gvm
+            Init-Posh-SDK
         }
 
         It "creates .meta" {
@@ -63,7 +63,7 @@ Describe 'Init-Posh-Gvm' {
         }
 
         BeforeEach {
-            Init-Posh-Gvm
+            Init-Posh-SDK
         }
 
         It "creates .meta" {

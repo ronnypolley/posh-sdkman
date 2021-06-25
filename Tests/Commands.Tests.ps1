@@ -11,7 +11,7 @@ Describe 'gvm' {
             $Script:SDK_FORCE_OFFLINE = $true
             Mock-PSDK-Dir
             Remove-Item $Global:PSDK_DIR -Recurse
-            Mock Init-Posh-Gvm -verifiable
+            Mock Init-Posh-SDK -verifiable
             Mock Init-Candidate-Cache -verifiable
             Mock Show-Help
         }
@@ -35,7 +35,7 @@ Describe 'gvm' {
         BeforeAll {
             $Script:SDK_FORCE_OFFLINE = $true
             Mock-PSDK-Dir
-            Mock Init-Posh-Gvm
+            Mock Init-Posh-SDK
             Mock Init-Candidate-Cache -verifiable
             Mock Show-Help
         }
@@ -49,7 +49,7 @@ Describe 'gvm' {
         }
         
         It 'does not init again' {
-            Assert-MockCalled Init-Posh-Gvm 0
+            Assert-MockCalled Init-Posh-SDK 0
         }
         
         It 'prints help' {
