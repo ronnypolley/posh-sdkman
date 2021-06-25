@@ -181,8 +181,8 @@ Describe 'Is-New-Posh-SDK-Version-Available' {
     Context 'New version available' {
         BeforeAll {
             $Script:PSDK_VERSION_SERVICE = 'blub'
-            $Script:PGVM_VERSION_PATH = 'TestDrive:VERSION.txt'
-            Set-Content $Script:PGVM_VERSION_PATH '1.1.1'
+            $Script:PSDK_VERSION_PATH = 'TestDrive:VERSION.txt'
+            Set-Content $Script:PSDK_VERSION_PATH '1.1.1'
 
             Mock Invoke-RestMethod { '1.2.1' } -parameterFilter { $Uri -eq 'blub' }
         }
@@ -196,8 +196,8 @@ Describe 'Is-New-Posh-SDK-Version-Available' {
     Context 'No new version available' {
         BeforeAll {
             $Script:PSDK_VERSION_SERVICE = 'blub'
-            $Script:PGVM_VERSION_PATH = 'TestDrive:VERSION.txt'
-            Set-Content $Script:PGVM_VERSION_PATH '1.1.1'
+            $Script:PSDK_VERSION_PATH = 'TestDrive:VERSION.txt'
+            Set-Content $Script:PSDK_VERSION_PATH '1.1.1'
 
             Mock Invoke-RestMethod { '1.1.1' } -parameterFilter { $Uri -eq 'blub' }
         }
@@ -211,8 +211,8 @@ Describe 'Is-New-Posh-SDK-Version-Available' {
     Context 'Version service error' {
         BeforeAll { 
             $Script:PSDK_VERSION_SERVICE = 'blub'
-            $Script:PGVM_VERSION_PATH = 'TestDrive:VERSION.txt'
-            Set-Content $Script:PGVM_VERSION_PATH '1.1.1'
+            $Script:PSDK_VERSION_PATH = 'TestDrive:VERSION.txt'
+            Set-Content $Script:PSDK_VERSION_PATH '1.1.1'
 
             Mock Invoke-RestMethod { throw 'error' } -parameterFilter { $Uri -eq 'blub' }
         }

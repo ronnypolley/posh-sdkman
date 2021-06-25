@@ -63,7 +63,7 @@ function Check-Posh-SDK-Version() {
 }
 
 function Get-Posh-SDK-Version() {
-    return Get-Content $Script:PGVM_VERSION_PATH
+    return Get-Content $Script:PSDK_VERSION_PATH
 }
 
 function Is-New-Posh-SDK-Version-Available() {
