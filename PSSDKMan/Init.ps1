@@ -27,9 +27,6 @@ function Init-Posh-SDK() {
 
         Set-Env-Candidate-Version $candidate 'current'
     }
-
-    # Check if we can use unzip (which is much faster)
-    Check-Unzip-On-Path
 }
 
 function Check-JAVA-HOME() {
@@ -43,19 +40,4 @@ function Check-JAVA-HOME() {
     }
 }
 
-function Check-Unzip-On-Path() {
-    try {
-        Get-Command 'unzip.exe' | Out-Null
-        $Script:UNZIP_ON_PATH = $true
-    } catch {
-        $Script:UNZIP_ON_PATH = $false
-    }
-
-    try {
-        Get-Command '7z.exe' | Out-Null
-        $Script:SEVENZ_ON_PATH = $true
-    } catch {
-        $Script:SEVENZ_ON_PATH = $false
-    }
-}
 #endregion
