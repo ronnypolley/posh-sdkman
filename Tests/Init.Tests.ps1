@@ -33,7 +33,7 @@ Describe 'Init-Posh-Gvm' {
         }
 
         It "calls methods to test JAVA_HOME, API version, loads candidate cache and setup env variables" {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
 
         Reset-PGVM-Dir
@@ -71,7 +71,7 @@ Describe 'Init-Posh-Gvm' {
         }
 
         It "calls methods to test JAVA_HOME, API version, loads candidate cache and setup env variables" {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
 
         It "does not call update-candidates-cache" {

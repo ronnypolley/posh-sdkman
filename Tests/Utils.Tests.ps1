@@ -56,7 +56,7 @@ Describe 'Check-GVM-API-Version' {
         }
 
         It 'write a warning about needed update' {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
 
         $Global:PGVM_AUTO_SELFUPDATE = $backup_Global_PGVM_AUTO_SELFUPDTE
@@ -74,7 +74,7 @@ Describe 'Check-GVM-API-Version' {
         Check-GVM-API-Version
 
         It 'updates self' {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
 
         It 'does not informs about new version' {
@@ -139,7 +139,7 @@ Describe 'Check-Posh-Gvm-Version' {
         Check-Posh-Gvm-Version
 
         It 'updates self' {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
 
         It 'does not informs about new version' {
@@ -231,7 +231,7 @@ Describe 'Check-Available-Broadcast' {
         }
 
         It 'calls Handle-Broadcast' {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
     }
 
@@ -294,7 +294,7 @@ Describe 'Check-Available-Broadcast' {
         }
 
         It 'calls Handle-Broadcast' {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
     }
 }
@@ -309,7 +309,7 @@ Describe 'Invoke-Self-Update' {
         Invoke-Self-Update
 
         It 'updates the candidate cache' {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
 
         It 'does not updates itself' {
@@ -326,7 +326,7 @@ Describe 'Invoke-Self-Update' {
         Invoke-Self-Update
 
         It 'updates the candidate cache and version' {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
     }
 
@@ -339,7 +339,7 @@ Describe 'Invoke-Self-Update' {
         Invoke-Self-Update -Force $true
 
         It 'updates the candidate cache and version' {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
     }
 }
@@ -377,7 +377,7 @@ Describe 'Check-Candidate-Version-Available select or vadidates a version for a 
         $result = Check-Candidate-Version-Available grails 1.1.1
 
         It 'check candidate parameter' {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
 
         It 'returns the 1.1.1' {
@@ -395,7 +395,7 @@ Describe 'Check-Candidate-Version-Available select or vadidates a version for a 
         }
 
         It 'check candidate parameter' {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
     }
 
@@ -407,7 +407,7 @@ Describe 'Check-Candidate-Version-Available select or vadidates a version for a 
         $result = Check-Candidate-Version-Available grails
 
         It 'check candidate parameter' {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
 
         It 'returns the current version' {
@@ -425,7 +425,7 @@ Describe 'Check-Candidate-Version-Available select or vadidates a version for a 
         }
 
         It 'check candidate parameter' {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
     }
 
@@ -441,7 +441,7 @@ Describe 'Check-Candidate-Version-Available select or vadidates a version for a 
         }
 
         It 'check candidate parameter' {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
     }
 
@@ -457,7 +457,7 @@ Describe 'Check-Candidate-Version-Available select or vadidates a version for a 
         }
 
         It 'check candidate parameter' {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
     }
 
@@ -471,7 +471,7 @@ Describe 'Check-Candidate-Version-Available select or vadidates a version for a 
         }
 
         It 'check candidate parameter' {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
     }
 }
@@ -625,7 +625,7 @@ Describe 'Set-Linked-Candidate-Version' {
         Set-Linked-Candidate-Version grails 2.2.1
 
         It 'calls Set-Junction-Via-Mklink with the correct paths' {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
 
         Reset-PGVM-Dir
@@ -770,7 +770,7 @@ Describe 'Invoke-API-Call helps doing calls to the GVM-API' {
         }
 
         It 'calls Check-Online-Mode which throws an error' {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
     }
 
@@ -798,7 +798,7 @@ Describe 'Invoke-API-Call helps doing calls to the GVM-API' {
         Invoke-API-Call 'na/rock' TestDrive:a.txt
 
         It 'calls Invoke-RestMethod with file path' {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
     }
 }
@@ -820,7 +820,7 @@ Describe 'Cleanup-Directory' {
         }
 
         It 'Write info to host' {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
     }
 }
@@ -835,7 +835,7 @@ Describe 'Handle-Broadcast' {
         Handle-Broadcast list 'New Broadcast message'
 
         It 'outputs the broadcast message' {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
 
         It 'sets the new broadcast message in file' {
@@ -855,7 +855,7 @@ Describe 'Handle-Broadcast' {
         Handle-Broadcast list 'New Broadcast message'
 
         It 'outputs the broadcast message' {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
 
         It 'sets the new broadcast message in file' {
@@ -984,7 +984,7 @@ Describe 'Update-Candidate-Cache' {
         Update-Candidates-Cache
 
         It 'calls the Check-Online-Mode and two API paths' {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
 
         Reset-PGVM-Dir
@@ -1049,7 +1049,7 @@ Describe 'Install-Local-Version' {
         Install-Local-Version grails snapshot TestDrive:Snapshot
 
         It 'creates junction for candidate version' {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
     }
 }
@@ -1070,7 +1070,7 @@ Describe 'Install-Remote-Version' {
         Install-Remote-Version grails 1.3.9
 
         It 'downloads the archive' {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
 
         It 'install it correctly' {

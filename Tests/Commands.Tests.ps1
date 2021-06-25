@@ -5,23 +5,28 @@
 
 Describe 'gvm' {
     Context 'No posh-gvm dir available'{
-        $Script:GVM_FORCE_OFFLINE = $true
-        Mock-PGVM-Dir
-        Remove-Item $global:PGVM_DIR -Recurse
-        Mock Init-Posh-Gvm -verifiable
-        Mock Init-Candidate-Cache -verifiable
-        Mock Show-Help
-        gvm
+        BeforeAll {
+            $Script:GVM_FORCE_OFFLINE = $true
+            Mock-PGVM-Dir
+            Remove-Item $global:PGVM_DIR -Recurse
+            Mock Init-Posh-Gvm -verifiable
+            Mock Init-Candidate-Cache -verifiable
+            Mock Show-Help
+        }
 
         It 'initalize posh-gvm' {
-            Assert-VerifiableMocks
+            gvm
+            Assert-VerifiableMock
         }
 
         It 'prints help' {
+            gvm
             Assert-MockCalled Show-Help 1
         }
 
-        Reset-PGVM-Dir
+        AfterAll {
+            Reset-PGVM-Dir
+        }
     }
 
     Context 'Posh-gvm dir available'{
@@ -33,7 +38,7 @@ Describe 'gvm' {
         gvm
 
         It 'initalize posh-gvm' {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
 
         It 'does not init again' {
@@ -60,7 +65,7 @@ Describe 'gvm' {
         }
 
         It 'performs default command actions' {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
 
         Reset-PGVM-DIR
@@ -80,7 +85,7 @@ Describe 'gvm' {
         }
 
         It 'performs offline command actions' {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
 
         Reset-PGVM-DIR
@@ -93,7 +98,7 @@ Describe 'gvm' {
         gvm i grails 2.2.2 \bla
 
         It 'checks for new broadcast, inits the Candidate-Cache and calls install-command' {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
 
         Reset-Dispatcher-Test
@@ -106,7 +111,7 @@ Describe 'gvm' {
         gvm install grails 2.2.2
 
         It 'checks for new broadcast, inits the Candidate-Cache and calls install-command' {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
 
         Reset-Dispatcher-Test
@@ -119,7 +124,7 @@ Describe 'gvm' {
         gvm uninstall grails 2.2.2
 
         It 'checks for new broadcast, inits the Candidate-Cache and calls uninstall-command' {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
 
         Reset-Dispatcher-Test
@@ -132,7 +137,7 @@ Describe 'gvm' {
         gvm rm grails 2.2.1
 
         It 'checks for new broadcast, inits the Candidate-Cache and calls uninstall-command' {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
 
         Reset-Dispatcher-Test
@@ -145,7 +150,7 @@ Describe 'gvm' {
         gvm ls grails
 
         It 'checks for new broadcast, inits the Candidate-Cache and calls list-command' {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
 
         Reset-Dispatcher-Test
@@ -158,7 +163,7 @@ Describe 'gvm' {
         gvm list grails
 
         It 'checks for new broadcast, inits the Candidate-Cache and calls list-command' {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
 
         Reset-Dispatcher-Test
@@ -171,7 +176,7 @@ Describe 'gvm' {
         gvm u grails 2.2.1
 
         It 'checks for new broadcast, inits the Candidate-Cache and calls use-command' {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
 
         Reset-Dispatcher-Test
@@ -184,7 +189,7 @@ Describe 'gvm' {
         gvm use grails 2.2.1
 
         It 'checks for new broadcast, inits the Candidate-Cache and calls use-command' {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
 
         Reset-Dispatcher-Test
@@ -197,7 +202,7 @@ Describe 'gvm' {
         gvm d grails 2.2.1
 
         It 'checks for new broadcast, inits the Candidate-Cache and calls default-command' {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
 
         Reset-Dispatcher-Test
@@ -210,7 +215,7 @@ Describe 'gvm' {
         gvm default grails 2.2.1
 
         It 'checks for new broadcast, inits the Candidate-Cache and calls default-command' {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
 
         Reset-Dispatcher-Test
@@ -223,7 +228,7 @@ Describe 'gvm' {
         gvm c grails
 
         It 'checks for new broadcast, inits the Candidate-Cache and calls current-command' {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
 
         Reset-Dispatcher-Test
@@ -236,7 +241,7 @@ Describe 'gvm' {
         gvm current grails
 
         It 'checks for new broadcast, inits the Candidate-Cache and calls current-command' {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
 
         Reset-Dispatcher-Test
@@ -249,7 +254,7 @@ Describe 'gvm' {
         gvm v
 
         It 'checks for new broadcast, inits the Candidate-Cache and calls version-command' {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
 
         Reset-Dispatcher-Test
@@ -262,7 +267,7 @@ Describe 'gvm' {
         gvm version
 
         It 'checks for new broadcast, inits the Candidate-Cache and calls version-command' {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
 
         Reset-Dispatcher-Test
@@ -275,7 +280,7 @@ Describe 'gvm' {
         gvm b
 
         It 'checks for new broadcast, inits the Candidate-Cache and calls broadcast-command' {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
 
         Reset-Dispatcher-Test
@@ -288,7 +293,7 @@ Describe 'gvm' {
         gvm broadcast
 
         It 'checks for new broadcast, inits the Candidate-Cache and calls broadcast-command' {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
 
         Reset-Dispatcher-Test
@@ -301,7 +306,7 @@ Describe 'gvm' {
         gvm h
 
         It 'checks for new broadcast, inits the Candidate-Cache and calls help-command' {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
 
         Reset-Dispatcher-Test
@@ -314,7 +319,7 @@ Describe 'gvm' {
         gvm help
 
         It 'checks for new broadcast, inits the Candidate-Cache and calls help-command' {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
 
         Reset-Dispatcher-Test
@@ -327,7 +332,7 @@ Describe 'gvm' {
         gvm offline enable
 
         It 'checks for new broadcast, inits the Candidate-Cache and calls offline-command' {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
 
         Reset-Dispatcher-Test
@@ -340,7 +345,7 @@ Describe 'gvm' {
         gvm selfupdate
 
         It 'checks for new broadcast, inits the Candidate-Cache and calls selfupdate-command' {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
 
         Reset-Dispatcher-Test
@@ -353,7 +358,7 @@ Describe 'gvm' {
         gvm flush version
 
         It 'checks for new broadcast, inits the Candidate-Cache and calls flush-command' {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
 
         Reset-Dispatcher-Test
@@ -371,7 +376,7 @@ Describe 'Install-Candidate-Version' {
         }
 
         It 'process precondition checks' {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
     }
 
@@ -385,7 +390,7 @@ Describe 'Install-Candidate-Version' {
         }
 
         It 'process precondition checks' {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
     }
 
@@ -398,7 +403,7 @@ Describe 'Install-Candidate-Version' {
         }
 
         It 'process precondition checks' {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
     }
 
@@ -415,7 +420,7 @@ Describe 'Install-Candidate-Version' {
         Install-Candidate-Version grails 1.1.1 \bla
 
         It 'installs the local version' {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
 
         It "does not set default" {
@@ -438,7 +443,7 @@ Describe 'Install-Candidate-Version' {
         Install-Candidate-Version grails 1.1.1 \bla
 
         It 'installs the local version' {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
 
         $Global:PGVM_AUTO_ANSWER = $backupAutoAnswer
@@ -458,7 +463,7 @@ Describe 'Install-Candidate-Version' {
         Install-Candidate-Version grails 1.1.1
 
         It 'installs the local version' {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
 
         $Global:PGVM_AUTO_ANSWER = $backupAutoAnswer
@@ -482,7 +487,7 @@ Describe 'Uninstall-Candidate-Version' {
         }
 
         It 'checks candidate' {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
     }
 
@@ -511,7 +516,7 @@ Describe 'Uninstall-Candidate-Version' {
         }
 
         It "checks different preconditions correctly" {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
 
         Reset-PGVM-Dir
@@ -533,7 +538,7 @@ Describe 'Uninstall-Candidate-Version' {
         }
 
         It "checks different preconditions correctly" {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
 
         Reset-PGVM-Dir
@@ -549,7 +554,7 @@ Describe 'List-Candidate-Versions' {
         List-Candidate-Versions grails
 
         It 'write the version list retrieved from api' {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
     }
 
@@ -561,7 +566,7 @@ Describe 'List-Candidate-Versions' {
         List-Candidate-Versions grails
 
         It 'write the version list based on local file structure' {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
     }
 }
@@ -576,7 +581,7 @@ Describe 'Use-Candidate-Version' {
         Use-Candidate-Version grails 1.1.1
 
         It 'changes nothing' {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
 
         It 'does not test candidate version' {
@@ -594,7 +599,7 @@ Describe 'Use-Candidate-Version' {
         Use-Candidate-Version grails 1.1.1
 
         It 'perform the changes' {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
     }
 }
@@ -609,7 +614,7 @@ Describe 'Set-Default-Version' {
         Set-Default-Version grails 1.1.1
 
         It 'changes nothing' {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
 
         It 'does not test candidate version' {
@@ -627,7 +632,7 @@ Describe 'Set-Default-Version' {
         Set-Default-Version grails 1.1.1
 
         It 'perform the changes' {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
     }
 }
@@ -646,7 +651,7 @@ Describe 'Show-Current-Version' {
         Show-Current-Version
 
         It 'write the version for all currently used candidates' {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
     }
 
@@ -658,7 +663,7 @@ Describe 'Show-Current-Version' {
         Show-Current-Version grails
 
         It 'write version info' {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
     }
 
@@ -670,7 +675,7 @@ Describe 'Show-Current-Version' {
         Show-Current-Version grails
 
         It 'write no version is available' {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
     }
 }
@@ -684,7 +689,7 @@ Describe 'Show-Posh-Gvm-Version' {
         Show-Posh-Gvm-Version
 
         It 'write the version message to output' {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
     }
 }
@@ -698,7 +703,7 @@ Describe 'Show-Broadcast-Message' {
         Show-Broadcast-Message
 
         It 'Write broadcast message to output' {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
     }
 }
@@ -721,7 +726,7 @@ Describe 'Set-Offline-Mode' {
         }
 
         It "writes info to output" {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
     }
 
@@ -741,7 +746,7 @@ Describe 'Set-Offline-Mode' {
         }
 
         It "writes info to output" {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
     }
 }
@@ -756,7 +761,7 @@ Describe 'Flush-Cache' {
         Flush-Cache candidates
 
         It 'deletes the file and writes flush message' {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
     }
 
@@ -768,7 +773,7 @@ Describe 'Flush-Cache' {
         Flush-Cache candidates
 
         It 'writes warning about non existing file' {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
     }
 
@@ -781,7 +786,7 @@ Describe 'Flush-Cache' {
         Flush-Cache broadcast
 
         It 'deletes the file and writes flush message' {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
     }
 
@@ -793,7 +798,7 @@ Describe 'Flush-Cache' {
         Flush-Cache broadcast
 
         It 'writes warning about non existing file' {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
     }
 
@@ -806,7 +811,7 @@ Describe 'Flush-Cache' {
         Flush-Cache version
 
         It 'deletes the file and writes flush message' {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
     }
 
@@ -818,7 +823,7 @@ Describe 'Flush-Cache' {
         Flush-Cache version
 
         It 'writes warning about non existing file' {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
     }
 
@@ -829,7 +834,7 @@ Describe 'Flush-Cache' {
         Flush-Cache archives
 
         It 'cleanup archives directory' {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
     }
 
@@ -840,7 +845,7 @@ Describe 'Flush-Cache' {
         Flush-Cache temp
 
         It 'cleanup temp directory' {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
     }
 
@@ -851,7 +856,7 @@ Describe 'Flush-Cache' {
         Flush-Cache tmp
 
         It 'cleanup temp directory' {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
     }
 
@@ -869,7 +874,7 @@ Describe 'Show-Help' {
         Show-Help
 
         It 'write the help to the output' {
-            Assert-VerifiableMocks
+            Assert-VerifiableMock
         }
     }
 }
