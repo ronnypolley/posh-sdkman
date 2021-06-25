@@ -5,7 +5,7 @@
 #
 
 @{
-    RootModule = 'posh-gvm.psm1'
+    RootModule = 'posh-sdk.psm1'
 
     ModuleVersion = '1.3.0'
 

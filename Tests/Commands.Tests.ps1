@@ -5,51 +5,51 @@ BeforeAll {
     . .\TestUtils.ps1
 }
 
-Describe 'gvm' {
-    Context 'No posh-gvm dir available' {
+Describe 'psdk' {
+    Context 'No posh-sdk dir available' {
         BeforeAll {
-            $Script:GVM_FORCE_OFFLINE = $true
-            Mock-PGVM-Dir
-            Remove-Item $global:PGVM_DIR -Recurse
-            Mock Init-Posh-Gvm -verifiable
+            $Script:PSDK_FORCE_OFFLINE = $true
+            Mock-PSDK-Dir
+            Remove-Item $Global:PSDK_DIR -Recurse
+            Mock Init-Posh-SDK -verifiable
             Mock Init-Candidate-Cache -verifiable
             Mock Show-Help
         }
 
-        It 'initalize posh-gvm' {
-            gvm
+        It 'initalize posh-sdk' {
+            psdk
             Assert-VerifiableMock
         }
 
         It 'prints help' {
-            gvm
+            psdk
             Assert-MockCalled Show-Help 1
         }
 
         AfterAll {
-            Reset-PGVM-Dir
+            Reset-PSDK-Dir
         }
     }
 
-    Context 'Posh-gvm dir available' {
+    Context 'posh-sdk dir available' {
         BeforeAll {
-            $Script:GVM_FORCE_OFFLINE = $true
-            Mock-PGVM-Dir
-            Mock Init-Posh-Gvm
+            $Script:PSDK_FORCE_OFFLINE = $true
+            Mock-PSDK-Dir
+            Mock Init-Posh-SDK
             Mock Init-Candidate-Cache -verifiable
             Mock Show-Help
         }
 
-        BeforeEach{
-            gvm
+        BeforeEach {
+            psdk
         }
         
-        It 'initalize posh-gvm' {
+        It 'initalize posh-sdk' {
             Assert-VerifiableMock
         }
         
         It 'does not init again' {
-            Assert-MockCalled Init-Posh-Gvm 0
+            Assert-MockCalled Init-Posh-SDK 0
         }
         
         It 'prints help' {
@@ -58,57 +58,57 @@ Describe 'gvm' {
 
     }
 
-    Context 'posh-gvm is forced offline' {
+    Context 'posh-sdk is forced offline' {
         BeforeAll {
-            Mock-PGVM-DIR
+            Mock-PSDK-Dir
             Mock Init-Candidate-Cache -verifiable
             Mock Check-Available-Broadcast
             Mock Show-Help -verifiable
-            $Script:GVM_FORCE_OFFLINE = $true
+            $Script:PSDK_FORCE_OFFLINE = $true
         }
 
     
         It 'does not load broadcast message from api' {
-            gvm
+            psdk
             Assert-MockCalled Check-Available-Broadcast 0
         }
     
         It 'performs default command actions' {
-            gvm
+            psdk
             Assert-VerifiableMock
         }
 
         AfterAll {
-            Reset-PGVM-DIR
+            Reset-PSDK-Dir
         }
     }
 
-    Context 'posh-gvm offline command called' {
+    Context 'posh-sdk offline command called' {
         BeforeAll {
-            Mock-PGVM-DIR
+            Mock-PSDK-Dir
             Mock Init-Candidate-Cache -verifiable
             Mock Check-Available-Broadcast
             Mock Set-Offline-Mode -verifiable
-            $Script:GVM_FORCE_OFFLINE = $false
+            $Script:PSDK_FORCE_OFFLINE = $false
         }
 
     
         It 'does not load broadcast message from api' {
-            gvm offline
+            psdk offline
             Assert-MockCalled Check-Available-Broadcast 0
         }
         
         It 'performs offline command actions' {
-            gvm offline
+            psdk offline
             Assert-VerifiableMock
         }
 
         AfterAll {
-            Reset-PGVM-DIR
+            Reset-PSDK-Dir
         }
     }
 
-    Context 'posh-gvm online and command i called' {
+    Context 'posh-sdk online and command i called' {
         BeforeAll {
             Mock-Dispatcher-Test
             Mock Install-Candidate-Version -verifiable -parameterFilter { $Candidate -eq 'grails' -and $Version -eq '2.2.2' -and $InstallPath -eq '\bla' }
@@ -116,7 +116,7 @@ Describe 'gvm' {
 
     
         It 'checks for new broadcast, inits the Candidate-Cache and calls install-command' {
-            gvm i grails 2.2.2 \bla
+            psdk i grails 2.2.2 \bla
             Assert-VerifiableMock
         }
 
@@ -125,7 +125,7 @@ Describe 'gvm' {
         }
     }
 
-    Context 'posh-gvm online and command install called' {
+    Context 'posh-sdk online and command install called' {
         BeforeAll {
             Mock-Dispatcher-Test
             Mock Install-Candidate-Version -verifiable -parameterFilter { $Candidate -eq 'grails' -and $Version -eq '2.2.2' -and $InstallPath -eq '' }
@@ -133,7 +133,7 @@ Describe 'gvm' {
 
     
         It 'checks for new broadcast, inits the Candidate-Cache and calls install-command' {
-            gvm install grails 2.2.2
+            psdk install grails 2.2.2
             Assert-VerifiableMock
         }
 
@@ -142,7 +142,7 @@ Describe 'gvm' {
         }
     }
 
-    Context 'posh-gvm online and command uninstall called' {
+    Context 'posh-sdk online and command uninstall called' {
         BeforeAll {
             Mock-Dispatcher-Test
             Mock Uninstall-Candidate-Version -verifiable -parameterFilter { $Candidate -eq 'grails' -and $Version -eq '2.2.2' }
@@ -150,7 +150,7 @@ Describe 'gvm' {
 
     
         It 'checks for new broadcast, inits the Candidate-Cache and calls uninstall-command' {
-            gvm uninstall grails 2.2.2
+            psdk uninstall grails 2.2.2
             Assert-VerifiableMock
         }
 
@@ -159,7 +159,7 @@ Describe 'gvm' {
         }
     }
 
-    Context 'posh-gvm online and command rm called' {
+    Context 'posh-sdk online and command rm called' {
         BeforeAll {
             Mock-Dispatcher-Test
             Mock Uninstall-Candidate-Version -verifiable -parameterFilter { $Candidate -eq 'grails' -and $Version -eq '2.2.1' }
@@ -167,7 +167,7 @@ Describe 'gvm' {
 
     
         It 'checks for new broadcast, inits the Candidate-Cache and calls uninstall-command' {
-            gvm rm grails 2.2.1
+            psdk rm grails 2.2.1
             Assert-VerifiableMock
         }
 
@@ -176,7 +176,7 @@ Describe 'gvm' {
         }
     }
 
-    Context 'posh-gvm online and command ls called' {
+    Context 'posh-sdk online and command ls called' {
         BeforeAll {
             Mock-Dispatcher-Test
             Mock List-Candidate-Versions -verifiable -parameterFilter { $Candidate -eq 'grails' }
@@ -184,7 +184,7 @@ Describe 'gvm' {
 
     
         It 'checks for new broadcast, inits the Candidate-Cache and calls list-command' {
-            gvm ls grails
+            psdk ls grails
             Assert-VerifiableMock
         }
 
@@ -193,7 +193,7 @@ Describe 'gvm' {
         }
     }
 
-    Context 'posh-gvm online and command list called' {
+    Context 'posh-sdk online and command list called' {
         BeforeAll {
             Mock-Dispatcher-Test
             Mock List-Candidate-Versions -verifiable -parameterFilter { $Candidate -eq 'grails' }
@@ -201,7 +201,7 @@ Describe 'gvm' {
 
     
         It 'checks for new broadcast, inits the Candidate-Cache and calls list-command' {
-            gvm list grails
+            psdk list grails
             Assert-VerifiableMock
         }
 
@@ -210,7 +210,7 @@ Describe 'gvm' {
         }
     }
 
-    Context 'posh-gvm online and command u called' {
+    Context 'posh-sdk online and command u called' {
         BeforeAll {
             Mock-Dispatcher-Test
             Mock Use-Candidate-Version -verifiable -parameterFilter { $Candidate -eq 'grails' -and $Version -eq '2.2.1' }
@@ -218,7 +218,7 @@ Describe 'gvm' {
 
     
         It 'checks for new broadcast, inits the Candidate-Cache and calls use-command' {
-            gvm u grails 2.2.1
+            psdk u grails 2.2.1
             Assert-VerifiableMock
         }
 
@@ -227,7 +227,7 @@ Describe 'gvm' {
         }
     }
 
-    Context 'posh-gvm online and command use called' {
+    Context 'posh-sdk online and command use called' {
         BeforeAll {
             Mock-Dispatcher-Test
             Mock Use-Candidate-Version -verifiable -parameterFilter { $Candidate -eq 'grails' -and $Version -eq '2.2.1' }
@@ -235,7 +235,7 @@ Describe 'gvm' {
 
     
         It 'checks for new broadcast, inits the Candidate-Cache and calls use-command' {
-            gvm use grails 2.2.1
+            psdk use grails 2.2.1
             Assert-VerifiableMock
         }
 
@@ -244,7 +244,7 @@ Describe 'gvm' {
         }
     }
 
-    Context 'posh-gvm online and command d called' {
+    Context 'posh-sdk online and command d called' {
         BeforeAll {
             Mock-Dispatcher-Test
             Mock Set-Default-Version -verifiable -parameterFilter { $Candidate -eq 'grails' -and $Version -eq '2.2.1' }
@@ -252,7 +252,7 @@ Describe 'gvm' {
 
     
         It 'checks for new broadcast, inits the Candidate-Cache and calls default-command' {
-            gvm d grails 2.2.1
+            psdk d grails 2.2.1
             Assert-VerifiableMock
         }
 
@@ -261,7 +261,7 @@ Describe 'gvm' {
         }
     }
 
-    Context 'posh-gvm online and command default called' {
+    Context 'posh-sdk online and command default called' {
         BeforeAll {
             Mock-Dispatcher-Test
             Mock Set-Default-Version -verifiable -parameterFilter { $Candidate -eq 'grails' -and $Version -eq '2.2.1' }
@@ -269,7 +269,7 @@ Describe 'gvm' {
 
     
         It 'checks for new broadcast, inits the Candidate-Cache and calls default-command' {
-            gvm default grails 2.2.1
+            psdk default grails 2.2.1
             Assert-VerifiableMock
         }
 
@@ -278,7 +278,7 @@ Describe 'gvm' {
         }
     }
 
-    Context 'posh-gvm online and command c called' {
+    Context 'posh-sdk online and command c called' {
         BeforeAll {
             Mock-Dispatcher-Test
             Mock Show-Current-Version -verifiable -parameterFilter { $Candidate -eq 'grails' }
@@ -286,7 +286,7 @@ Describe 'gvm' {
 
     
         It 'checks for new broadcast, inits the Candidate-Cache and calls current-command' {
-            gvm c grails
+            psdk c grails
             Assert-VerifiableMock
         }
 
@@ -295,7 +295,7 @@ Describe 'gvm' {
         }
     }
 
-    Context 'posh-gvm online and command current called' {
+    Context 'posh-sdk online and command current called' {
         BeforeAll {
             Mock-Dispatcher-Test
             Mock Show-Current-Version -verifiable -parameterFilter { $Candidate -eq 'grails' }
@@ -303,7 +303,7 @@ Describe 'gvm' {
 
     
         It 'checks for new broadcast, inits the Candidate-Cache and calls current-command' {
-            gvm current grails
+            psdk current grails
             Assert-VerifiableMock
         }
 
@@ -312,15 +312,15 @@ Describe 'gvm' {
         }
     }
 
-    Context 'posh-gvm online and command v called' {
+    Context 'posh-sdk online and command v called' {
         BeforeAll {
             Mock-Dispatcher-Test
-            Mock Show-Posh-Gvm-Version -verifiable
+            Mock Show-Posh-SDK-Version -verifiable
         }
 
     
         It 'checks for new broadcast, inits the Candidate-Cache and calls version-command' {
-            gvm v
+            psdk v
             Assert-VerifiableMock
         }
 
@@ -329,15 +329,15 @@ Describe 'gvm' {
         }
     }
 
-    Context 'posh-gvm online and command version called' {
+    Context 'posh-sdk online and command version called' {
         BeforeAll {
             Mock-Dispatcher-Test
-            Mock Show-Posh-Gvm-Version -verifiable
+            Mock Show-Posh-SDK-Version -verifiable
         }
 
     
         It 'checks for new broadcast, inits the Candidate-Cache and calls version-command' {
-            gvm version
+            psdk version
             Assert-VerifiableMock
         }
 
@@ -346,7 +346,7 @@ Describe 'gvm' {
         }
     }
 
-    Context 'posh-gvm online and command b called' {
+    Context 'posh-sdk online and command b called' {
         BeforeAll {
             Mock-Dispatcher-Test
             Mock Show-Broadcast-Message -verifiable
@@ -354,7 +354,7 @@ Describe 'gvm' {
 
     
         It 'checks for new broadcast, inits the Candidate-Cache and calls broadcast-command' {
-            gvm b
+            psdk b
             Assert-VerifiableMock
         }
 
@@ -363,7 +363,7 @@ Describe 'gvm' {
         }
     }
 
-    Context 'posh-gvm online and command broadcast called' {
+    Context 'posh-sdk online and command broadcast called' {
         BeforeAll {
             Mock-Dispatcher-Test
             Mock Show-Broadcast-Message -verifiable
@@ -371,7 +371,7 @@ Describe 'gvm' {
 
     
         It 'checks for new broadcast, inits the Candidate-Cache and calls broadcast-command' {
-            gvm broadcast
+            psdk broadcast
             Assert-VerifiableMock
         }
 
@@ -380,7 +380,7 @@ Describe 'gvm' {
         }
     }
 
-    Context 'posh-gvm online and command h called' {
+    Context 'posh-sdk online and command h called' {
         BeforeAll {
             Mock-Dispatcher-Test
             Mock Show-Help -verifiable
@@ -388,7 +388,7 @@ Describe 'gvm' {
 
     
         It 'checks for new broadcast, inits the Candidate-Cache and calls help-command' {
-            gvm h
+            psdk h
             Assert-VerifiableMock
         }
 
@@ -397,7 +397,7 @@ Describe 'gvm' {
         }
     }
 
-    Context 'posh-gvm online and command help called' {
+    Context 'posh-sdk online and command help called' {
         BeforeAll {
             Mock-Dispatcher-Test
             Mock Show-Help -verifiable
@@ -405,7 +405,7 @@ Describe 'gvm' {
 
     
         It 'checks for new broadcast, inits the Candidate-Cache and calls help-command' {
-            gvm help
+            psdk help
             Assert-VerifiableMock
         }
 
@@ -414,7 +414,7 @@ Describe 'gvm' {
         }
     }
 
-    Context 'posh-gvm online and command offline called' {
+    Context 'posh-sdk online and command offline called' {
         BeforeAll {
             Mock-Dispatcher-Test -Offline
             Mock Set-Offline-Mode -verifiable -parameterFilter { $Flag -eq 'enable' }
@@ -422,7 +422,7 @@ Describe 'gvm' {
 
     
         It 'checks for new broadcast, inits the Candidate-Cache and calls offline-command' {
-            gvm offline enable
+            psdk offline enable
             Assert-VerifiableMock
         }
 
@@ -431,7 +431,7 @@ Describe 'gvm' {
         }
     }
 
-    Context 'posh-gvm online and command selfupdate called' {
+    Context 'posh-sdk online and command selfupdate called' {
         BeforeAll {
             Mock-Dispatcher-Test
             Mock Invoke-Self-Update -verifiable
@@ -439,7 +439,7 @@ Describe 'gvm' {
 
     
         It 'checks for new broadcast, inits the Candidate-Cache and calls selfupdate-command' {
-            gvm selfupdate
+            psdk selfupdate
             Assert-VerifiableMock
         }
 
@@ -448,7 +448,7 @@ Describe 'gvm' {
         }
     }
 
-    Context 'posh-gvm online and command flush called' {
+    Context 'posh-sdk online and command flush called' {
         BeforeAll {
             Mock-Dispatcher-Test
             Mock Flush-Cache -verifiable -parameterFilter { $DataType -eq 'version' }
@@ -456,7 +456,7 @@ Describe 'gvm' {
 
     
         It 'checks for new broadcast, inits the Candidate-Cache and calls flush-command' {
-            gvm flush version
+            psdk flush version
             Assert-VerifiableMock
         }
 
@@ -516,8 +516,8 @@ Describe 'Install-Candidate-Version' {
 
     Context 'Local version installation without defaulting' {
         BeforeAll {
-            $Global:backupAutoAnswer = $Global:PGVM_AUTO_ANSWER
-            $Global:PGVM_AUTO_ANSWER = $false
+            $Global:backupAutoAnswer = $Global:PSDK_AUTO_ANSWER
+            $Global:PSDK_AUTO_ANSWER = $false
             Mock Check-Candidate-Present -verifiable -parameterFilter { $Candidate -eq 'grails' }
             Mock Check-Candidate-Version-Available { throw 'error' } -verifiable { $Candidate -eq 'grails' -and $Version -eq '1.1.1' }
             Mock Is-Candidate-Version-Locally-Available { $false } -verifiable { $Candidate -eq 'grails' -and $Version -eq '1.1.1' }
@@ -537,14 +537,14 @@ Describe 'Install-Candidate-Version' {
         }
 
         AfterAll {
-            $Global:PGVM_AUTO_ANSWER = $Global:backupAutoAnswer
+            $Global:PSDK_AUTO_ANSWER = $Global:backupAutoAnswer
         }
     }
 
     Context 'Local version installation with auto defaulting' {
         BeforeAll {
-            $Global:backupAutoAnswer = $Global:PGVM_AUTO_ANSWER
-            $Global:PGVM_AUTO_ANSWER = $true
+            $Global:backupAutoAnswer = $Global:PSDK_AUTO_ANSWER
+            $Global:PSDK_AUTO_ANSWER = $true
             Mock Check-Candidate-Present -verifiable -parameterFilter { $Candidate -eq 'grails' }
             Mock Check-Candidate-Version-Available { throw 'error' } -verifiable { $Candidate -eq 'grails' -and $Version -eq '1.1.1' }
             Mock Is-Candidate-Version-Locally-Available { $false } -verifiable { $Candidate -eq 'grails' -and $Version -eq '1.1.1' }
@@ -560,14 +560,14 @@ Describe 'Install-Candidate-Version' {
         }
 
         AfterAll {
-            $Global:PGVM_AUTO_ANSWER = $Global:backupAutoAnswer
+            $Global:PSDK_AUTO_ANSWER = $Global:backupAutoAnswer
         }
     }
 
     Context 'Remote version installation with prompt defaulting' {
         BeforeAll {
-            $Global:backupAutoAnswer = $Global:PGVM_AUTO_ANSWER
-            $Global:PGVM_AUTO_ANSWER = $false
+            $Global:backupAutoAnswer = $Global:PSDK_AUTO_ANSWER
+            $Global:PSDK_AUTO_ANSWER = $false
             Mock Check-Candidate-Present -verifiable -parameterFilter { $Candidate -eq 'grails' }
             Mock Check-Candidate-Version-Available { '1.1.1' } -verifiable { $Candidate -eq 'grails' -and $Version -eq '1.1.1' }
             Mock Is-Candidate-Version-Locally-Available { $false } -verifiable { $Candidate -eq 'grails' -and $Version -eq '1.1.1' }
@@ -584,7 +584,7 @@ Describe 'Install-Candidate-Version' {
         }
 
         AfterAll {
-            $Global:PGVM_AUTO_ANSWER = $Global:backupAutoAnswer
+            $Global:PSDK_AUTO_ANSWER = $Global:backupAutoAnswer
         }
     }
 }
@@ -617,18 +617,18 @@ Describe 'Uninstall-Candidate-Version' {
 
     Context 'To be uninstalled Version is current version' {
         BeforeAll {
-            Mock-PGVM-Dir
+            Mock-PSDK-Dir
         }
 
         BeforeEach {
-            if ( ! (Test-Path "$Global:PGVM_DIR\grails\24.3") ) {
-                New-Item -ItemType Directory "$Global:PGVM_DIR\grails\24.3" | Out-Null
+            if ( ! (Test-Path "$Global:PSDK_DIR\grails\24.3") ) {
+                New-Item -ItemType Directory "$Global:PSDK_DIR\grails\24.3" | Out-Null
             }
             Set-Linked-Candidate-Version grails 24.3
         }
 
         It 'finds current-junction defined' {
-            Test-Path "$Global:PGVM_DIR\grails\current" | Should -Be $true
+            Test-Path "$Global:PSDK_DIR\grails\current" | Should -Be $true
         }
 
         Context "deletion testing" {
@@ -644,11 +644,11 @@ Describe 'Uninstall-Candidate-Version' {
             }
     
             It 'delete the current-junction' {
-                Test-Path "$Global:PGVM_DIR\grails\current" | Should -Be $false
+                Test-Path "$Global:PSDK_DIR\grails\current" | Should -Be $false
             }
     
             It 'delete the version' {
-                Test-Path "$Global:PGVM_DIR\grails\24.3" | Should -Be $false
+                Test-Path "$Global:PSDK_DIR\grails\24.3" | Should -Be $false
             }
     
             It "checks different preconditions correctly" {
@@ -657,14 +657,14 @@ Describe 'Uninstall-Candidate-Version' {
         }
 
         AfterAll {
-            Reset-PGVM-Dir
+            Reset-PSDK-Dir
         }
     }
 
     Context 'To be uninstalled version is installed' {
         BeforeAll {
-            Mock-PGVM-Dir
-            New-Item -ItemType Directory "$Global:PGVM_DIR\grails\24.3" | Out-Null
+            Mock-PSDK-Dir
+            New-Item -ItemType Directory "$Global:PSDK_DIR\grails\24.3" | Out-Null
 
             Mock Check-Candidate-Present -verifiable -parameterFilter { $Candidate -eq 'grails' }
             Mock Is-Candidate-Version-Locally-Available { $true } -verifiable -parameterFilter { $Candidate -eq 'grails' -and $Version -eq '24.3' }
@@ -674,7 +674,7 @@ Describe 'Uninstall-Candidate-Version' {
         }
 
         It 'delete the version' {
-            Test-Path "$Global:PGVM_DIR\grails\24.3" | Should -Be $false
+            Test-Path "$Global:PSDK_DIR\grails\24.3" | Should -Be $false
         }
 
         It "checks different preconditions correctly" {
@@ -682,7 +682,7 @@ Describe 'Uninstall-Candidate-Version' {
         }
 
         AfterAll {
-            Reset-PGVM-Dir
+            Reset-PSDK-Dir
         }
     }
 }
@@ -802,7 +802,7 @@ Describe 'Set-Default-Version' {
 Describe 'Show-Current-Version' {
     Context 'If called without candidate' {
         BeforeAll {
-            $Script:GVM_CANDIDATES = @('grails', 'groovy', 'bla')
+            $Script:SDK_CANDIDATES = @('grails', 'groovy', 'bla')
             Mock Get-Env-Candidate-Version { '1.1.0' } -parameterFilter { $Candidate -eq 'grails' }
             Mock Get-Env-Candidate-Version { '2.1.0' } -parameterFilter { $Candidate -eq 'groovy' }
             Mock Get-Env-Candidate-Version { '0.1.0' } -parameterFilter { $Candidate -eq 'bla' }
@@ -854,17 +854,17 @@ Describe 'Show-Current-Version' {
     }
 }
 
-Describe 'Show-Posh-Gvm-Version' {
+Describe 'Show-Posh-SDK-Version' {
     Context 'When called' {
         BeforeAll {
-            Mock Get-GVM-API-Version -verifiable
-            Mock Get-Posh-Gvm-Version -verifiable
+            Mock Get-SDKMAN-API-Version -verifiable
+            Mock Get-Posh-SDK-Version -verifiable
             Mock Write-Output -verifiable
         }
 
     
         It 'write the version message to output' {
-            Show-Posh-Gvm-Version
+            Show-Posh-SDK-Version
             Assert-VerifiableMock
         }
     }
@@ -873,7 +873,7 @@ Describe 'Show-Posh-Gvm-Version' {
 Describe 'Show-Broadcast-Message' {
     Context 'When called' {
         BeforeAll {
-            $Script:PGVM_BROADCAST_PATH = 'broadcast'
+            $Script:PSDK_BROADCAST_PATH = 'broadcast'
             Mock Get-Content { 'broadcast' } -verifiable -parameterFilter { $Path -eq 'broadcast' }
             Mock Write-Output -verifiable
         }
@@ -895,7 +895,7 @@ Describe 'Set-Offline-Mode' {
 
     Context 'If called with enable flag' {
         BeforeAll {
-            $Script:GVM_FORCE_OFFLINE = $false
+            $Script:PSDK_FORCE_OFFLINE = $false
             Mock Write-Output -verifiable
         }
 
@@ -904,7 +904,7 @@ Describe 'Set-Offline-Mode' {
         }
 
         It "set offline mode" {
-            $Script:GVM_FORCE_OFFLINE | Should -Be $true
+            $Script:PSDK_FORCE_OFFLINE | Should -Be $true
         }
 
         It "writes info to output" {
@@ -914,8 +914,8 @@ Describe 'Set-Offline-Mode' {
 
     Context 'if called with disable flag' {
         BeforeAll {
-            $Script:GVM_ONLINE = $false
-            $Script:GVM_FORCE_OFFLINE = $true
+            $Script:PSDK_ONLINE = $false
+            $Script:PSDK_FORCE_OFFLINE = $true
             Mock Write-Output -verifiable
         }
 
@@ -924,11 +924,11 @@ Describe 'Set-Offline-Mode' {
         }
 
         It "deactivate offline mode" {
-            $Script:GVM_FORCE_OFFLINE | Should -Be $false
+            $Script:PSDK_FORCE_OFFLINE | Should -Be $false
         }
 
-        It "set gvm to online" {
-            $Script:GVM_ONLINE | Should -Be $true
+        It "set psdk to online" {
+            $Script:PSDK_ONLINE | Should -Be $true
         }
 
         It "writes info to output" {
@@ -940,7 +940,7 @@ Describe 'Set-Offline-Mode' {
 Describe 'Flush-Cache' {
     Context 'Try to delete existing candidates cache' {
         BeforeAll {
-            $Script:PGVM_CANDIDATES_PATH = 'test'
+            $Script:PSDK_CANDIDATES_PATH = 'test'
             Mock Test-Path { $true } -parameterFilter { $Path -eq 'test' }
             Mock Remove-Item -verifiable -parameterFilter { $Path -eq 'test' }
             Mock Write-Output -verifiable
@@ -955,7 +955,7 @@ Describe 'Flush-Cache' {
 
     Context 'Try to delete non-existing candidates cache' {
         BeforeAll {
-            $Script:PGVM_CANDIDATES_PATH = 'test2'
+            $Script:PSDK_CANDIDATES_PATH = 'test2'
             Mock Test-Path { $false } -parameterFilter { $Path -eq 'test2' }
             Mock Write-Warning -verifiable
         }
@@ -969,7 +969,7 @@ Describe 'Flush-Cache' {
 
     Context 'Try to delete existing broadcast cache' {
         BeforeAll {
-            $Script:PGVM_BROADCAST_PATH = 'test'
+            $Script:PSDK_BROADCAST_PATH = 'test'
             Mock Test-Path { $true } -parameterFilter { $Path -eq 'test' }
             Mock Remove-Item -verifiable -parameterFilter { $Path -eq 'test' }
             Mock Write-Output -verifiable
@@ -984,7 +984,7 @@ Describe 'Flush-Cache' {
 
     Context 'Try to delete non-existing broadcast cache' {
         BeforeAll {
-            $Script:PGVM_BROADCAST_PATH = 'test2'
+            $Script:PSDK_BROADCAST_PATH = 'test2'
             Mock Test-Path { $false } -parameterFilter { $Path -eq 'test2' }
             Mock Write-Warning -verifiable
         }
@@ -998,7 +998,7 @@ Describe 'Flush-Cache' {
 
     Context 'Try to delete existing version cache' {
         BeforeAll {
-            $Script:GVM_API_VERSION_PATH = 'test'
+            $Script:PSDK_API_VERSION_PATH = 'test'
             Mock Test-Path { $true } -parameterFilter { $Path -eq 'test' }
             Mock Remove-Item -verifiable -parameterFilter { $Path -eq 'test' }
             Mock Write-Output -verifiable
@@ -1013,7 +1013,7 @@ Describe 'Flush-Cache' {
 
     Context 'Try to delete non-existing version cache' {
         BeforeAll {
-            $Script:GVM_API_VERSION_PATH = 'test2'
+            $Script:PSDK_API_VERSION_PATH = 'test2'
             Mock Test-Path { $false } -parameterFilter { $Path -eq 'test2' }
             Mock Write-Warning -verifiable
         }
@@ -1027,7 +1027,7 @@ Describe 'Flush-Cache' {
 
     Context 'Cleanup archives directory' {
         BeforeAll {
-            $Script:PGVM_ARCHIVES_PATH = 'archives'
+            $Script:PSDK_ARCHIVES_PATH = 'archives'
             Mock Cleanup-Directory -verifiable -parameterFilter { $Path -eq 'archives' }
         }
 
@@ -1040,7 +1040,7 @@ Describe 'Flush-Cache' {
 
     Context 'Cleanup temp directory' {
         BeforeAll {
-            $Script:PGVM_TEMP_PATH = 'temp'
+            $Script:PSDK_TEMP_PATH = 'temp'
             Mock Cleanup-Directory -verifiable -parameterFilter { $Path -eq 'temp' }
         }
 
@@ -1053,7 +1053,7 @@ Describe 'Flush-Cache' {
 
     Context 'Cleanup tmp directory' {
         BeforeAll {
-            $Script:PGVM_TEMP_PATH = 'temp'
+            $Script:PSDK_TEMP_PATH = 'temp'
             Mock Cleanup-Directory -verifiable -parameterFilter { $Path -eq 'temp' }
         }
 

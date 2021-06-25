@@ -1,21 +1,21 @@
-﻿function gvm([string]$Command, [string]$Candidate, [string]$Version, [string]$InstallPath, [switch]$Verbose, [switch]$Force) {
+﻿function psdk([string]$Command, [string]$Candidate, [string]$Version, [string]$InstallPath, [switch]$Verbose, [switch]$Force) {
     $ErrorActionPreference = 'Stop'
 	$ProgressPreference = 'SilentlyContinue'
 	if ($Verbose) { $VerbosePreference = 'Continue' }
 
-    if ( !( Test-Path $Global:PGVM_DIR ) ) {
-        Write-Warning "$Global:PGVM_DIR does not exists. Reinitialize posh-gvm"
-        Init-Posh-Gvm
+    if ( !( Test-Path $Global:PSDK_DIR ) ) {
+        Write-Warning "$Global:PSDK_DIR does not exists. Reinitialize posh-sdk"
+        Init-Posh-SDK
     }
 
-    $Script:GVM_AVAILABLE = $true
-    if ( !($Script:GVM_FORCE_OFFLINE) -and $Command -ne 'offline' ) {
+    $Script:PSDK_AVAILABLE = $true
+    if ( !($Script:PSDK_FORCE_OFFLINE) -and $Command -ne 'offline' ) {
         Check-Available-Broadcast $Command
 
-        if ( $Script:GVM_AVAILABLE ) {
+        if ( $Script:PSDK_AVAILABLE ) {
             if ( $Script:FIRST_RUN ) {
-                Check-GVM-API-Version
-                Check-Posh-Gvm-Version
+                Check-SDKMAN-API-Version
+                Check-Posh-SDK-Version
                 $Script:FIRST_RUN = $false
             }
             Write-New-Version-Broadcast
@@ -38,13 +38,13 @@
             '^u(se)?$'        { Use-Candidate-Version $Candidate $Version }
             '^d(efault)?$'    { Set-Default-Version $Candidate $Version }
             '^c(urrent)?$'    { Show-Current-Version $Candidate }
-            '^v(ersion)?$'    { Show-Posh-Gvm-Version }
+            '^v(ersion)?$'    { Show-Posh-SDK-Version }
             '^b(roadcast)?$'  { Show-Broadcast-Message }
             '^h(elp)?$'       { Show-Help }
             '^offline$'       { Set-Offline-Mode $Candidate }
             '^selfupdate$'    { Invoke-Self-Update($Force) }
             '^flush$'         { Flush-Cache $Candidate }
-            default           { Write-Warning "Invalid command: $Command. Check gvm help!" }
+            default           { Write-Warning "Invalid command: $Command. Check psdk help!" }
         }
     } catch {
         if ( $_.CategoryInfo.Category -eq 'OperationStopped') {
@@ -85,7 +85,7 @@ function Install-Candidate-Version($Candidate, $Version, $InstallPath) {
     }
 
     $default = $false
-    if ( !$Global:PGVM_AUTO_ANSWER ) {
+    if ( !$Global:PSDK_AUTO_ANSWER ) {
         $default = (Read-Host -Prompt "Do you want $Candidate $Version to be set as default? (Y/n)") -match '(y|\A\z)'
     } else {
         $default = $true
@@ -110,11 +110,11 @@ function Uninstall-Candidate-Version($Candidate, $Version) {
 
     if ( $current -eq $Version ) {
         Write-Output "Unselecting $Candidate $Version..."
-        (Get-Item "$Global:PGVM_DIR\$Candidate\current").Delete()
+        (Get-Item "$Global:PSDK_DIR\$Candidate\current").Delete()
     }
 
     Write-Output "Uninstalling $Candidate $Version..."
-    Remove-Item -Recurse -Force "$Global:PGVM_DIR\$Candidate\$Version"
+    Remove-Item -Recurse -Force "$Global:PSDK_DIR\$Candidate\$Version"
 }
 
 function List-Candidate-Versions($Candidate) {
@@ -158,7 +158,7 @@ function Show-Current-Version($Candidate) {
 
     if ( !($Candidate) ) {
         Write-Output 'Using:'
-        foreach ( $c in $Script:GVM_CANDIDATES ) {
+        foreach ( $c in $Script:SDK_CANDIDATES ) {
             $v = Get-Env-Candidate-Version $c
             if ($v) {
                 Write-Output "$c`: $v"
@@ -176,22 +176,22 @@ function Show-Current-Version($Candidate) {
     }
 }
 
-function Show-Posh-Gvm-Version() {
-    $poshGvmVersion = Get-Posh-Gvm-Version
-    $apiVersion = Get-GVM-API-Version
-    Write-Output "posh-gvm (POwer SHell Groovy enVironment Manager) $poshGvmVersion base on GVM $GVM_BASE_VERSION and GVM API $apiVersion"
+function Show-Posh-SDK-Version() {
+    $poshSDKVersion = Get-Posh-SDK-Version
+    $apiVersion = Get-SDKMAN-API-Version
+    Write-Output "posh-sdk (POwer SHell Groovy enVironment Manager) $poshSDKVersion base on SDKMAN! $SDKMAN_BASE_VERSION and SDKMAN! API $apiVersion"
 }
 
 function Show-Broadcast-Message() {
     Write-Verbose 'Perform Show-Broadcast-Message'
-    Get-Content $Script:PGVM_BROADCAST_PATH | Write-Output
+    Get-Content $Script:PSDK_BROADCAST_PATH | Write-Output
 }
 
 function Set-Offline-Mode($Flag) {
     Write-Verbose 'Perform Set-Offline-Mode'
     switch ($Flag) {
-        'enable'  { $Script:GVM_FORCE_OFFLINE = $true; Write-Output 'Forced offline mode enabled.' }
-        'disable' { $Script:GVM_FORCE_OFFLINE = $false; $Script:GVM_ONLINE = $true; Write-Output 'Online mode re-enabled!' }
+        'enable'  { $Script:PSDK_FORCE_OFFLINE = $true; Write-Output 'Forced offline mode enabled.' }
+        'disable' { $Script:PSDK_FORCE_OFFLINE = $false; $Script:PSDK_ONLINE = $true; Write-Output 'Online mode re-enabled!' }
         default   { throw "Stop! $Flag is not a valid offline offline mode." }
     }
 }
@@ -200,40 +200,40 @@ function Flush-Cache($DataType) {
     Write-Verbose 'Perform Flush-Cache'
     switch ($DataType) {
         'candidates' {
-                        if ( Test-Path $Script:PGVM_CANDIDATES_PATH ) {
-                            Remove-Item $Script:PGVM_CANDIDATES_PATH
+                        if ( Test-Path $Script:PSDK_CANDIDATES_PATH ) {
+                            Remove-Item $Script:PSDK_CANDIDATES_PATH
                             Write-Output 'Candidates have been flushed.'
                         } else {
                             Write-Warning 'No candidate list found so not flushed.'
                         }
                      }
         'broadcast'  {
-                        if ( Test-Path $Script:PGVM_BROADCAST_PATH ) {
-                            Remove-Item $Script:PGVM_BROADCAST_PATH
+                        if ( Test-Path $Script:PSDK_BROADCAST_PATH ) {
+                            Remove-Item $Script:PSDK_BROADCAST_PATH
                             Write-Output 'Broadcast have been flushed.'
                         } else {
                             Write-Warning 'No prior broadcast found so not flushed.'
                         }
                      }
         'version'    {
-                        if ( Test-Path $Script:GVM_API_VERSION_PATH ) {
-                            Remove-Item $Script:GVM_API_VERSION_PATH
+                        if ( Test-Path $Script:PSDK_API_VERSION_PATH ) {
+                            Remove-Item $Script:PSDK_API_VERSION_PATH
                             Write-Output 'Version Token have been flushed.'
                         } else {
                             Write-Warning 'No prior Remote Version found so not flushed.'
                         }
                      }
-        'archives'   { Cleanup-Directory $Script:PGVM_ARCHIVES_PATH }
-        'temp'       { Cleanup-Directory $Script:PGVM_TEMP_PATH }
-        'tmp'        { Cleanup-Directory $Script:PGVM_TEMP_PATH }
+        'archives'   { Cleanup-Directory $Script:PSDK_ARCHIVES_PATH }
+        'temp'       { Cleanup-Directory $Script:PSDK_TEMP_PATH }
+        'tmp'        { Cleanup-Directory $Script:PSDK_TEMP_PATH }
         default      { throw 'Stop! Please specify what you want to flush.' }
     }
 }
 
 function Show-Help() {
     Write-Output @"
-Usage: gvm <command> <candidate> [version]
-    gvm offline <enable|disable>
+Usage: psdk <command> <candidate> [version]
+    psdk offline <enable|disable>
 
     commands:
         install   or i    <candidate> [version]
@@ -248,10 +248,10 @@ Usage: gvm <command> <candidate> [version]
         offline           <enable|disable>
         selfupdate        [-Force]
         flush             <candidates|broadcast|archives|temp>
-    candidate  :  $($Script:GVM_CANDIDATES -join ', ')
+    candidate  :  $($Script:SDK_CANDIDATES -join ', ')
 
     version    :  where optional, defaults to latest stable if not provided
 
-eg: gvm install groovy
+eg: psdk install groovy
 "@
 }
