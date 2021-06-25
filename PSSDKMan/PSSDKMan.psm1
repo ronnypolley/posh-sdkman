@@ -12,7 +12,7 @@ if ( !(Test-Path Variable:Global:PGVM_DIR) ) {
 	$Global:PSDK_DIR = "$env:USERPROFILE\.posh_gvm"
 }
 if ( !(Test-Path Variable:Global:PGVM_AUTO_ANSWER) ) {
-	$Global:PGVM_AUTO_ANSWER = $false
+	$Global:PSDK_AUTO_ANSWER = $false
 }
 if ( !(Test-Path Variable:Global:PGVM_AUTO_SELFUPDATE) ) {
 	$Global:PGVM_AUTO_SELFUPDATE = $false

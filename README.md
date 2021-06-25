@@ -73,7 +73,7 @@ n your profile BEFORE the `Import-Module posh-gvm` line.
 
 Similar to the BASH client you can configure posh-gvm to automatically set new installed versions as default version. You do this by adding:
 
-	$Global:PGVM_AUTO_ANSWER = $true
+	$Global:PSDK_AUTO_ANSWER = $true
 
 in your profile.
 

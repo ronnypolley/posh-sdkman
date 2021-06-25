@@ -516,8 +516,8 @@ Describe 'Install-Candidate-Version' {
 
     Context 'Local version installation without defaulting' {
         BeforeAll {
-            $Global:backupAutoAnswer = $Global:PGVM_AUTO_ANSWER
-            $Global:PGVM_AUTO_ANSWER = $false
+            $Global:backupAutoAnswer = $Global:PSDK_AUTO_ANSWER
+            $Global:PSDK_AUTO_ANSWER = $false
             Mock Check-Candidate-Present -verifiable -parameterFilter { $Candidate -eq 'grails' }
             Mock Check-Candidate-Version-Available { throw 'error' } -verifiable { $Candidate -eq 'grails' -and $Version -eq '1.1.1' }
             Mock Is-Candidate-Version-Locally-Available { $false } -verifiable { $Candidate -eq 'grails' -and $Version -eq '1.1.1' }
@@ -537,14 +537,14 @@ Describe 'Install-Candidate-Version' {
         }
 
         AfterAll {
-            $Global:PGVM_AUTO_ANSWER = $Global:backupAutoAnswer
+            $Global:PSDK_AUTO_ANSWER = $Global:backupAutoAnswer
         }
     }
 
     Context 'Local version installation with auto defaulting' {
         BeforeAll {
-            $Global:backupAutoAnswer = $Global:PGVM_AUTO_ANSWER
-            $Global:PGVM_AUTO_ANSWER = $true
+            $Global:backupAutoAnswer = $Global:PSDK_AUTO_ANSWER
+            $Global:PSDK_AUTO_ANSWER = $true
             Mock Check-Candidate-Present -verifiable -parameterFilter { $Candidate -eq 'grails' }
             Mock Check-Candidate-Version-Available { throw 'error' } -verifiable { $Candidate -eq 'grails' -and $Version -eq '1.1.1' }
             Mock Is-Candidate-Version-Locally-Available { $false } -verifiable { $Candidate -eq 'grails' -and $Version -eq '1.1.1' }
@@ -560,14 +560,14 @@ Describe 'Install-Candidate-Version' {
         }
 
         AfterAll {
-            $Global:PGVM_AUTO_ANSWER = $Global:backupAutoAnswer
+            $Global:PSDK_AUTO_ANSWER = $Global:backupAutoAnswer
         }
     }
 
     Context 'Remote version installation with prompt defaulting' {
         BeforeAll {
-            $Global:backupAutoAnswer = $Global:PGVM_AUTO_ANSWER
-            $Global:PGVM_AUTO_ANSWER = $false
+            $Global:backupAutoAnswer = $Global:PSDK_AUTO_ANSWER
+            $Global:PSDK_AUTO_ANSWER = $false
             Mock Check-Candidate-Present -verifiable -parameterFilter { $Candidate -eq 'grails' }
             Mock Check-Candidate-Version-Available { '1.1.1' } -verifiable { $Candidate -eq 'grails' -and $Version -eq '1.1.1' }
             Mock Is-Candidate-Version-Locally-Available { $false } -verifiable { $Candidate -eq 'grails' -and $Version -eq '1.1.1' }
@@ -584,7 +584,7 @@ Describe 'Install-Candidate-Version' {
         }
 
         AfterAll {
-            $Global:PGVM_AUTO_ANSWER = $Global:backupAutoAnswer
+            $Global:PSDK_AUTO_ANSWER = $Global:backupAutoAnswer
         }
     }
 }

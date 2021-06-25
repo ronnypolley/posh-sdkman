@@ -85,7 +85,7 @@ function Install-Candidate-Version($Candidate, $Version, $InstallPath) {
     }
 
     $default = $false
-    if ( !$Global:PGVM_AUTO_ANSWER ) {
+    if ( !$Global:PSDK_AUTO_ANSWER ) {
         $default = (Read-Host -Prompt "Do you want $Candidate $Version to be set as default? (Y/n)") -match '(y|\A\z)'
     } else {
         $default = $true
