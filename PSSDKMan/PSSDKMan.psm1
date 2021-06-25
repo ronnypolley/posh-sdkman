@@ -19,8 +19,8 @@ if ( !(Test-Path Variable:Global:PGVM_AUTO_SELFUPDATE) ) {
 }
 
 $Script:PGVM_INIT = $false
-$Script:PGVM_SERVICE = 'https://api.sdkman.io/2'
-$Script:PGVM_BROADCAST_SERVICE = $Script:PGVM_SERVICE
+$Script:PSDK_SERVICE = 'https://api.sdkman.io/2'
+$Script:PGVM_BROADCAST_SERVICE = $Script:PSDK_SERVICE
 $Script:GVM_BASE_VERSION = '1.3.13'
 
 $Script:PSDK_CANDIDATES_PATH = "$Global:PSDK_DIR\.meta\candidates.txt"

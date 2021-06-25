@@ -350,7 +350,7 @@ Describe 'Invoke-Self-Update' {
             Mock Update-Candidates-Cache -verifiable
             Mock Write-Output -verifiable
             Mock Is-New-Posh-SDK-Version-Available { $false }
-            Mock Invoke-Posh-Gvm-Update
+            Mock Invoke-Posh-SDK-Update
 
             Invoke-Self-Update
         }
@@ -360,7 +360,7 @@ Describe 'Invoke-Self-Update' {
         }
 
         It 'does not updates itself' {
-            Assert-MockCalled Invoke-Posh-Gvm-Update -Times 0
+            Assert-MockCalled Invoke-Posh-SDK-Update -Times 0
         }
     }
 
@@ -369,7 +369,7 @@ Describe 'Invoke-Self-Update' {
             Mock Update-Candidates-Cache -verifiable
             Mock Write-Output -verifiable
             Mock Is-New-Posh-SDK-Version-Available { $true }
-            Mock Invoke-Posh-Gvm-Update -verifiable
+            Mock Invoke-Posh-SDK-Update -verifiable
 
             Invoke-Self-Update
         }
@@ -384,7 +384,7 @@ Describe 'Invoke-Self-Update' {
             Mock Update-Candidates-Cache -verifiable
             Mock Write-Output -verifiable
             Mock Is-New-Posh-SDK-Version-Available { $false }
-            Mock Invoke-Posh-Gvm-Update -verifiable
+            Mock Invoke-Posh-SDK-Update -verifiable
 
             Invoke-Self-Update -Force $true
         }
@@ -439,7 +439,7 @@ Describe 'Check-Candidate-Version-Available select or vadidates a version for a 
         }
     }
 
-    Context 'When gvm is offline and the provided version is not locally available' {
+    Context 'When psdk is offline and the provided version is not locally available' {
         BeforeAll {
             Mock-Check-Candidate-Grails
             Mock-Offline
@@ -455,7 +455,7 @@ Describe 'Check-Candidate-Version-Available select or vadidates a version for a 
         }
     }
 
-    Context 'When gvm is offline and no version is provided but there is a current version' {
+    Context 'When psdk is offline and no version is provided but there is a current version' {
         BeforeAll {
             Mock-Check-Candidate-Grails
             Mock-Offline
@@ -473,7 +473,7 @@ Describe 'Check-Candidate-Version-Available select or vadidates a version for a 
         }
     }
 
-    Context 'When gvm is offline and no version is provided and no current version is defined' {
+    Context 'When psdk is offline and no version is provided and no current version is defined' {
         BeforeAll {
             Mock-Check-Candidate-Grails
             Mock-Offline
@@ -489,7 +489,7 @@ Describe 'Check-Candidate-Version-Available select or vadidates a version for a 
         }
     }
 
-    Context 'When gvm is online and no version is provided' {
+    Context 'When psdk is online and no version is provided' {
         BeforeAll {
             Mock-Check-Candidate-Grails
             Mock-Online
@@ -508,7 +508,7 @@ Describe 'Check-Candidate-Version-Available select or vadidates a version for a 
         }
     }
 
-    Context 'When gvm is online and the provided version is valid' {
+    Context 'When psdk is online and the provided version is valid' {
         BeforeAll {
             Mock-Check-Candidate-Grails
             Mock-Online
@@ -527,7 +527,7 @@ Describe 'Check-Candidate-Version-Available select or vadidates a version for a 
         }
     }
 
-    Context 'When gvm is online and the provided version is invalid' {
+    Context 'When psdk is online and the provided version is invalid' {
         BeforeAll {
             Mock-Check-Candidate-Grails
             Mock-Online
@@ -710,7 +710,7 @@ Describe 'Set-Env-Candidate-Version' {
 }
 
 Describe 'Set-Linked-Candidate-Version' {
-    Context 'In a initialized PGVM-Dir' {
+    Context 'In a initialized PSDK-Dir' {
         BeforeAll {
             Mock-PSDK-Dir
             Mock Set-Junction-Via-Mklink -verifiable -parameterFilter { $Candidate -eq 'grails' -and $Version -eq '2.2.1' }
@@ -802,8 +802,8 @@ Describe 'Get-Junction-Target' {
     }
 }
 
-Describe 'Get-Online-Mode check the state variables for GVM-API availablitiy and for force offline mode' {
-    Context 'GVM-Api unavailable but may be connected' {
+Describe 'Get-Online-Mode check the state variables for PSDK-API availablitiy and for force offline mode' {
+    Context 'PSDK-Api unavailable but may be connected' {
         
         It 'returns $false' {
             $Script:PSDK_AVAILABLE = $false
@@ -812,7 +812,7 @@ Describe 'Get-Online-Mode check the state variables for GVM-API availablitiy and
         }
     }
 
-    Context 'GVM-Api unavailable and may not be connected' {
+    Context 'PSDK-Api unavailable and may not be connected' {
         
         It 'returns $false' {
             $Script:PSDK_AVAILABLE = $false
@@ -821,7 +821,7 @@ Describe 'Get-Online-Mode check the state variables for GVM-API availablitiy and
         }
     }
 
-    Context 'GVM-Api is available and may not be connected' {
+    Context 'PSDK-Api is available and may not be connected' {
         
         It 'returns $false' {
             $Script:PSDK_AVAILABLE = $true
@@ -830,7 +830,7 @@ Describe 'Get-Online-Mode check the state variables for GVM-API availablitiy and
         }
     }
 
-    Context 'GVM-Api is available and may be connected' {
+    Context 'PSDK-Api is available and may be connected' {
         
         It 'returns $true' {
             $Script:PSDK_AVAILABLE = $true
@@ -859,11 +859,11 @@ Describe 'Check-Online-Mode throws an error when offline' {
     }
 }
 
-Describe 'Invoke-API-Call helps doing calls to the GVM-API' {
+Describe 'Invoke-API-Call helps doing calls to the PSDK-Api' {
     Context 'Successful API call only with API path' {
         
         It 'returns the result from Invoke-RestMethod' {
-            $Script:PGVM_SERVICE = 'blub'
+            $Script:PSDK_SERVICE = 'blub'
             Mock Invoke-RestMethod { 'called' } -parameterFilter { $Uri -eq 'blub/na/rock' }
             Invoke-API-Call 'na/rock' | Should -Be 'called'
         }
@@ -871,7 +871,7 @@ Describe 'Invoke-API-Call helps doing calls to the GVM-API' {
 
     Context 'Failed API call only with API path' {
         BeforeAll {
-            $Script:PGVM_SERVICE = 'blub'
+            $Script:PSDK_SERVICE = 'blub'
             $Script:PSDK_AVAILABLE = $true
             Mock Invoke-RestMethod { throw 'error' } -parameterFilter { $Uri -eq 'blub/na/rock' }
             Mock Check-Online-Mode -verifiable
@@ -879,7 +879,7 @@ Describe 'Invoke-API-Call helps doing calls to the GVM-API' {
             Invoke-API-Call 'na/rock'
         }
 
-        It 'sets GVM_AVAILABLE to false' {
+        It 'sets SDK_AVAILABLE to false' {
             $Script:PSDK_AVAILABLE | Should -Be $false
         }
 
@@ -890,7 +890,7 @@ Describe 'Invoke-API-Call helps doing calls to the GVM-API' {
 
     Context 'Failed API call with API path and IgnoreFailure' {
         BeforeAll {
-            $Script:PGVM_SERVICE = 'blub'
+            $Script:PSDK_SERVICE = 'blub'
             $Script:PSDK_AVAILABLE = $true
             Mock Invoke-RestMethod { throw 'error' } -parameterFilter { $Uri -eq 'blub/na/rock' }
             Mock Check-Online-Mode
@@ -898,7 +898,7 @@ Describe 'Invoke-API-Call helps doing calls to the GVM-API' {
             Invoke-API-Call 'na/rock' -IgnoreFailure
         }
 
-        It 'sets GVM_AVAILABLE to false' {
+        It 'sets SDK_AVAILABLE to false' {
             $Script:PSDK_AVAILABLE | Should -Be $false
         }
 
@@ -909,7 +909,7 @@ Describe 'Invoke-API-Call helps doing calls to the GVM-API' {
 
     Context 'Successful API call with API path and FilePath' {
         BeforeAll {
-            $Script:PGVM_SERVICE = 'blub'
+            $Script:PSDK_SERVICE = 'blub'
             Mock Invoke-RestMethod -verifiable -parameterFilter { $Uri -eq 'blub/na/rock' -and $OutFile -eq 'TestDrive:a.txt' }
 
             Invoke-API-Call 'na/rock' TestDrive:a.txt
@@ -1221,7 +1221,7 @@ Describe 'Install-Remote-Version' {
 
             Mock Write-Output
             Mock Check-Online-Mode -verifiable
-            $Script:PGVM_SERVICE = 'foobar'
+            $Script:PSDK_SERVICE = 'foobar'
             $Script:PSDK_ARCHIVES_PATH = "$Global:PSDK_DIR\archives"
             $Script:PSDK_TEMP_PATH = "$Global:PSDK_DIR\temp"
             $testFilePath = "$PSScriptRoot\test\grails-1.3.9.zip"

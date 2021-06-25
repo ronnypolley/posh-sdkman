@@ -34,7 +34,7 @@ A new version is available. Please consider to execute:
 }
 
 function Check-PSDK-API-Version() {
-    Write-Verbose 'Checking GVM-API version'
+    Write-Verbose 'Checking PSDK-Api version'
     try {
         $apiVersion = Get-SDK-API-Version
         $gvmRemoteVersion = Invoke-API-Call "broker/download/sdkman/version/stable"
@@ -126,16 +126,16 @@ function Invoke-Self-Update($Force) {
     Update-Candidates-Cache
     $Script:PSDK_API_NEW_VERSION = $false
     if ( $Force ) {
-        Invoke-Posh-Gvm-Update
+        Invoke-Posh-SDK-Update
     } else {
         if ( Is-New-Posh-SDK-Version-Available ) {
-            Invoke-Posh-Gvm-Update
+            Invoke-Posh-SDK-Update
         }
     }
     $Script:PSDK_NEW_VERSION = $false
 }
 
-function Invoke-Posh-Gvm-Update {
+function Invoke-Posh-SDK-Update {
     Write-Output 'Update posh-gvm...'
     . "$psScriptRoot\GetPoshGvm.ps1"
 }
@@ -297,7 +297,7 @@ function Check-Online-Mode() {
 
 function Invoke-API-Call([string]$Path, [string]$FileTarget, [switch]$IgnoreFailure) {
     try {
-        $target = "$Script:PGVM_SERVICE/$Path"
+        $target = "$Script:PSDK_SERVICE/$Path"
 
         if ( $FileTarget ) {
             return Invoke-RestMethod $target -OutFile $FileTarget
@@ -346,7 +346,7 @@ function Init-Candidate-Cache() {
 }
 
 function Update-Candidates-Cache() {
-    Write-Verbose 'Update candidates-cache from GVM-API'
+    Write-Verbose 'Update candidates-cache from PSDK-Api'
     Check-Online-Mode
     Invoke-Api-Call 'broker/download/sdkman/version/stable' $Script:PSDK_API_VERSION_PATH
     Invoke-API-Call 'candidates/all' $Script:PSDK_CANDIDATES_PATH
@@ -414,7 +414,7 @@ function Install-Remote-Version($Candidate, $Version) {
     } else {
 		Check-Online-Mode
         Write-Output "`nDownloading: $Candidate $Version`n"
-        Download-File "$Script:PGVM_SERVICE/broker/download/$Candidate/$Version`/cygwin" $archive
+        Download-File "$Script:PSDK_SERVICE/broker/download/$Candidate/$Version`/cygwin" $archive
     }
 
     Write-Output "Installing: $Candidate $Version"
