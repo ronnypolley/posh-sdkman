@@ -15,7 +15,7 @@
         if ( $Script:PSDK_AVAILABLE ) {
             if ( $Script:FIRST_RUN ) {
                 Check-PSDK-API-Version
-                Check-Posh-Gvm-Version
+                Check-Posh-SDK-Version
                 $Script:FIRST_RUN = $false
             }
             Write-New-Version-Broadcast

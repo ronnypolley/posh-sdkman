@@ -100,17 +100,17 @@ Describe 'Check-PSDK-API-Version' {
     }
 }
 
-Describe 'Check-Posh-Gvm-Version' {
+Describe 'Check-Posh-SDK-Version' {
     Context 'No new Version' {
         BeforeAll {
             $Global:backup_Global_PSDK_AUTO_SELFUPDTE = $Global:PSDK_AUTO_SELFUPDATE
             $Global:PSDK_AUTO_SELFUPDATE = $false
-            $Script:PGVM_NEW_VERSION = $false
+            $Script:PSDK_NEW_VERSION = $false
 
-            Mock Is-New-Posh-GVM-Version-Available { $false }
+            Mock Is-New-Posh-SDK-Version-Available { $false }
             Mock Invoke-Self-Update
 
-            Check-Posh-Gvm-Version
+            Check-Posh-SDK-Version
         }
 
         It 'does not update itself' {
@@ -118,7 +118,7 @@ Describe 'Check-Posh-Gvm-Version' {
         }
 
         It 'does not informs about new version' {
-            $Script:PGVM_NEW_VERSION | Should -Be $false
+            $Script:PSDK_NEW_VERSION | Should -Be $false
         }
 
         AfterAll {
@@ -130,16 +130,16 @@ Describe 'Check-Posh-Gvm-Version' {
         BeforeAll {
             $Global:backup_Global_PSDK_AUTO_SELFUPDTE = $Global:PSDK_AUTO_SELFUPDATE
             $Global:PSDK_AUTO_SELFUPDATE = $false
-            $Script:PGVM_NEW_VERSION = $false
+            $Script:PSDK_NEW_VERSION = $false
 
-            Mock Is-New-Posh-GVM-Version-Available { $true }
+            Mock Is-New-Posh-SDK-Version-Available { $true }
             Mock Invoke-Self-Update
 
-            Check-Posh-Gvm-Version
+            Check-Posh-SDK-Version
         }
 
         It 'informs about new version' {
-            $Script:PGVM_NEW_VERSION | Should -Be $true
+            $Script:PSDK_NEW_VERSION | Should -Be $true
         }
 
         It 'does not update itself' {
@@ -155,12 +155,12 @@ Describe 'Check-Posh-Gvm-Version' {
         BeforeAll {
             $Global:backup_Global_PSDK_AUTO_SELFUPDTE = $Global:PSDK_AUTO_SELFUPDATE
             $Global:PSDK_AUTO_SELFUPDATE = $true
-            $Script:PGVM_NEW_VERSION = $false
+            $Script:PSDK_NEW_VERSION = $false
 
-            Mock Is-New-Posh-GVM-Version-Available { $true }
+            Mock Is-New-Posh-SDK-Version-Available { $true }
             Mock Invoke-Self-Update -verifiable
 
-            Check-Posh-Gvm-Version
+            Check-Posh-SDK-Version
         }
 
         It 'updates self' {
@@ -168,7 +168,7 @@ Describe 'Check-Posh-Gvm-Version' {
         }
 
         It 'does not informs about new version' {
-            $Script:PGVM_NEW_VERSION | Should -Be $false
+            $Script:PSDK_NEW_VERSION | Should -Be $false
         }
 
         AfterAll {
@@ -177,7 +177,7 @@ Describe 'Check-Posh-Gvm-Version' {
     }
 }
 
-Describe 'Is-New-Posh-GVM-Version-Available' {
+Describe 'Is-New-Posh-SDK-Version-Available' {
     Context 'New version available' {
         BeforeAll {
             $Script:PGVM_VERSION_SERVICE = 'blub'
@@ -188,7 +188,7 @@ Describe 'Is-New-Posh-GVM-Version-Available' {
         }
 
         It 'returns $true' {
-            $result = Is-New-Posh-GVM-Version-Available
+            $result = Is-New-Posh-SDK-Version-Available
             $result | Should -Be $true
         }
     }
@@ -203,7 +203,7 @@ Describe 'Is-New-Posh-GVM-Version-Available' {
         }
         
         It 'returns $false' {
-            $result = Is-New-Posh-GVM-Version-Available
+            $result = Is-New-Posh-SDK-Version-Available
             $result | Should -Be $false
         }
     }
@@ -218,7 +218,7 @@ Describe 'Is-New-Posh-GVM-Version-Available' {
         }
         
         It 'returns $false' {
-            $result = Is-New-Posh-GVM-Version-Available
+            $result = Is-New-Posh-SDK-Version-Available
             $result | Should -Be $false
         }
     }
@@ -349,7 +349,7 @@ Describe 'Invoke-Self-Update' {
         BeforeAll {
             Mock Update-Candidates-Cache -verifiable
             Mock Write-Output -verifiable
-            Mock Is-New-Posh-GVM-Version-Available { $false }
+            Mock Is-New-Posh-SDK-Version-Available { $false }
             Mock Invoke-Posh-Gvm-Update
 
             Invoke-Self-Update
@@ -368,7 +368,7 @@ Describe 'Invoke-Self-Update' {
         BeforeAll {
             Mock Update-Candidates-Cache -verifiable
             Mock Write-Output -verifiable
-            Mock Is-New-Posh-GVM-Version-Available { $true }
+            Mock Is-New-Posh-SDK-Version-Available { $true }
             Mock Invoke-Posh-Gvm-Update -verifiable
 
             Invoke-Self-Update
@@ -383,7 +383,7 @@ Describe 'Invoke-Self-Update' {
         BeforeAll {
             Mock Update-Candidates-Cache -verifiable
             Mock Write-Output -verifiable
-            Mock Is-New-Posh-GVM-Version-Available { $false }
+            Mock Is-New-Posh-SDK-Version-Available { $false }
             Mock Invoke-Posh-Gvm-Update -verifiable
 
             Invoke-Self-Update -Force $true

@@ -20,7 +20,7 @@ ONLINE MODE RE-ENABLED! All functionality now restored.
 }
 
 function Write-New-Version-Broadcast() {
-    if ( $Script:PSDK_API_NEW_VERSION -or $Script:PGVM_NEW_VERSION ) {
+    if ( $Script:PSDK_API_NEW_VERSION -or $Script:PSDK_NEW_VERSION ) {
 Write-Output @"
 ==== UPDATE AVAILABLE ==========================================================
 
@@ -51,13 +51,13 @@ function Check-PSDK-API-Version() {
     }
 }
 
-function Check-Posh-Gvm-Version() {
+function Check-Posh-SDK-Version() {
     Write-Verbose 'Checking posh-gvm version'
-    if ( Is-New-Posh-GVM-Version-Available ) {
+    if ( Is-New-Posh-SDK-Version-Available ) {
         if ( $Global:PSDK_AUTO_SELFUPDATE ) {
             Invoke-Self-Update
         } else {
-            $Script:PGVM_NEW_VERSION = $true
+            $Script:PSDK_NEW_VERSION = $true
         }
     }
 }
@@ -66,7 +66,7 @@ function Get-Posh-SDK-Version() {
     return Get-Content $Script:PGVM_VERSION_PATH
 }
 
-function Is-New-Posh-GVM-Version-Available() {
+function Is-New-Posh-SDK-Version-Available() {
     try {
         $localVersion = (Get-Posh-SDK-Version).Trim()
         $currentVersion = (Invoke-RestMethod $Script:PGVM_VERSION_SERVICE).Trim()
@@ -128,11 +128,11 @@ function Invoke-Self-Update($Force) {
     if ( $Force ) {
         Invoke-Posh-Gvm-Update
     } else {
-        if ( Is-New-Posh-GVM-Version-Available ) {
+        if ( Is-New-Posh-SDK-Version-Available ) {
             Invoke-Posh-Gvm-Update
         }
     }
-    $Script:PGVM_NEW_VERSION = $false
+    $Script:PSDK_NEW_VERSION = $false
 }
 
 function Invoke-Posh-Gvm-Update {
