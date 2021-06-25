@@ -3,14 +3,14 @@
     . .\TestUtils.ps1
 }
 
-Describe 'Check-SDKMAN-API-Version' {
+Describe 'Test-SDKMAN-API-Version' {
     Context 'API offline' {
         BeforeAll {
             $Script:PSDK_AVAILABLE = $true
             $Script:PSDK_API_NEW_VERSION = $false
             Mock Get-SDKMAN-API-Version
             Mock Invoke-API-Call { throw 'error' }  -parameterFilter { $Path -eq 'app/Version' }
-            Check-SDKMAN-API-Version
+            Test-SDKMAN-API-Version
         }
         
         It 'the error handling set the app in offline mode' {
@@ -32,7 +32,7 @@ Describe 'Check-SDKMAN-API-Version' {
             Mock Invoke-API-Call { 1.2.2 } -parameterFilter { $Path -eq 'app/Version' }
             Mock Invoke-Self-Update
 
-            Check-SDKMAN-API-Version 
+            Test-SDKMAN-API-Version 
         }
 
         It 'do nothing' {
@@ -57,7 +57,7 @@ Describe 'Check-SDKMAN-API-Version' {
             Mock Get-SDKMAN-API-Version { '1.2.2' }
             Mock Invoke-API-Call { '1.2.3' } -parameterFilter { $Path -eq 'broker/download/sdkman/version/stable' }
 
-            Check-SDKMAN-API-Version
+            Test-SDKMAN-API-Version
         }
 
         It 'informs about new version' {
@@ -83,7 +83,7 @@ Describe 'Check-SDKMAN-API-Version' {
             Mock Invoke-API-Call { '1.2.3' } -parameterFilter { $Path -eq 'broker/download/sdkman/version/stable' }
             Mock Invoke-Self-Update -verifiable
 
-            Check-SDKMAN-API-Version 
+            Test-SDKMAN-API-Version 
         }
 
         It 'updates self' {
@@ -100,17 +100,17 @@ Describe 'Check-SDKMAN-API-Version' {
     }
 }
 
-Describe 'Check-Posh-SDK-Version' {
+Describe 'Test-Posh-SDK-Version' {
     Context 'No new Version' {
         BeforeAll {
             $Global:backup_Global_PSDK_AUTO_SELFUPDTE = $Global:PSDK_AUTO_SELFUPDATE
             $Global:PSDK_AUTO_SELFUPDATE = $false
             $Script:PSDK_NEW_VERSION = $false
 
-            Mock Is-New-Posh-SDK-Version-Available { $false }
+            Mock Test-New-Posh-SDK-Version-Available { $false }
             Mock Invoke-Self-Update
 
-            Check-Posh-SDK-Version
+            Test-Posh-SDK-Version
         }
 
         It 'does not update itself' {
@@ -132,10 +132,10 @@ Describe 'Check-Posh-SDK-Version' {
             $Global:PSDK_AUTO_SELFUPDATE = $false
             $Script:PSDK_NEW_VERSION = $false
 
-            Mock Is-New-Posh-SDK-Version-Available { $true }
+            Mock Test-New-Posh-SDK-Version-Available { $true }
             Mock Invoke-Self-Update
 
-            Check-Posh-SDK-Version
+            Test-Posh-SDK-Version
         }
 
         It 'informs about new version' {
@@ -157,10 +157,10 @@ Describe 'Check-Posh-SDK-Version' {
             $Global:PSDK_AUTO_SELFUPDATE = $true
             $Script:PSDK_NEW_VERSION = $false
 
-            Mock Is-New-Posh-SDK-Version-Available { $true }
+            Mock Test-New-Posh-SDK-Version-Available { $true }
             Mock Invoke-Self-Update -verifiable
 
-            Check-Posh-SDK-Version
+            Test-Posh-SDK-Version
         }
 
         It 'updates self' {
@@ -177,7 +177,7 @@ Describe 'Check-Posh-SDK-Version' {
     }
 }
 
-Describe 'Is-New-Posh-SDK-Version-Available' {
+Describe 'Test-New-Posh-SDK-Version-Available' {
     Context 'New version available' {
         BeforeAll {
             $Script:PSDK_VERSION_SERVICE = 'blub'
@@ -188,7 +188,7 @@ Describe 'Is-New-Posh-SDK-Version-Available' {
         }
 
         It 'returns $true' {
-            $result = Is-New-Posh-SDK-Version-Available
+            $result = Test-New-Posh-SDK-Version-Available
             $result | Should -Be $true
         }
     }
@@ -203,7 +203,7 @@ Describe 'Is-New-Posh-SDK-Version-Available' {
         }
         
         It 'returns $false' {
-            $result = Is-New-Posh-SDK-Version-Available
+            $result = Test-New-Posh-SDK-Version-Available
             $result | Should -Be $false
         }
     }
@@ -218,7 +218,7 @@ Describe 'Is-New-Posh-SDK-Version-Available' {
         }
         
         It 'returns $false' {
-            $result = Is-New-Posh-SDK-Version-Available
+            $result = Test-New-Posh-SDK-Version-Available
             $result | Should -Be $false
         }
     }
@@ -247,18 +247,18 @@ Describe 'Get-SDKMAN-API-Version' {
     }
 }
 
-Describe 'Check-Available-Broadcast' {
+Describe 'Test-Available-Broadcast' {
     Context 'Last execution was online, still online' {
         BeforeAll {
             $Script:PSDK_ONLINE = $true
             $Script:PSDK_AVAILABLE = $true
             Mock Get-SDKMAN-API-Version { '1.2.3' }
             Mock Invoke-Broadcast-API-Call { 'Broadcast message' }
-            Mock Handle-Broadcast -verifiable -parameterFilter { $Command -eq $null -and $Broadcast -eq 'Broadcast message' }
+            Mock Resolve-Broadcast -verifiable -parameterFilter { $Command -eq $null -and $Broadcast -eq 'Broadcast message' }
             Mock Write-Offline-Broadcast
             Mock Write-Online-Broadcast
 
-            Check-Available-Broadcast
+            Test-Available-Broadcast
         }
 
         It 'does not announce any mode changes' {
@@ -266,7 +266,7 @@ Describe 'Check-Available-Broadcast' {
             Assert-MockCalled Write-Online-Broadcast 0
         }
 
-        It 'calls Handle-Broadcast' {
+        It 'calls Resolve-Broadcast' {
             Assert-VerifiableMock
         }
     }
@@ -277,21 +277,21 @@ Describe 'Check-Available-Broadcast' {
             $Script:PSDK_AVAILABLE = $false
             Mock Get-SDKMAN-API-Version { '1.2.4' }
             Mock Invoke-Broadcast-API-Call { $null }
-            Mock Handle-Broadcast
+            Mock Resolve-Broadcast
             Mock Write-Offline-Broadcast
             Mock Write-Online-Broadcast
 
         }
         
         It 'does announce offline mode' {
-            Check-Available-Broadcast
+            Test-Available-Broadcast
             Assert-MockCalled Write-Offline-Broadcast 1
             Assert-MockCalled Write-Online-Broadcast 0
         }
         
-        It 'does not call Handle-Broadcast' {
-            Check-Available-Broadcast
-            Assert-MockCalled Handle-Broadcast 0
+        It 'does not call Resolve-Broadcast' {
+            Test-Available-Broadcast
+            Assert-MockCalled Resolve-Broadcast 0
         }
     }
 
@@ -301,21 +301,21 @@ Describe 'Check-Available-Broadcast' {
             $Script:PSDK_AVAILABLE = $false
             Mock Get-SDKMAN-API-Version { '1.2.4' }
             Mock Invoke-Broadcast-API-Call { $null }
-            Mock Handle-Broadcast
+            Mock Resolve-Broadcast
             Mock Write-Offline-Broadcast
             Mock Write-Online-Broadcast
 
         }
         
         It 'does not announce any mode changes' {
-            Check-Available-Broadcast
+            Test-Available-Broadcast
             Assert-MockCalled Write-Offline-Broadcast 0
             Assert-MockCalled Write-Online-Broadcast 0
         }
         
-        It 'does not call Handle-Broadcast' {
-            Check-Available-Broadcast
-            Assert-MockCalled Handle-Broadcast 0
+        It 'does not call Resolve-Broadcast' {
+            Test-Available-Broadcast
+            Assert-MockCalled Resolve-Broadcast 0
         }
     }
 
@@ -325,20 +325,20 @@ Describe 'Check-Available-Broadcast' {
             $Script:PSDK_AVAILABLE = $true
             Mock Get-SDKMAN-API-Version { '1.2.5' }
             Mock Invoke-Broadcast-API-Call { 'Broadcast message' }
-            Mock Handle-Broadcast -verifiable -parameterFilter { $Command -eq $null -and $Broadcast -eq 'Broadcast message' }
+            Mock Resolve-Broadcast -verifiable -parameterFilter { $Command -eq $null -and $Broadcast -eq 'Broadcast message' }
             Mock Write-Offline-Broadcast
             Mock Write-Online-Broadcast
 
         }
         
         It 'does announce online mode' {
-            Check-Available-Broadcast
+            Test-Available-Broadcast
             Assert-MockCalled Write-Offline-Broadcast 0
             Assert-MockCalled Write-Online-Broadcast 1
         }
         
-        It 'calls Handle-Broadcast' {
-            Check-Available-Broadcast
+        It 'calls Resolve-Broadcast' {
+            Test-Available-Broadcast
             Assert-VerifiableMock
         }
     }
@@ -349,7 +349,7 @@ Describe 'Invoke-Self-Update' {
         BeforeAll {
             Mock Update-Candidates-Cache -verifiable
             Mock Write-Output -verifiable
-            Mock Is-New-Posh-SDK-Version-Available { $false }
+            Mock Test-New-Posh-SDK-Version-Available { $false }
             Mock Invoke-Posh-SDK-Update
 
             Invoke-Self-Update
@@ -368,7 +368,7 @@ Describe 'Invoke-Self-Update' {
         BeforeAll {
             Mock Update-Candidates-Cache -verifiable
             Mock Write-Output -verifiable
-            Mock Is-New-Posh-SDK-Version-Available { $true }
+            Mock Test-New-Posh-SDK-Version-Available { $true }
             Mock Invoke-Posh-SDK-Update -verifiable
 
             Invoke-Self-Update
@@ -383,7 +383,7 @@ Describe 'Invoke-Self-Update' {
         BeforeAll {
             Mock Update-Candidates-Cache -verifiable
             Mock Write-Output -verifiable
-            Mock Is-New-Posh-SDK-Version-Available { $false }
+            Mock Test-New-Posh-SDK-Version-Available { $false }
             Mock Invoke-Posh-SDK-Update -verifiable
 
             Invoke-Self-Update -Force $true
@@ -395,59 +395,59 @@ Describe 'Invoke-Self-Update' {
     }
 }
 
-Describe 'Check-Candidate-Present checks if candidate parameter is valid' {
+Describe 'Test-Candidate-Present checks if candidate parameter is valid' {
     It 'throws an error if no candidate is provided' {
-        { Check-Candidate-Present } | Should -Throw
+        { Test-Candidate-Present } | Should -Throw
     }
     
     It 'throws error if candidate unknown' {
         $Script:SDK_CANDIDATES = @('grails', 'groovy')
-        { Check-Candidate-Present java } | Should -Throw
+        { Test-Candidate-Present java } | Should -Throw
     }
 
     It 'throws no error if candidate known' {
         $Script:SDK_CANDIDATES = @('grails', 'groovy')
-        { Check-Candidate-Present groovy } | Should -Not -Throw
+        { Test-Candidate-Present groovy } | Should -Not -Throw
     }
 }
 
-Describe 'Check-Version-Present checks if version parameter is defined' {
+Describe 'Test-Version-Present checks if version parameter is defined' {
     It 'throws an error if no candidate is provided' {
-        { Check-Version-Present } | Should -Throw
+        { Test-Version-Present } | Should -Throw
     }
 
     It 'throws no error if version provided' {
-        { Check-Version-Present 2.1.3 } | Should -Not -Throw
+        { Test-Version-Present 2.1.3 } | Should -Not -Throw
     }
 }
 
-Describe 'Check-Candidate-Version-Available select or vadidates a version for a candidate' {
+Describe 'Test-Candidate-Version-Available select or vadidates a version for a candidate' {
     Context 'When grails version 1.1.1 is locally available' {
         BeforeAll {
-            Mock-Check-Candidate-Grails
+            Mock Test-Candidate-Present -verifiable -parameterFilter { $Candidate -eq 'grails' }
             Mock-Grails-1.1.1-Locally-Available $true
         }
 
         It 'check candidate parameter' {
-            Check-Candidate-Version-Available grails 1.1.1
+            Test-Candidate-Version-Available grails 1.1.1
             Assert-VerifiableMock
         }
 
         It 'returns the 1.1.1' {
-            $result = Check-Candidate-Version-Available grails 1.1.1
+            $result = Test-Candidate-Version-Available grails 1.1.1
             $result | Should -Be 1.1.1
         }
     }
 
     Context 'When psdk is offline and the provided version is not locally available' {
         BeforeAll {
-            Mock-Check-Candidate-Grails
-            Mock-Offline
+            Mock Test-Candidate-Present -verifiable -parameterFilter { $Candidate -eq 'grails' }
+            Mock Get-Online-Mode { return $false }
             Mock-Grails-1.1.1-Locally-Available $false
         }
 
         It 'throws an error' {
-            { Check-Candidate-Version-Available grails 1.1.1 } | Should -Throw
+            { Test-Candidate-Version-Available grails 1.1.1 } | Should -Throw
         }
 
         It 'check candidate parameter' {
@@ -457,31 +457,31 @@ Describe 'Check-Candidate-Version-Available select or vadidates a version for a 
 
     Context 'When psdk is offline and no version is provided but there is a current version' {
         BeforeAll {
-            Mock-Check-Candidate-Grails
-            Mock-Offline
-            Mock-Current-Grails-1.2
+            Mock Test-Candidate-Present -verifiable -parameterFilter { $Candidate -eq 'grails' }
+            Mock Get-Online-Mode { return $false }
+            Mock Get-Current-Candidate-Version { return 1.2 } -parameterFilter { $Candidate -eq 'grails' }
         }
 
         It 'check candidate parameter' {
-            Check-Candidate-Version-Available grails
+            Test-Candidate-Version-Available grails
             Assert-VerifiableMock
         }
 
         It 'returns the current version' {
-            $result = Check-Candidate-Version-Available grails
+            $result = Test-Candidate-Version-Available grails
             $result | Should -Be 1.2
         }
     }
 
     Context 'When psdk is offline and no version is provided and no current version is defined' {
         BeforeAll {
-            Mock-Check-Candidate-Grails
-            Mock-Offline
-            Mock-No-Current-Grails
+            Mock Test-Candidate-Present -verifiable -parameterFilter { $Candidate -eq 'grails' }
+            Mock Get-Online-Mode { return $false }
+            Mock Get-Current-Candidate-Version { return $null } -parameterFilter { $Candidate -eq 'grails' }
         }
 
         It 'throws an error' {
-            { Check-Candidate-Version-Available grails } | Should -Throw
+            { Test-Candidate-Version-Available grails } | Should -Throw
         }
 
         It 'check candidate parameter' {
@@ -491,51 +491,51 @@ Describe 'Check-Candidate-Version-Available select or vadidates a version for a 
 
     Context 'When psdk is online and no version is provided' {
         BeforeAll {
-            Mock-Check-Candidate-Grails
-            Mock-Online
-            Mock-Api-Call-Default-Grails-2.2
+            Mock Test-Candidate-Present -verifiable -parameterFilter { $Candidate -eq 'grails' }
+            Mock Get-Online-Mode { return $true }
+            Mock Invoke-API-Call { return 2.2 } -parameterFilter { $Path -eq 'candidates/grails/default' }
         }
 
     
         It 'the API default is returned' {
-            $result = Check-Candidate-Version-Available grails
+            $result = Test-Candidate-Version-Available grails
             $result | Should -Be 2.2
         }
 
         It 'check candidate parameter' {
-            Check-Candidate-Version-Available grails
+            Test-Candidate-Version-Available grails
             Assert-VerifiableMock
         }
     }
 
     Context 'When psdk is online and the provided version is valid' {
         BeforeAll {
-            Mock-Check-Candidate-Grails
-            Mock-Online
+            Mock Test-Candidate-Present -verifiable -parameterFilter { $Candidate -eq 'grails' }
+            Mock Get-Online-Mode { return $true }
             Mock-Api-Call-Grails-1.1.1-Available $true
         }
 
     
         It 'returns the version' {
-            $result = Check-Candidate-Version-Available grails 1.1.1
+            $result = Test-Candidate-Version-Available grails 1.1.1
             $result | Should -Be 1.1.1
         }
         
         It 'check candidate parameter' {
-            Check-Candidate-Version-Available grails 1.1.1
+            Test-Candidate-Version-Available grails 1.1.1
             Assert-VerifiableMock
         }
     }
 
     Context 'When psdk is online and the provided version is invalid' {
         BeforeAll {
-            Mock-Check-Candidate-Grails
-            Mock-Online
+            Mock Test-Candidate-Present -verifiable -parameterFilter { $Candidate -eq 'grails' }
+            Mock Get-Online-Mode { return $true }
             Mock-Api-Call-Grails-1.1.1-Available $false
         }
 
         It 'throws an error' {
-            { Check-Candidate-Version-Available grails 1.1.1 } | Should -Throw
+            { Test-Candidate-Version-Available grails 1.1.1 } | Should -Throw
         }
 
         It 'check candidate parameter' {
@@ -614,11 +614,11 @@ Describe 'Get-Env-Candidate-Version reads the version set in $Candidate-Home' {
     }
 }
 
-Describe 'Check-Candidate-Version-Locally-Available throws error message if not available' {
+Describe 'Test-Candidate-Version-Locally-Available throws error message if not available' {
     Context 'Version not available' {
         It 'throws an error' {
             Mock-Grails-1.1.1-Locally-Available $false
-            { Check-Candidate-Version-Locally-Available grails 1.1.1 } | Should -Throw
+            { Test-Candidate-Version-Locally-Available grails 1.1.1 } | Should -Throw
         }
     }
 
@@ -626,15 +626,15 @@ Describe 'Check-Candidate-Version-Locally-Available throws error message if not 
         
         It 'not throws any error' {
             Mock-Grails-1.1.1-Locally-Available $true
-            { Check-Candidate-Version-Locally-Available grails 1.1.1 } | Should -Not -Throw
+            { Test-Candidate-Version-Locally-Available grails 1.1.1 } | Should -Not -Throw
         }
     }
 }
 
-Describe 'Is-Candidate-Version-Locally-Available check the path exists' {
+Describe 'Test-Is-Candidate-Version-Locally-Available check the path exists' {
     Context 'No version provided' {
         it 'returns $false' {
-            Is-Candidate-Version-Locally-Available grails | Should -Be $false
+            Test-Is-Candidate-Version-Locally-Available grails | Should -Be $false
         }
     }
 
@@ -642,7 +642,7 @@ Describe 'Is-Candidate-Version-Locally-Available check the path exists' {
         
         it 'returns $false' {
             Mock-PSDK-Dir
-            Is-Candidate-Version-Locally-Available grails 1.1.1 | Should -Be $false
+            Test-Is-Candidate-Version-Locally-Available grails 1.1.1 | Should -Be $false
             Reset-PSDK-Dir
         }
 
@@ -653,7 +653,7 @@ Describe 'Is-Candidate-Version-Locally-Available check the path exists' {
         it 'returns $true' {
             Mock-PSDK-Dir
             New-Item -ItemType Directory "$Global:PSDK_DIR\grails\1.1.1" | Out-Null
-            Is-Candidate-Version-Locally-Available grails 1.1.1 | Should -Be $true
+            Test-Is-Candidate-Version-Locally-Available grails 1.1.1 | Should -Be $true
             Reset-PSDK-Dir
         }
 
@@ -841,20 +841,20 @@ Describe 'Get-Online-Mode check the state variables for PSDK-API availablitiy an
 }
 
 
-Describe 'Check-Online-Mode throws an error when offline' {
+Describe 'Test-Online-Mode throws an error when offline' {
     Context 'Offline' {
         
         It 'throws an error' {
-            Mock-Offline
-            { Check-Online-Mode } | Should -Throw
+            Mock Get-Online-Mode { return $false }
+            { Test-Online-Mode } | Should -Throw
         }
     }
 
     Context 'Online' {
         
         It 'throws no error' {
-            Mock-Online
-            { Check-Online-Mode } | Should -Not -Throw
+            Mock Get-Online-Mode { return $true }
+            { Test-Online-Mode } | Should -Not -Throw
         }
     }
 }
@@ -874,7 +874,7 @@ Describe 'Invoke-API-Call helps doing calls to the PSDK-Api' {
             $Script:PSDK_SERVICE = 'blub'
             $Script:PSDK_AVAILABLE = $true
             Mock Invoke-RestMethod { throw 'error' } -parameterFilter { $Uri -eq 'blub/na/rock' }
-            Mock Check-Online-Mode -verifiable
+            Mock Test-Online-Mode -verifiable
 
             Invoke-API-Call 'na/rock'
         }
@@ -883,7 +883,7 @@ Describe 'Invoke-API-Call helps doing calls to the PSDK-Api' {
             $Script:PSDK_AVAILABLE | Should -Be $false
         }
 
-        It 'calls Check-Online-Mode which throws an error' {
+        It 'calls Test-Online-Mode which throws an error' {
             Assert-VerifiableMock
         }
     }
@@ -893,7 +893,7 @@ Describe 'Invoke-API-Call helps doing calls to the PSDK-Api' {
             $Script:PSDK_SERVICE = 'blub'
             $Script:PSDK_AVAILABLE = $true
             Mock Invoke-RestMethod { throw 'error' } -parameterFilter { $Uri -eq 'blub/na/rock' }
-            Mock Check-Online-Mode
+            Mock Test-Online-Mode
 
             Invoke-API-Call 'na/rock' -IgnoreFailure
         }
@@ -902,8 +902,8 @@ Describe 'Invoke-API-Call helps doing calls to the PSDK-Api' {
             $Script:PSDK_AVAILABLE | Should -Be $false
         }
 
-        It 'do not call Check-Online-Mode' {
-            Assert-MockCalled Check-Online-Mode 0
+        It 'do not call Test-Online-Mode' {
+            Assert-MockCalled Test-Online-Mode 0
         }
     }
 
@@ -921,7 +921,7 @@ Describe 'Invoke-API-Call helps doing calls to the PSDK-Api' {
     }
 }
 
-Describe 'Cleanup-Directory' {
+Describe 'Clear-Directory' {
     Context 'Directory with subdirectories and files' {
         BeforeAll {
             New-Item -ItemType Directory TestDrive:bla | Out-Null
@@ -932,7 +932,7 @@ Describe 'Cleanup-Directory' {
 
             Mock Write-Output -verifiable -parameterFilter { $InputObject -eq '2 archive(s) flushed, freeing 0 MB' }
 
-            Cleanup-Directory TestDrive:bla
+            Clear-Directory TestDrive:bla
         }
 
         It 'Cleans the Test-Path file' {
@@ -945,7 +945,7 @@ Describe 'Cleanup-Directory' {
     }
 }
 
-Describe 'Handle-Broadcast' {
+Describe 'Resolve-Broadcast' {
     Context 'Cache broadcast message different than new broadcast' {
         BeforeAll {
             Mock-PSDK-Dir
@@ -953,7 +953,7 @@ Describe 'Handle-Broadcast' {
             Set-Content $Script:PSDK_BROADCAST_PATH 'Old Broadcast message'
             Mock Write-Output -verifiable -parameterFilter { $InputObject -eq 'New Broadcast message' }
 
-            Handle-Broadcast list 'New Broadcast message'
+            Resolve-Broadcast list 'New Broadcast message'
         }
 
         It 'outputs the broadcast message' {
@@ -977,7 +977,7 @@ Describe 'Handle-Broadcast' {
             $Script:PSDK_BROADCAST_PATH = "$Global:PSDK_DIR\broadcast.txt"
             Mock Write-Output -verifiable -parameterFilter { $InputObject -eq 'New Broadcast message' }
 
-            Handle-Broadcast list 'New Broadcast message'
+            Resolve-Broadcast list 'New Broadcast message'
         }
 
         It 'outputs the broadcast message' {
@@ -1000,7 +1000,7 @@ Describe 'Handle-Broadcast' {
             $Script:PSDK_BROADCAST_PATH = "$Global:PSDK_DIR\broadcast.txt"
             Mock Write-Output -verifiable
 
-            Handle-Broadcast b 'New Broadcast message'
+            Resolve-Broadcast b 'New Broadcast message'
         }
 
         It 'no Broadcast' {
@@ -1023,7 +1023,7 @@ Describe 'Handle-Broadcast' {
             $Script:PSDK_BROADCAST_PATH = "$Global:PSDK_DIR\broadcast.txt"
             Mock Write-Output -verifiable
 
-            Handle-Broadcast broadcast 'New Broadcast message'
+            Resolve-Broadcast broadcast 'New Broadcast message'
         }
 
         It 'no Broadcast' {
@@ -1046,7 +1046,7 @@ Describe 'Handle-Broadcast' {
             $Script:PSDK_BROADCAST_PATH = "$Global:PSDK_DIR\broadcast.txt"
             Mock Write-Output -verifiable
 
-            Handle-Broadcast selfupdate 'New Broadcast message'
+            Resolve-Broadcast selfupdate 'New Broadcast message'
         }
 
         It 'no Broadcast' {
@@ -1069,7 +1069,7 @@ Describe 'Handle-Broadcast' {
             $Script:PSDK_BROADCAST_PATH = "$Global:PSDK_DIR\broadcast.txt"
             Mock Write-Output -verifiable
 
-            Handle-Broadcast flush 'New Broadcast message'
+            Resolve-Broadcast flush 'New Broadcast message'
         }
 
         It 'no Broadcast' {
@@ -1086,7 +1086,7 @@ Describe 'Handle-Broadcast' {
     }
 }
 
-Describe 'Init-Candidate-Cache' {
+Describe 'Initialize-Candidate-Cache' {
     Context 'Candidate cache file does not exists' {
         BeforeAll {
             Mock-PSDK-Dir
@@ -1094,7 +1094,7 @@ Describe 'Init-Candidate-Cache' {
         }
 
         It 'throws an error' {
-            { Init-Candidate-Cache } | Should -Throw
+            { Initialize-Candidate-Cache } | Should -Throw
         }
 
         AfterAll {
@@ -1109,7 +1109,7 @@ Describe 'Init-Candidate-Cache' {
             Set-Content $Script:PSDK_CANDIDATES_PATH 'grails,groovy,test'
             $Script:SDK_CANDIDATES = $null
 
-            Init-Candidate-Cache
+            Initialize-Candidate-Cache
         }
 
         It 'sets `$Script:SDK_CANDIDATES' {
@@ -1130,14 +1130,14 @@ Describe 'Update-Candidate-Cache' {
             $Script:PSDK_API_VERSION_PATH = "$Global:PSDK_DIR\version.txt"
             $Script:PSDK_CANDIDATES_PATH = "$Global:PSDK_DIR\candidates.txt"
 
-            Mock Check-Online-Mode -verifiable
+            Mock Test-Online-Mode -verifiable
             Mock Invoke-API-Call -verifiable -parameterFilter { $Path -eq 'broker/download/sdkman/version/stable' -and $FileTarget -eq "$Global:PSDK_DIR\version.txt" }
             Mock Invoke-API-Call -verifiable -parameterFilter { $Path -eq 'candidates/all' -and $FileTarget -eq "$Global:PSDK_DIR\candidates.txt" }
 
             Update-Candidates-Cache
         }
 
-        It 'calls the Check-Online-Mode and two API paths' {
+        It 'calls the Test-Online-Mode and two API paths' {
             Assert-VerifiableMock
         }
 
@@ -1220,13 +1220,13 @@ Describe 'Install-Remote-Version' {
             Mock-PSDK-Dir
 
             Mock Write-Output
-            Mock Check-Online-Mode -verifiable
+            Mock Test-Online-Mode -verifiable
             $Script:PSDK_SERVICE = 'foobar'
             $Script:PSDK_ARCHIVES_PATH = "$Global:PSDK_DIR\archives"
             $Script:PSDK_TEMP_PATH = "$Global:PSDK_DIR\temp"
             $testFilePath = "$PSScriptRoot\test\grails-1.3.9.zip"
 
-            Mock -CommandName Download-File -verifiable -MockWith { Copy-Item $testFilePath "$Script:PSDK_ARCHIVES_PATH\grails-1.3.9.zip" } -ParameterFilter { $Url -eq 'foobar/broker/download/grails/1.3.9/cygwin' -and $TargetFile -eq "$Script:PSDK_ARCHIVES_PATH\grails-1.3.9.zip" }
+            Mock -CommandName Get-File-From-Url -verifiable -MockWith { Copy-Item $testFilePath "$Script:PSDK_ARCHIVES_PATH\grails-1.3.9.zip" } -ParameterFilter { $Url -eq 'foobar/broker/download/grails/1.3.9/cygwin' -and $TargetFile -eq "$Script:PSDK_ARCHIVES_PATH\grails-1.3.9.zip" }
 
             Install-Remote-Version grails 1.3.9
         }
@@ -1249,7 +1249,7 @@ Describe 'Install-Remote-Version' {
             Mock-PSDK-Dir
 
             Mock Write-Output
-            Mock Download-File
+            Mock Get-File-From-Url
 
             $Script:PSDK_ARCHIVES_PATH = "$Global:PSDK_DIR\archives"
             $Script:PSDK_TEMP_PATH = "$Global:PSDK_DIR\temp"
@@ -1260,7 +1260,7 @@ Describe 'Install-Remote-Version' {
         }
 
         It 'does not download the archive again' {
-            Assert-MockCalled Download-File 0
+            Assert-MockCalled Get-File-From-Url 0
         }
 
         It 'install it correctly' {
@@ -1277,7 +1277,7 @@ Describe 'Install-Remote-Version' {
             Mock-PSDK-Dir
 
             Mock Write-Output
-            Mock Download-File
+            Mock Get-File-From-Url
 
             $Script:PSDK_ARCHIVES_PATH = "$Global:PSDK_DIR\archives"
             $Script:PSDK_TEMP_PATH = "$Global:PSDK_DIR\temp"
@@ -1290,7 +1290,7 @@ Describe 'Install-Remote-Version' {
         }
 
         It 'does not download the archive again' {
-            Assert-MockCalled Download-File 0
+            Assert-MockCalled Get-File-From-Url 0
         }
 
         AfterAll {

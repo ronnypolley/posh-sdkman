@@ -33,7 +33,7 @@ A new version is available. Please consider to execute:
     }
 }
 
-function Check-SDKMAN-API-Version() {
+function Test-SDKMAN-API-Version() {
     Write-Verbose 'Checking PSDK-Api version'
     try {
         $apiVersion = Get-SDKMAN-API-Version
@@ -51,9 +51,9 @@ function Check-SDKMAN-API-Version() {
     }
 }
 
-function Check-Posh-SDK-Version() {
+function Test-Posh-SDK-Version() {
     Write-Verbose 'Checking posh-sdk version'
-    if ( Is-New-Posh-SDK-Version-Available ) {
+    if ( Test-New-Posh-SDK-Version-Available ) {
         if ( $Global:PSDK_AUTO_SELFUPDATE ) {
             Invoke-Self-Update
         } else {
@@ -66,7 +66,7 @@ function Get-Posh-SDK-Version() {
     return Get-Content $Script:PSDK_VERSION_PATH
 }
 
-function Is-New-Posh-SDK-Version-Available() {
+function Test-New-Posh-SDK-Version-Available() {
     try {
         $localVersion = (Get-Posh-SDK-Version).Trim()
         $currentVersion = (Invoke-RestMethod $Script:PSDK_VERSION_SERVICE).Trim()
@@ -86,7 +86,7 @@ function Get-SDKMAN-API-Version() {
     return Get-Content $Script:PSDK_API_VERSION_PATH
 }
 
-function Check-Available-Broadcast($Command) {
+function Test-Available-Broadcast($Command) {
     $version = Get-SDKMAN-API-Version
     if ( !( $version ) ) {
         return
@@ -104,7 +104,7 @@ function Check-Available-Broadcast($Command) {
 	$Script:PSDK_ONLINE = $Script:PSDK_AVAILABLE
 
 	if ( $liveBroadcast ) {
-		Handle-Broadcast $Command $liveBroadcast
+		Resolve-Broadcast $Command $liveBroadcast
 	}
 }
 
@@ -128,7 +128,7 @@ function Invoke-Self-Update($Force) {
     if ( $Force ) {
         Invoke-Posh-SDK-Update
     } else {
-        if ( Is-New-Posh-SDK-Version-Available ) {
+        if ( Test-New-Posh-SDK-Version-Available ) {
             Invoke-Posh-SDK-Update
         }
     }
@@ -140,7 +140,7 @@ function Invoke-Posh-SDK-Update {
     . "$psScriptRoot\GetPoshSDK.ps1"
 }
 
-function Check-Candidate-Present($Candidate) {
+function Test-Candidate-Present($Candidate) {
     if ( !($Candidate) ) {
         throw 'No candidate provided.'
     }
@@ -150,14 +150,14 @@ function Check-Candidate-Present($Candidate) {
     }
 }
 
-function Check-Version-Present($Version) {
+function Test-Version-Present($Version) {
     if ( !($Version)) {
         throw 'No version provided.'
     }
 }
 
-function Check-Candidate-Version-Available($Candidate, $Version) {
-    Check-Candidate-Present $Candidate
+function Test-Candidate-Version-Available($Candidate, $Version) {
+    Test-Candidate-Present $Candidate
 
     $UseDefault = $false
     if ( !($Version) ) {
@@ -166,7 +166,7 @@ function Check-Candidate-Version-Available($Candidate, $Version) {
     }
 
     # Check locally
-    elseif ( Is-Candidate-Version-Locally-Available $Candidate $Version ) {
+    elseif ( Test-Is-Candidate-Version-Locally-Available $Candidate $Version ) {
         return $Version
     }
 
@@ -240,13 +240,13 @@ function Get-Env-Candidate-Version($Candidate) {
     }
 }
 
-function Check-Candidate-Version-Locally-Available($Candidate, $Version) {
-    if ( !(Is-Candidate-Version-Locally-Available $Candidate $Version) ) {
+function Test-Candidate-Version-Locally-Available($Candidate, $Version) {
+    if ( !(Test-Is-Candidate-Version-Locally-Available $Candidate $Version) ) {
         throw "Stop! $Candidate $Version is not installed."
     }
 }
 
-function Is-Candidate-Version-Locally-Available($Candidate, $Version) {
+function Test-Is-Candidate-Version-Locally-Available($Candidate, $Version) {
     if ( $Version ) {
         return Test-Path "$Global:PSDK_DIR\$Candidate\$Version"
     } else {
@@ -289,7 +289,7 @@ function Get-Online-Mode() {
     return $Script:PSDK_AVAILABLE -and ! ($Script:PSDK_FORCE_OFFLINE)
 }
 
-function Check-Online-Mode() {
+function Test-Online-Mode() {
     if ( ! (Get-Online-Mode) ) {
         throw 'This command is not available in offline mode.'
     }
@@ -307,14 +307,14 @@ function Invoke-API-Call([string]$Path, [string]$FileTarget, [switch]$IgnoreFail
     } catch {
         $Script:PSDK_AVAILABLE = $false
         if ( ! ($IgnoreFailure) ) {
-            Check-Online-Mode
+            Test-Online-Mode
         } else {
 			return $null
 		}
     }
 }
 
-function Cleanup-Directory($Path) {
+function Clear-Directory($Path) {
     $dirStats = Get-ChildItem $Path -Recurse | Measure-Object -property length -sum
     Remove-Item -Force -Recurse $Path
     $count = $dirStats.Count
@@ -322,7 +322,7 @@ function Cleanup-Directory($Path) {
     Write-Output "$count archive(s) flushed, freeing $size MB"
 }
 
-function Handle-Broadcast($Command, $Broadcast) {
+function Resolve-Broadcast($Command, $Broadcast) {
     $oldBroadcast = $null
     if (Test-Path $Script:PSDK_BROADCAST_PATH) {
         $oldBroadcast = (Get-Content $Script:PSDK_BROADCAST_PATH) -join "`n"
@@ -336,7 +336,7 @@ function Handle-Broadcast($Command, $Broadcast) {
     }
 }
 
-function Init-Candidate-Cache() {
+function Initialize-Candidate-Cache() {
     if ( !(Test-Path $Script:PSDK_CANDIDATES_PATH) ) {
         throw 'Can not retrieve list of candidates'
     }
@@ -347,7 +347,7 @@ function Init-Candidate-Cache() {
 
 function Update-Candidates-Cache() {
     Write-Verbose 'Update candidates-cache from PSDK-Api'
-    Check-Online-Mode
+    Test-Online-Mode
     Invoke-Api-Call 'broker/download/sdkman/version/stable' $Script:PSDK_API_VERSION_PATH
     Invoke-API-Call 'candidates/all' $Script:PSDK_CANDIDATES_PATH
 }
@@ -412,9 +412,9 @@ function Install-Remote-Version($Candidate, $Version) {
     if ( Test-Path $archive ) {
         Write-Output "Found a previously downloaded $Candidate $Version archive. Not downloading it again..."
     } else {
-		Check-Online-Mode
+		Test-Online-Mode
         Write-Output "`nDownloading: $Candidate $Version`n"
-        Download-File "$Script:PSDK_SERVICE/broker/download/$Candidate/$Version`/cygwin" $archive
+        Get-File-From-Url "$Script:PSDK_SERVICE/broker/download/$Candidate/$Version`/cygwin" $archive
     }
 
     Write-Output "Installing: $Candidate $Version"
@@ -425,7 +425,7 @@ function Install-Remote-Version($Candidate, $Version) {
     }
 
     # unzip downloaded archive
-    Unzip-Archive $archive $Script:PSDK_TEMP_PATH
+    Expand-Archive -Path $archive -DestinationPath $Script:PSDK_TEMP_PATH -Force
 
 	# check if unzip successfully
 	if ( ((Get-ChildItem -Directory $Script:PSDK_TEMP_PATH).count -gt 1) -or !(Test-Path "$Script:PSDK_TEMP_PATH\*-$Version") ) {
@@ -443,21 +443,7 @@ function Install-Remote-Version($Candidate, $Version) {
     Write-Output "Done installing!"
 }
 
-function Unzip-Archive($Archive, $Target) {
-    if ( $Script:SEVENZ_On_PATH ) {
-        $zipProcess = Start-Process 7z.exe -ArgumentList "x -o`"$Target`" -y `"$Archive`"" -Wait -PassThru -NoNewWindow
-
-        if ($zipProcess.ExitCode -ne 0) {
-            Remove-Item $Target -Recurse -Force
-        }
-    } elseif ( $Script:UNZIP_ON_PATH ) {
-        unzip.exe -oq $Archive -d $Target
-    } else {
-        Expand-Archive -Path $Archive -DestinationPath $Target -Force
-    }
-}
-
-function Download-File($Url, $TargetFile) {
+function Get-File-From-Url($Url, $TargetFile) {
 	<#
 		Adepted from http://blogs.msdn.com/b/jasonn/archive/2008/06/13/downloading-files-from-the-internet-in-powershell-with-progress.aspx
 	#>

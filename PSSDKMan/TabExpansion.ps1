@@ -33,26 +33,26 @@ function psdkTabExpansion($lastBlock) {
     $arguments = $arguments.TrimStart()
     # Help add correct parameters
     switch -regex ($command) {
-        '^i(nstall)?'    { psdkTabExpansion-Need-Candidate $command $arguments }
-        '^(uninstall|rm)'{ psdkTabExpansion-Need-Candidate $command $arguments }
-        '^(ls|list)'     { psdkTabExpansion-Need-Candidate $command $arguments }
-        '^u(se)?'        { psdkTabExpansion-Need-Candidate $command $arguments }
-        '^d(efault)?'    { psdkTabExpansion-Need-Candidate $command $arguments }
-        '^c(urrent)?'    { psdkTabExpansion-Need-Candidate $command $arguments }
-        '^offline'       { psdkTabExpansion-Offline $arguments }
-        '^flush'         { psdkTabExpansion-Flush $arguments }
+        '^i(nstall)?'    { Search-PSDKTabExpansion-Candidate $command $arguments }
+        '^(uninstall|rm)'{ Search-PSDKTabExpansion-Candidate $command $arguments }
+        '^(ls|list)'     { Search-PSDKTabExpansion-Candidate $command $arguments }
+        '^u(se)?'        { Search-PSDKTabExpansion-Candidate $command $arguments }
+        '^d(efault)?'    { Search-PSDKTabExpansion-Candidate $command $arguments }
+        '^c(urrent)?'    { Search-PSDKTabExpansion-Candidate $command $arguments }
+        '^offline'       { Get-PSDKTabExpansion-Offline $arguments }
+        '^flush'         { Get-PSDKTabExpansion-Clear $arguments }
         default          {}
     }
 }
 
-function psdkTabExpansion-Need-Candidate($Command, $LastBlock) {
+function Search-PSDKTabExpansion-Candidate($Command, $LastBlock) {
     if ( !($LastBlock -match "^(?<candidate>\S+)?(?<args> .*)?$") ) {
         return
     }
     $candidate = $Matches['candidate']
     $arguments = $Matches['args']
 
-    Init-Candidate-Cache
+    Initialize-Candidate-Cache
 
     if ( !($arguments) ) {
         # Try to complete the command
@@ -66,23 +66,23 @@ function psdkTabExpansion-Need-Candidate($Command, $LastBlock) {
     $arguments = $arguments.TrimStart()
     # Help add correct parameters
     switch -regex ($command) {
-        #'^i(nstall)?'    { psdkTabExpansion-Need-Version $candidate $arguments }
-        '^(uninstall|rm)'{ psdkTabExpansion-Need-Version $candidate $arguments }
-        '^u(se)?'        { psdkTabExpansion-Need-Version $candidate $arguments }
-        '^d(efault)?'    { psdkTabExpansion-Need-Version $candidate $arguments }
+        #'^i(nstall)?'    { Search-PSDKTabExpansion-Version $candidate $arguments }
+        '^(uninstall|rm)'{ Search-PSDKTabExpansion-Version $candidate $arguments }
+        '^u(se)?'        { Search-PSDKTabExpansion-Version $candidate $arguments }
+        '^d(efault)?'    { Search-PSDKTabExpansion-Version $candidate $arguments }
         default          {}
     }
 }
 
-function psdkTabExpansion-Need-Version($Candidate, $LastBlock) {
+function Search-PSDKTabExpansion-Version($Candidate, $LastBlock) {
     Get-Installed-Candidate-Version-List $Candidate | Where-Object { $_.StartsWith($LastBlock) }
 }
 
-function psdkTabExpansion-Offline($Arguments) {
+function Get-PSDKTabExpansion-Offline($Arguments) {
     @('enable','disable') | Where-Object { ([string]$_).StartsWith($Arguments) }
 }
 
-function psdkTabExpansion-Flush($Arguments) {
+function Get-PSDKTabExpansion-Clear($Arguments) {
     @('candidates','broadcast','archives','temp') | Where-Object { ([string]$_).StartsWith($Arguments) }
 }
 

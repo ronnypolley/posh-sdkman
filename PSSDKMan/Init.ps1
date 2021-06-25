@@ -1,11 +1,11 @@
 #region Initialization
-function Init-Posh-SDK() {
+function Initialize-Posh-SDK() {
     Write-Verbose 'Init posh-sdk'
 
     $ErrorActionPreference = 'Stop'
     $ProgressPreference = 'SilentlyContinue'
 
-    Check-JAVA-HOME
+    Test-JAVA-HOME
 
     # Check if $Global:PSDK_DIR is available, if not create it
     if ( !( Test-Path "$Global:PSDK_DIR\.meta" ) ) {
@@ -17,7 +17,7 @@ function Init-Posh-SDK() {
         Update-Candidates-Cache
     }
 
-    Init-Candidate-Cache
+    Initialize-Candidate-Cache
 
     #Setup default paths
     Foreach ( $candidate in $Script:SDK_CANDIDATES ) {
@@ -29,7 +29,7 @@ function Init-Posh-SDK() {
     }
 }
 
-function Check-JAVA-HOME() {
+function Test-JAVA-HOME() {
 	# Check for JAVA_HOME, If not set, try to interfere it
     if ( ! (Test-Path env:JAVA_HOME) ) {
         try {
