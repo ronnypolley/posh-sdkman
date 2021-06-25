@@ -4,13 +4,13 @@ BeforeAll {
     . .\TestUtils.ps1
 }
 
-Describe 'Init-Posh-SDK' {
+Describe 'Initialize-Posh-SDK' {
     Context 'PSDK-Dir with only a grails folder' {
         BeforeAll {
             Mock-PSDK-Dir
-            Mock Check-JAVA-HOME -verifiable
+            Mock Test-JAVA-HOME -verifiable
             Mock Update-Candidates-Cache -verifiable
-            Mock Init-Candidate-Cache -verifiable
+            Mock Initialize-Candidate-Cache -verifiable
             Mock Set-Env-Candidate-Version -verifiable -parameterFilter { $Candidate -eq 'grails' -and $Version -eq 'current' }
             Mock Set-Env-Candidate-Version -verifiable -parameterFilter { $Candidate -eq 'groovy' -and $Version -eq 'current' }
             Mock Set-Env-Candidate-Version -verifiable -parameterFilter { $Candidate -eq 'bla' -and $Version -eq 'current' }
@@ -19,7 +19,7 @@ Describe 'Init-Posh-SDK' {
         }
 
         BeforeEach {
-            Init-Posh-SDK
+            Initialize-Posh-SDK
         }
 
         It "creates .meta" {
@@ -50,9 +50,9 @@ Describe 'Init-Posh-SDK' {
     Context 'PSDK-Dir with only a grails folder and a candidates list' {
         BeforeAll {
             Mock-PSDK-Dir
-            Mock Check-JAVA-HOME -verifiable
+            Mock Test-JAVA-HOME -verifiable
             Mock Update-Candidates-Cache
-            Mock Init-Candidate-Cache -verifiable
+            Mock Initialize-Candidate-Cache -verifiable
             Mock Set-Env-Candidate-Version -verifiable -parameterFilter { $Candidate -eq 'grails' -and $Version -eq 'current' }
             Mock Set-Env-Candidate-Version -verifiable -parameterFilter { $Candidate -eq 'groovy' -and $Version -eq 'current' }
             Mock Set-Env-Candidate-Version -verifiable -parameterFilter { $Candidate -eq 'bla' -and $Version -eq 'current' }
@@ -63,7 +63,7 @@ Describe 'Init-Posh-SDK' {
         }
 
         BeforeEach {
-            Init-Posh-SDK
+            Initialize-Posh-SDK
         }
 
         It "creates .meta" {
@@ -96,7 +96,7 @@ Describe 'Init-Posh-SDK' {
     }
 }
 
-Describe 'Check-JAVA-HOME' {
+Describe 'Test-JAVA-HOME' {
     Context 'JAVA_HOME is set' {
         BeforeAll {
             Mock Get-Command
@@ -104,7 +104,7 @@ Describe 'Check-JAVA-HOME' {
         }
 
         BeforeEach {
-            Check-JAVA-HOME
+            Test-JAVA-HOME
         }
 
         It "changes nothing" {
@@ -120,7 +120,7 @@ Describe 'Check-JAVA-HOME' {
         }
 
         BeforeEach {
-            Check-JAVA-HOME
+            Test-JAVA-HOME
         }
 
         It "sets JAVA_HOME to javac parent" {
@@ -139,7 +139,7 @@ Describe 'Check-JAVA-HOME' {
         }
 
         It "throws an error" {
-            { Check-JAVA-HOME } | Should -Throw
+            { Test-JAVA-HOME } | Should -Throw
         }
     }
 }

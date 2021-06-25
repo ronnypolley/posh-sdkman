@@ -11,8 +11,8 @@ Describe 'psdk' {
             $Script:PSDK_FORCE_OFFLINE = $true
             Mock-PSDK-Dir
             Remove-Item $Global:PSDK_DIR -Recurse
-            Mock Init-Posh-SDK -verifiable
-            Mock Init-Candidate-Cache -verifiable
+            Mock Initialize-Posh-SDK -verifiable
+            Mock Initialize-Candidate-Cache -verifiable
             Mock Show-Help
         }
 
@@ -35,8 +35,8 @@ Describe 'psdk' {
         BeforeAll {
             $Script:PSDK_FORCE_OFFLINE = $true
             Mock-PSDK-Dir
-            Mock Init-Posh-SDK
-            Mock Init-Candidate-Cache -verifiable
+            Mock Initialize-Posh-SDK
+            Mock Initialize-Candidate-Cache -verifiable
             Mock Show-Help
         }
 
@@ -49,7 +49,7 @@ Describe 'psdk' {
         }
         
         It 'does not init again' {
-            Assert-MockCalled Init-Posh-SDK 0
+            Assert-MockCalled Initialize-Posh-SDK 0
         }
         
         It 'prints help' {
@@ -61,8 +61,8 @@ Describe 'psdk' {
     Context 'posh-sdk is forced offline' {
         BeforeAll {
             Mock-PSDK-Dir
-            Mock Init-Candidate-Cache -verifiable
-            Mock Check-Available-Broadcast
+            Mock Initialize-Candidate-Cache -verifiable
+            Mock Test-Available-Broadcast
             Mock Show-Help -verifiable
             $Script:PSDK_FORCE_OFFLINE = $true
         }
@@ -70,7 +70,7 @@ Describe 'psdk' {
     
         It 'does not load broadcast message from api' {
             psdk
-            Assert-MockCalled Check-Available-Broadcast 0
+            Assert-MockCalled Test-Available-Broadcast 0
         }
     
         It 'performs default command actions' {
@@ -86,8 +86,8 @@ Describe 'psdk' {
     Context 'posh-sdk offline command called' {
         BeforeAll {
             Mock-PSDK-Dir
-            Mock Init-Candidate-Cache -verifiable
-            Mock Check-Available-Broadcast
+            Mock Initialize-Candidate-Cache -verifiable
+            Mock Test-Available-Broadcast
             Mock Set-Offline-Mode -verifiable
             $Script:PSDK_FORCE_OFFLINE = $false
         }
@@ -95,7 +95,7 @@ Describe 'psdk' {
     
         It 'does not load broadcast message from api' {
             psdk offline
-            Assert-MockCalled Check-Available-Broadcast 0
+            Assert-MockCalled Test-Available-Broadcast 0
         }
         
         It 'performs offline command actions' {
@@ -179,7 +179,7 @@ Describe 'psdk' {
     Context 'posh-sdk online and command ls called' {
         BeforeAll {
             Mock-Dispatcher-Test
-            Mock List-Candidate-Versions -verifiable -parameterFilter { $Candidate -eq 'grails' }
+            Mock Show-Candidate-Versions -verifiable -parameterFilter { $Candidate -eq 'grails' }
         }
 
     
@@ -196,7 +196,7 @@ Describe 'psdk' {
     Context 'posh-sdk online and command list called' {
         BeforeAll {
             Mock-Dispatcher-Test
-            Mock List-Candidate-Versions -verifiable -parameterFilter { $Candidate -eq 'grails' }
+            Mock Show-Candidate-Versions -verifiable -parameterFilter { $Candidate -eq 'grails' }
         }
 
     
@@ -451,7 +451,7 @@ Describe 'psdk' {
     Context 'posh-sdk online and command flush called' {
         BeforeAll {
             Mock-Dispatcher-Test
-            Mock Flush-Cache -verifiable -parameterFilter { $DataType -eq 'version' }
+            Mock Clear-Cache -verifiable -parameterFilter { $DataType -eq 'version' }
         }
 
     
@@ -469,9 +469,9 @@ Describe 'psdk' {
 Describe 'Install-Candidate-Version' {
     Context 'Remote Version already installed' {
         BeforeAll {
-            Mock Check-Candidate-Present -verifiable -parameterFilter { $Candidate -eq 'grails' }
-            Mock Check-Candidate-Version-Available { '1.1.1' } -verifiable { $Candidate -eq 'grails' -and $Version -eq '1.1.1' }
-            Mock Is-Candidate-Version-Locally-Available { $true } -verifiable { $Candidate -eq 'grails' -and $Version -eq '1.1.1' }
+            Mock Test-Candidate-Present -verifiable -parameterFilter { $Candidate -eq 'grails' }
+            Mock Test-Candidate-Version-Available { '1.1.1' } -verifiable { $Candidate -eq 'grails' -and $Version -eq '1.1.1' }
+            Mock Test-Is-Candidate-Version-Locally-Available { $true } -verifiable { $Candidate -eq 'grails' -and $Version -eq '1.1.1' }
         }
 
         It 'throw an error' {
@@ -485,9 +485,9 @@ Describe 'Install-Candidate-Version' {
 
     Context 'Local Version already installed' {
         BeforeAll {
-            Mock Check-Candidate-Present -verifiable -parameterFilter { $Candidate -eq 'grails' }
-            Mock Check-Candidate-Version-Available { throw 'error' } -verifiable { $Candidate -eq 'grails' -and $Version -eq '1.1.1' }
-            Mock Is-Candidate-Version-Locally-Available { $true } -verifiable { $Candidate -eq 'grails' -and $Version -eq '1.1.1' }
+            Mock Test-Candidate-Present -verifiable -parameterFilter { $Candidate -eq 'grails' }
+            Mock Test-Candidate-Version-Available { throw 'error' } -verifiable { $Candidate -eq 'grails' -and $Version -eq '1.1.1' }
+            Mock Test-Is-Candidate-Version-Locally-Available { $true } -verifiable { $Candidate -eq 'grails' -and $Version -eq '1.1.1' }
         }
 
         It 'throw an error' {
@@ -501,8 +501,8 @@ Describe 'Install-Candidate-Version' {
 
     Context 'Local path but version is remote available already installed' {
         BeforeAll {
-            Mock Check-Candidate-Present -verifiable -parameterFilter { $Candidate -eq 'grails' }
-            Mock Check-Candidate-Version-Available { 1.1.1 } -verifiable { $Candidate -eq 'grails' -and $Version -eq '1.1.1' }
+            Mock Test-Candidate-Present -verifiable -parameterFilter { $Candidate -eq 'grails' }
+            Mock Test-Candidate-Version-Available { 1.1.1 } -verifiable { $Candidate -eq 'grails' -and $Version -eq '1.1.1' }
         }
 
         It 'throw an error' {
@@ -518,9 +518,9 @@ Describe 'Install-Candidate-Version' {
         BeforeAll {
             $Global:backupAutoAnswer = $Global:PSDK_AUTO_ANSWER
             $Global:PSDK_AUTO_ANSWER = $false
-            Mock Check-Candidate-Present -verifiable -parameterFilter { $Candidate -eq 'grails' }
-            Mock Check-Candidate-Version-Available { throw 'error' } -verifiable { $Candidate -eq 'grails' -and $Version -eq '1.1.1' }
-            Mock Is-Candidate-Version-Locally-Available { $false } -verifiable { $Candidate -eq 'grails' -and $Version -eq '1.1.1' }
+            Mock Test-Candidate-Present -verifiable -parameterFilter { $Candidate -eq 'grails' }
+            Mock Test-Candidate-Version-Available { throw 'error' } -verifiable { $Candidate -eq 'grails' -and $Version -eq '1.1.1' }
+            Mock Test-Is-Candidate-Version-Locally-Available { $false } -verifiable { $Candidate -eq 'grails' -and $Version -eq '1.1.1' }
             Mock Install-Local-Version -verifiable -parameterFilter { $Candidate -eq 'grails' -and $Version -eq '1.1.1' -and $LocalPath -eq '\bla' }
             Mock Read-Host { 'n' }
             Mock Set-Linked-Candidate-Version
@@ -545,9 +545,9 @@ Describe 'Install-Candidate-Version' {
         BeforeAll {
             $Global:backupAutoAnswer = $Global:PSDK_AUTO_ANSWER
             $Global:PSDK_AUTO_ANSWER = $true
-            Mock Check-Candidate-Present -verifiable -parameterFilter { $Candidate -eq 'grails' }
-            Mock Check-Candidate-Version-Available { throw 'error' } -verifiable { $Candidate -eq 'grails' -and $Version -eq '1.1.1' }
-            Mock Is-Candidate-Version-Locally-Available { $false } -verifiable { $Candidate -eq 'grails' -and $Version -eq '1.1.1' }
+            Mock Test-Candidate-Present -verifiable -parameterFilter { $Candidate -eq 'grails' }
+            Mock Test-Candidate-Version-Available { throw 'error' } -verifiable { $Candidate -eq 'grails' -and $Version -eq '1.1.1' }
+            Mock Test-Is-Candidate-Version-Locally-Available { $false } -verifiable { $Candidate -eq 'grails' -and $Version -eq '1.1.1' }
             Mock Install-Local-Version -verifiable -parameterFilter { $Candidate -eq 'grails' -and $Version -eq '1.1.1' -and $LocalPath -eq '\bla' }
             Mock Set-Linked-Candidate-Version -verifiable -parameterFilter { $Candidate -eq 'grails' -and $Version -eq '1.1.1' }
             Mock Write-Output -verifiable
@@ -568,9 +568,9 @@ Describe 'Install-Candidate-Version' {
         BeforeAll {
             $Global:backupAutoAnswer = $Global:PSDK_AUTO_ANSWER
             $Global:PSDK_AUTO_ANSWER = $false
-            Mock Check-Candidate-Present -verifiable -parameterFilter { $Candidate -eq 'grails' }
-            Mock Check-Candidate-Version-Available { '1.1.1' } -verifiable { $Candidate -eq 'grails' -and $Version -eq '1.1.1' }
-            Mock Is-Candidate-Version-Locally-Available { $false } -verifiable { $Candidate -eq 'grails' -and $Version -eq '1.1.1' }
+            Mock Test-Candidate-Present -verifiable -parameterFilter { $Candidate -eq 'grails' }
+            Mock Test-Candidate-Version-Available { '1.1.1' } -verifiable { $Candidate -eq 'grails' -and $Version -eq '1.1.1' }
+            Mock Test-Is-Candidate-Version-Locally-Available { $false } -verifiable { $Candidate -eq 'grails' -and $Version -eq '1.1.1' }
             Mock Install-Remote-Version -verifiable -parameterFilter { $Candidate -eq 'grails' -and $Version -eq '1.1.1' }
             Mock Read-Host { 'y' }
             Mock Set-Linked-Candidate-Version -verifiable -parameterFilter { $Candidate -eq 'grails' -and $Version -eq '1.1.1' }
@@ -592,7 +592,7 @@ Describe 'Install-Candidate-Version' {
 Describe 'Uninstall-Candidate-Version' {
     Context 'No version is provided' {
         BeforeAll {
-            Mock Check-Candidate-Present -verifiable -parameterFilter { $Candidate -eq 'grails' }
+            Mock Test-Candidate-Present -verifiable -parameterFilter { $Candidate -eq 'grails' }
         }
 
         It 'throws an error' {
@@ -602,8 +602,8 @@ Describe 'Uninstall-Candidate-Version' {
 
     Context 'To be uninstalled version is not installed' {
         BeforeAll {
-            Mock Check-Candidate-Present -verifiable -parameterFilter { $Candidate -eq 'grails' }
-            Mock Is-Candidate-Version-Locally-Available { $false } -parameterFilter { $Candidate -eq 'grails' -and $Version -eq '24.3' }
+            Mock Test-Candidate-Present -verifiable -parameterFilter { $Candidate -eq 'grails' }
+            Mock Test-Is-Candidate-Version-Locally-Available { $false } -parameterFilter { $Candidate -eq 'grails' -and $Version -eq '24.3' }
         }
 
         It 'throws an error' {
@@ -633,8 +633,8 @@ Describe 'Uninstall-Candidate-Version' {
 
         Context "deletion testing" {
             BeforeAll {
-                Mock Check-Candidate-Present -verifiable -parameterFilter { $Candidate -eq 'grails' }
-                Mock Is-Candidate-Version-Locally-Available { $true } -verifiable -parameterFilter { $Candidate -eq 'grails' -and $Version -eq '24.3' }
+                Mock Test-Candidate-Present -verifiable -parameterFilter { $Candidate -eq 'grails' }
+                Mock Test-Is-Candidate-Version-Locally-Available { $true } -verifiable -parameterFilter { $Candidate -eq 'grails' -and $Version -eq '24.3' }
                 Mock Get-Current-Candidate-Version { '24.3' } -verifiable -parameterFilter { $Candidate -eq 'grails' }
                 Mock Write-Output -verifiable
             }
@@ -666,8 +666,8 @@ Describe 'Uninstall-Candidate-Version' {
             Mock-PSDK-Dir
             New-Item -ItemType Directory "$Global:PSDK_DIR\grails\24.3" | Out-Null
 
-            Mock Check-Candidate-Present -verifiable -parameterFilter { $Candidate -eq 'grails' }
-            Mock Is-Candidate-Version-Locally-Available { $true } -verifiable -parameterFilter { $Candidate -eq 'grails' -and $Version -eq '24.3' }
+            Mock Test-Candidate-Present -verifiable -parameterFilter { $Candidate -eq 'grails' }
+            Mock Test-Is-Candidate-Version-Locally-Available { $true } -verifiable -parameterFilter { $Candidate -eq 'grails' -and $Version -eq '24.3' }
             Mock Get-Current-Candidate-Version { $null } -verifiable -parameterFilter { $Candidate -eq 'grails' }
             Mock Write-Output -verifiable
             Uninstall-Candidate-Version grails 24.3
@@ -687,14 +687,14 @@ Describe 'Uninstall-Candidate-Version' {
     }
 }
 
-Describe 'List-Candidate-Versions' {
+Describe 'Show-Candidate-Versions' {
     Context 'if in online mode' {
         BeforeAll {
-            Mock-Online
-            Mock Check-Candidate-Present -verifiable -parameterFilter { $Candidate -eq 'grails' }
+            Mock Get-Online-Mode { return $true }
+            Mock Test-Candidate-Present -verifiable -parameterFilter { $Candidate -eq 'grails' }
             Mock Write-Version-List -verifiable -parameterFilter { $Candidate -eq 'grails' }
 
-            List-Candidate-Versions grails
+            Show-Candidate-Versions grails
         }
 
         It 'write the version list retrieved from api' {
@@ -704,11 +704,11 @@ Describe 'List-Candidate-Versions' {
 
     Context 'If in offline mode' {
         BeforeAll {
-            Mock-Offline
-            Mock Check-Candidate-Present -verifiable -parameterFilter { $Candidate -eq 'grails' }
+            Mock Get-Online-Mode { return $false }
+            Mock Test-Candidate-Present -verifiable -parameterFilter { $Candidate -eq 'grails' }
             Mock Write-Offline-Version-List -verifiable -parameterFilter { $Candidate -eq 'grails' }
 
-            List-Candidate-Versions grails
+            Show-Candidate-Versions grails
         }
 
         It 'write the version list based on local file structure' {
@@ -720,10 +720,10 @@ Describe 'List-Candidate-Versions' {
 Describe 'Use-Candidate-Version' {
     Context 'If new use version is already used' {
         BeforeAll {
-            Mock Check-Candidate-Version-Available { '1.1.1' } -parameterFilter { $Candidate -eq 'grails' -and $Version -eq '1.1.1' }
+            Mock Test-Candidate-Version-Available { '1.1.1' } -parameterFilter { $Candidate -eq 'grails' -and $Version -eq '1.1.1' }
             Mock Get-Env-Candidate-Version { '1.1.1' } -parameterFilter { $Candidate -eq 'grails' }
             Mock Write-Output -verifiable
-            Mock Check-Candidate-Version-Locally-Available
+            Mock Test-Candidate-Version-Locally-Available
         }
 
         BeforeEach {
@@ -735,16 +735,16 @@ Describe 'Use-Candidate-Version' {
         }
 
         It 'does not test candidate version' {
-            Assert-MockCalled Check-Candidate-Version-Locally-Available 0
+            Assert-MockCalled Test-Candidate-Version-Locally-Available 0
         }
     }
 
     Context 'If setting a different version as the current version to use' {
         BeforeAll {
-            Mock Check-Candidate-Version-Available { '1.1.1' } -parameterFilter { $Candidate -eq 'grails' -and $Version -eq '1.1.1' }
+            Mock Test-Candidate-Version-Available { '1.1.1' } -parameterFilter { $Candidate -eq 'grails' -and $Version -eq '1.1.1' }
             Mock Get-Env-Candidate-Version { '1.1.0' } -parameterFilter { $Candidate -eq 'grails' }
             Mock Write-Output -verifiable
-            Mock Check-Candidate-Version-Locally-Available -verifiable -parameterFilter { $Candidate -eq 'grails' -and $Version -eq '1.1.1' }
+            Mock Test-Candidate-Version-Locally-Available -verifiable -parameterFilter { $Candidate -eq 'grails' -and $Version -eq '1.1.1' }
             Mock Set-Env-Candidate-Version -verifiable -parameterFilter { $Candidate -eq 'grails' -and $Version -eq '1.1.1' }
         }
 
@@ -761,10 +761,10 @@ Describe 'Use-Candidate-Version' {
 Describe 'Set-Default-Version' {
     Context 'If new default is already default' {
         BeforeAll {
-            Mock Check-Candidate-Version-Available { '1.1.1' } -parameterFilter { $Candidate -eq 'grails' -and $Version -eq '1.1.1' }
+            Mock Test-Candidate-Version-Available { '1.1.1' } -parameterFilter { $Candidate -eq 'grails' -and $Version -eq '1.1.1' }
             Mock Get-Current-Candidate-Version { '1.1.1' } -parameterFilter { $Candidate -eq 'grails' }
             Mock Write-Output -verifiable
-            Mock Check-Candidate-Version-Locally-Available
+            Mock Test-Candidate-Version-Locally-Available
         }
 
         BeforeEach {
@@ -776,16 +776,16 @@ Describe 'Set-Default-Version' {
         }
 
         It 'does not test candidate version' {
-            Assert-MockCalled Check-Candidate-Version-Locally-Available 0
+            Assert-MockCalled Test-Candidate-Version-Locally-Available 0
         }
     }
 
     Context 'If setting a new default' {
         BeforeAll {
-            Mock Check-Candidate-Version-Available { '1.1.1' } -parameterFilter { $Candidate -eq 'grails' -and $Version -eq '1.1.1' }
+            Mock Test-Candidate-Version-Available { '1.1.1' } -parameterFilter { $Candidate -eq 'grails' -and $Version -eq '1.1.1' }
             Mock Get-Current-Candidate-Version { '1.1.0' } -parameterFilter { $Candidate -eq 'grails' }
             Mock Write-Output -verifiable
-            Mock Check-Candidate-Version-Locally-Available -verifiable -parameterFilter { $Candidate -eq 'grails' -and $Version -eq '1.1.1' }
+            Mock Test-Candidate-Version-Locally-Available -verifiable -parameterFilter { $Candidate -eq 'grails' -and $Version -eq '1.1.1' }
             Mock Set-Linked-Candidate-Version -verifiable -parameterFilter { $Candidate -eq 'grails' -and $Version -eq '1.1.1' }
         }
 
@@ -823,7 +823,7 @@ Describe 'Show-Current-Version' {
 
     Context 'If called with specifiv candidate and version available' {
         BeforeAll {
-            Mock Check-Candidate-Present -verifiable
+            Mock Test-Candidate-Present -verifiable
             Mock Get-Env-Candidate-Version { '1.1.0' } -parameterFilter { $Candidate -eq 'grails' }
             Mock Write-Output -verifiable -parameterFilter { $InputObject -eq 'Using grails version 1.1.0' }
         }
@@ -839,7 +839,7 @@ Describe 'Show-Current-Version' {
 
     Context 'If called with specifiv candidate and no version available' {
         BeforeAll {
-            Mock Check-Candidate-Present -verifiable
+            Mock Test-Candidate-Present -verifiable
             Mock Get-Env-Candidate-Version { $null } -parameterFilter { $Candidate -eq 'grails' }
             Mock Write-Output -verifiable -parameterFilter { $InputObject -eq 'Not using any version of grails' }
         }
@@ -937,7 +937,7 @@ Describe 'Set-Offline-Mode' {
     }
 }
 
-Describe 'Flush-Cache' {
+Describe 'Clear-Cache' {
     Context 'Try to delete existing candidates cache' {
         BeforeAll {
             $Script:PSDK_CANDIDATES_PATH = 'test'
@@ -948,7 +948,7 @@ Describe 'Flush-Cache' {
 
     
         It 'deletes the file and writes flush message' {
-            Flush-Cache candidates
+            Clear-Cache candidates
             Assert-VerifiableMock
         }
     }
@@ -962,7 +962,7 @@ Describe 'Flush-Cache' {
 
     
         It 'writes warning about non existing file' {
-            Flush-Cache candidates
+            Clear-Cache candidates
             Assert-VerifiableMock
         }
     }
@@ -977,7 +977,7 @@ Describe 'Flush-Cache' {
 
     
         It 'deletes the file and writes flush message' {
-            Flush-Cache broadcast
+            Clear-Cache broadcast
             Assert-VerifiableMock
         }
     }
@@ -991,7 +991,7 @@ Describe 'Flush-Cache' {
 
     
         It 'writes warning about non existing file' {
-            Flush-Cache broadcast
+            Clear-Cache broadcast
             Assert-VerifiableMock
         }
     }
@@ -1006,7 +1006,7 @@ Describe 'Flush-Cache' {
 
     
         It 'deletes the file and writes flush message' {
-            Flush-Cache version
+            Clear-Cache version
             Assert-VerifiableMock
         }
     }
@@ -1020,7 +1020,7 @@ Describe 'Flush-Cache' {
 
     
         It 'writes warning about non existing file' {
-            Flush-Cache version
+            Clear-Cache version
             Assert-VerifiableMock
         }
     }
@@ -1028,12 +1028,12 @@ Describe 'Flush-Cache' {
     Context 'Cleanup archives directory' {
         BeforeAll {
             $Script:PSDK_ARCHIVES_PATH = 'archives'
-            Mock Cleanup-Directory -verifiable -parameterFilter { $Path -eq 'archives' }
+            Mock Clear-Directory -verifiable -parameterFilter { $Path -eq 'archives' }
         }
 
     
         It 'cleanup archives directory' {
-            Flush-Cache archives
+            Clear-Cache archives
             Assert-VerifiableMock
         }
     }
@@ -1041,12 +1041,12 @@ Describe 'Flush-Cache' {
     Context 'Cleanup temp directory' {
         BeforeAll {
             $Script:PSDK_TEMP_PATH = 'temp'
-            Mock Cleanup-Directory -verifiable -parameterFilter { $Path -eq 'temp' }
+            Mock Clear-Directory -verifiable -parameterFilter { $Path -eq 'temp' }
         }
 
     
         It 'cleanup temp directory' {
-            Flush-Cache temp
+            Clear-Cache temp
             Assert-VerifiableMock
         }
     }
@@ -1054,11 +1054,11 @@ Describe 'Flush-Cache' {
     Context 'Cleanup tmp directory' {
         BeforeAll {
             $Script:PSDK_TEMP_PATH = 'temp'
-            Mock Cleanup-Directory -verifiable -parameterFilter { $Path -eq 'temp' }
+            Mock Clear-Directory -verifiable -parameterFilter { $Path -eq 'temp' }
         }
 
         BeforeEach {
-            Flush-Cache tmp
+            Clear-Cache tmp
         }
     
         It 'cleanup temp directory' {
@@ -1068,7 +1068,7 @@ Describe 'Flush-Cache' {
 
     Context 'flush invalid parameter' {
         It 'throws an error' {
-            { Flush-Cache invalid } | Should -Throw
+            { Clear-Cache invalid } | Should -Throw
         }
     }
 }

@@ -5,24 +5,24 @@
 
     if ( !( Test-Path $Global:PSDK_DIR ) ) {
         Write-Warning "$Global:PSDK_DIR does not exists. Reinitialize posh-sdk"
-        Init-Posh-SDK
+        Initialize-Posh-SDK
     }
 
     $Script:PSDK_AVAILABLE = $true
     if ( !($Script:PSDK_FORCE_OFFLINE) -and $Command -ne 'offline' ) {
-        Check-Available-Broadcast $Command
+        Test-Available-Broadcast $Command
 
         if ( $Script:PSDK_AVAILABLE ) {
             if ( $Script:FIRST_RUN ) {
-                Check-SDKMAN-API-Version
-                Check-Posh-SDK-Version
+                Test-SDKMAN-API-Version
+                Test-Posh-SDK-Version
                 $Script:FIRST_RUN = $false
             }
             Write-New-Version-Broadcast
         }
     }
 
-    Init-Candidate-Cache
+    Initialize-Candidate-Cache
 
     Write-Verbose "Command: $Command"
 
@@ -34,7 +34,7 @@
         switch -regex ($Command) {
             '^i(nstall)?$'    { Install-Candidate-Version $Candidate $Version $InstallPath }
             '^(uninstall|rm)$'{ Uninstall-Candidate-Version $Candidate $Version }
-            '^(ls|list)$'     { List-Candidate-Versions $Candidate }
+            '^(ls|list)$'     { Show-Candidate-Versions $Candidate }
             '^u(se)?$'        { Use-Candidate-Version $Candidate $Version }
             '^d(efault)?$'    { Set-Default-Version $Candidate $Version }
             '^c(urrent)?$'    { Show-Current-Version $Candidate }
@@ -43,7 +43,7 @@
             '^h(elp)?$'       { Show-Help }
             '^offline$'       { Set-Offline-Mode $Candidate }
             '^selfupdate$'    { Invoke-Self-Update($Force) }
-            '^flush$'         { Flush-Cache $Candidate }
+            '^flush$'         { Clear-Cache $Candidate }
             default           { Write-Warning "Invalid command: $Command. Check psdk help!" }
         }
     } catch {
@@ -57,13 +57,13 @@
 
 function Install-Candidate-Version($Candidate, $Version, $InstallPath) {
     Write-Verbose 'Perform Install-Candidate-Version'
-    Check-Candidate-Present $Candidate
+    Test-Candidate-Present $Candidate
 
     $localInstallation = $false
     if ($Version -and $InstallPath) {
         #local installation
         try {
-            $Version = Check-Candidate-Version-Available $Candidate $Version
+            $Version = Test-Candidate-Version-Available $Candidate $Version
         } catch {
             $localInstallation = $true
         }
@@ -71,10 +71,10 @@ function Install-Candidate-Version($Candidate, $Version, $InstallPath) {
 			throw 'Stop! Local installation for $Candidate $Version not possible. It exists remote already.'
 		}
     } else {
-        $Version = Check-Candidate-Version-Available $Candidate $Version
+        $Version = Test-Candidate-Version-Available $Candidate $Version
     }
 
-    if ( Is-Candidate-Version-Locally-Available $Candidate $Version ) {
+    if ( Test-Is-Candidate-Version-Locally-Available $Candidate $Version ) {
         throw "Stop! $Candidate $Version is already installed."
     }
 
@@ -99,10 +99,10 @@ function Install-Candidate-Version($Candidate, $Version, $InstallPath) {
 
 function Uninstall-Candidate-Version($Candidate, $Version) {
     Write-Verbose 'Perform Uninstall-Candidate-Version'
-    Check-Candidate-Present $Candidate
-    Check-Version-Present $Version
+    Test-Candidate-Present $Candidate
+    Test-Version-Present $Version
 
-    if ( !(Is-Candidate-Version-Locally-Available $Candidate $Version) ) {
+    if ( !(Test-Is-Candidate-Version-Locally-Available $Candidate $Version) ) {
         throw "$Candidate $Version is not installed."
     }
 
@@ -117,9 +117,9 @@ function Uninstall-Candidate-Version($Candidate, $Version) {
     Remove-Item -Recurse -Force "$Global:PSDK_DIR\$Candidate\$Version"
 }
 
-function List-Candidate-Versions($Candidate) {
+function Show-Candidate-Versions($Candidate) {
     Write-Verbose 'Perform List-Candidate-Version'
-    Check-Candidate-Present $Candidate
+    Test-Candidate-Present $Candidate
     if ( Get-Online-Mode ) {
         Write-Version-List $Candidate
     } else {
@@ -129,12 +129,12 @@ function List-Candidate-Versions($Candidate) {
 
 function Use-Candidate-Version($Candidate, $Version) {
     Write-Verbose 'Perform Use-Candidate-Version'
-    $Version = Check-Candidate-Version-Available $Candidate $Version
+    $Version = Test-Candidate-Version-Available $Candidate $Version
 
     if ( $Version -eq (Get-Env-Candidate-Version $Candidate) ) {
         Write-Output "$Candidate $Version is used. Nothing changed."
     } else {
-        Check-Candidate-Version-Locally-Available $Candidate $Version
+        Test-Candidate-Version-Locally-Available $Candidate $Version
         Set-Env-Candidate-Version $Candidate $Version
 		Write-Output "Using $CANDIDATE version $Version in this shell."
     }
@@ -142,12 +142,12 @@ function Use-Candidate-Version($Candidate, $Version) {
 
 function Set-Default-Version($Candidate, $Version) {
     Write-Verbose 'Perform Set-Default-Version'
-    $Version = Check-Candidate-Version-Available $Candidate $Version
+    $Version = Test-Candidate-Version-Available $Candidate $Version
 
     if ( $Version -eq (Get-Current-Candidate-Version $Candidate) ) {
         Write-Output "$Candidate $Version is already default. Nothing changed."
     } else {
-        Check-Candidate-Version-Locally-Available $Candidate $Version
+        Test-Candidate-Version-Locally-Available $Candidate $Version
         Set-Linked-Candidate-Version $Candidate $Version
         Write-Output "Default $Candidate version set to $Version"
     }
@@ -167,7 +167,7 @@ function Show-Current-Version($Candidate) {
         return
     }
 
-    Check-Candidate-Present $Candidate
+    Test-Candidate-Present $Candidate
     $Version = Get-Env-Candidate-Version $Candidate
     if ( $Version ) {
         Write-Output "Using $Candidate version $Version"
@@ -196,8 +196,8 @@ function Set-Offline-Mode($Flag) {
     }
 }
 
-function Flush-Cache($DataType) {
-    Write-Verbose 'Perform Flush-Cache'
+function Clear-Cache($DataType) {
+    Write-Verbose 'Perform Clear-Cache'
     switch ($DataType) {
         'candidates' {
                         if ( Test-Path $Script:PSDK_CANDIDATES_PATH ) {
@@ -223,9 +223,9 @@ function Flush-Cache($DataType) {
                             Write-Warning 'No prior Remote Version found so not flushed.'
                         }
                      }
-        'archives'   { Cleanup-Directory $Script:PSDK_ARCHIVES_PATH }
-        'temp'       { Cleanup-Directory $Script:PSDK_TEMP_PATH }
-        'tmp'        { Cleanup-Directory $Script:PSDK_TEMP_PATH }
+        'archives'   { Clear-Directory $Script:PSDK_ARCHIVES_PATH }
+        'temp'       { Clear-Directory $Script:PSDK_TEMP_PATH }
+        'tmp'        { Clear-Directory $Script:PSDK_TEMP_PATH }
         default      { throw 'Stop! Please specify what you want to flush.' }
     }
 }
