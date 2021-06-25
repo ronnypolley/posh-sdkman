@@ -9,7 +9,7 @@ Describe 'gvm' {
     Context 'No posh-gvm dir available' {
         BeforeAll {
             $Script:SDK_FORCE_OFFLINE = $true
-            Mock-PGVM-Dir
+            Mock-PSDK-Dir
             Remove-Item $global:PGVM_DIR -Recurse
             Mock Init-Posh-Gvm -verifiable
             Mock Init-Candidate-Cache -verifiable
@@ -34,7 +34,7 @@ Describe 'gvm' {
     Context 'Posh-gvm dir available' {
         BeforeAll {
             $Script:SDK_FORCE_OFFLINE = $true
-            Mock-PGVM-Dir
+            Mock-PSDK-Dir
             Mock Init-Posh-Gvm
             Mock Init-Candidate-Cache -verifiable
             Mock Show-Help
@@ -60,7 +60,7 @@ Describe 'gvm' {
 
     Context 'posh-gvm is forced offline' {
         BeforeAll {
-            Mock-PGVM-DIR
+            Mock-PSDK-Dir
             Mock Init-Candidate-Cache -verifiable
             Mock Check-Available-Broadcast
             Mock Show-Help -verifiable
@@ -85,7 +85,7 @@ Describe 'gvm' {
 
     Context 'posh-gvm offline command called' {
         BeforeAll {
-            Mock-PGVM-DIR
+            Mock-PSDK-Dir
             Mock Init-Candidate-Cache -verifiable
             Mock Check-Available-Broadcast
             Mock Set-Offline-Mode -verifiable
@@ -617,7 +617,7 @@ Describe 'Uninstall-Candidate-Version' {
 
     Context 'To be uninstalled Version is current version' {
         BeforeAll {
-            Mock-PGVM-Dir
+            Mock-PSDK-Dir
         }
 
         BeforeEach {
@@ -663,7 +663,7 @@ Describe 'Uninstall-Candidate-Version' {
 
     Context 'To be uninstalled version is installed' {
         BeforeAll {
-            Mock-PGVM-Dir
+            Mock-PSDK-Dir
             New-Item -ItemType Directory "$Global:PGVM_DIR\grails\24.3" | Out-Null
 
             Mock Check-Candidate-Present -verifiable -parameterFilter { $Candidate -eq 'grails' }

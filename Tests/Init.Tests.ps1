@@ -7,7 +7,7 @@ BeforeAll {
 Describe 'Init-Posh-Gvm' {
     Context 'PGVM-Dir with only a grails folder' {
         BeforeAll {
-            Mock-PGVM-Dir
+            Mock-PSDK-Dir
             Mock Check-JAVA-HOME -verifiable
             Mock Update-Candidates-Cache -verifiable
             Mock Init-Candidate-Cache -verifiable
@@ -49,7 +49,7 @@ Describe 'Init-Posh-Gvm' {
 
     Context 'PGVM-Dir with only a grails folder and a candidates list' {
         BeforeAll {
-            Mock-PGVM-Dir
+            Mock-PSDK-Dir
             Mock Check-JAVA-HOME -verifiable
             Mock Update-Candidates-Cache
             Mock Init-Candidate-Cache -verifiable

@@ -547,7 +547,7 @@ Describe 'Check-Candidate-Version-Available select or vadidates a version for a 
 Describe 'Get-Current-Candidate-Version reads the currently linked version' {
     Context 'When current is not defined' {
         BeforeAll {
-            Mock-PGVM-Dir
+            Mock-PSDK-Dir
         }
 
         It 'returns $null if current not defined' {
@@ -561,7 +561,7 @@ Describe 'Get-Current-Candidate-Version reads the currently linked version' {
 
     Context 'When current is defined' {
         BeforeAll {
-            Mock-PGVM-Dir
+            Mock-PSDK-Dir
             New-Item -ItemType Directory "$Global:PGVM_DIR\grails\2.2.2" | Out-Null
             Set-Junction-Via-Mklink "$Global:PGVM_DIR\grails\current" "$Global:PGVM_DIR\grails\2.2.2"
         }
@@ -579,7 +579,7 @@ Describe 'Get-Current-Candidate-Version reads the currently linked version' {
 Describe 'Get-Env-Candidate-Version reads the version set in $Candidate-Home' {
     Context 'When GRAILS_HOME is set to a specific version' {
         BeforeAll {
-            Mock-PGVM-Dir
+            Mock-PSDK-Dir
             New-Item -ItemType Directory "$Global:PGVM_DIR\grails\2.2.1" | Out-Null
             Mock-Grails-Home 2.2.1
         }
@@ -596,7 +596,7 @@ Describe 'Get-Env-Candidate-Version reads the version set in $Candidate-Home' {
 
     Context 'When GRAILS_HOME is set to current' {
         BeforeAll {
-            Mock-PGVM-Dir
+            Mock-PSDK-Dir
             New-Item -ItemType Directory "$Global:PGVM_DIR\grails\2.2.1" | Out-Null
             Set-Junction-Via-Mklink "$Global:PGVM_DIR\grails\current" "$Global:PGVM_DIR\grails\2.2.1"
 
@@ -641,7 +641,7 @@ Describe 'Is-Candidate-Version-Locally-Available check the path exists' {
     Context 'COC path for grails 1.1.1 is missing' {
         
         it 'returns $false' {
-            Mock-PGVM-Dir
+            Mock-PSDK-Dir
             Is-Candidate-Version-Locally-Available grails 1.1.1 | Should -Be $false
             Reset-PGVM-Dir
         }
@@ -651,7 +651,7 @@ Describe 'Is-Candidate-Version-Locally-Available check the path exists' {
     Context 'COC path for grails 1.1.1 exists' {
         
         it 'returns $true' {
-            Mock-PGVM-Dir
+            Mock-PSDK-Dir
             New-Item -ItemType Directory "$Global:PGVM_DIR\grails\1.1.1" | Out-Null
             Is-Candidate-Version-Locally-Available grails 1.1.1 | Should -Be $true
             Reset-PGVM-Dir
@@ -663,7 +663,7 @@ Describe 'Is-Candidate-Version-Locally-Available check the path exists' {
 Describe 'Get-Installed-Candidate-Version-List' {
     Context 'Version 1.1, 1.3.7 and 2.2.1 of grails installed' {
         BeforeAll {
-            Mock-PGVM-Dir
+            Mock-PSDK-Dir
             New-Item -ItemType Directory "$Global:PGVM_DIR\grails\1.1" | Out-Null
             New-Item -ItemType Directory "$Global:PGVM_DIR\grails\1.3.7" | Out-Null
             New-Item -ItemType Directory "$Global:PGVM_DIR\grails\2.2.1" | Out-Null
@@ -683,7 +683,7 @@ Describe 'Get-Installed-Candidate-Version-List' {
 Describe 'Set-Env-Candidate-Version' {
     Context 'Env-Version of grails is current' {
         BeforeAll {
-            Mock-PGVM-Dir
+            Mock-PSDK-Dir
             New-Item -ItemType Directory "$Global:PGVM_DIR\grails\1.3.7" | Out-Null
             New-Item -ItemType Directory "$Global:PGVM_DIR\grails\2.2.1" | Out-Null
             Set-Junction-Via-Mklink "$Global:PGVM_DIR\grails\current" "$Global:PGVM_DIR\grails\2.2.1"
@@ -712,7 +712,7 @@ Describe 'Set-Env-Candidate-Version' {
 Describe 'Set-Linked-Candidate-Version' {
     Context 'In a initialized PGVM-Dir' {
         BeforeAll {
-            Mock-PGVM-Dir
+            Mock-PSDK-Dir
             Mock Set-Junction-Via-Mklink -verifiable -parameterFilter { $Candidate -eq 'grails' -and $Version -eq '2.2.1' }
 
             Set-Linked-Candidate-Version grails 2.2.1
@@ -731,7 +731,7 @@ Describe 'Set-Linked-Candidate-Version' {
 Describe 'Set-Junction-Via-Mklink' {
     Context 'No junction for the link-path exists' {
         BeforeAll {
-            Mock-PGVM-Dir
+            Mock-PSDK-Dir
             New-Item -ItemType Directory "$Global:PGVM_DIR\grails\1.3.7" | Out-Null
 
             Set-Junction-Via-Mklink "$Global:PGVM_DIR\grails\bla" "$Global:PGVM_DIR\grails\1.3.7"
@@ -749,7 +749,7 @@ Describe 'Set-Junction-Via-Mklink' {
 
     Context 'A Junction for the link-path exists' {
         BeforeAll {
-            Mock-PGVM-Dir
+            Mock-PSDK-Dir
             New-Item -ItemType Directory "$Global:PGVM_DIR\grails\1.3.7" | Out-Null
             New-Item -ItemType Directory "$Global:PGVM_DIR\grails\1.3.8" | Out-Null
             Set-Junction-Via-Mklink "$Global:PGVM_DIR\grails\bla" "$Global:PGVM_DIR\grails\1.3.8"
@@ -770,7 +770,7 @@ Describe 'Set-Junction-Via-Mklink' {
 Describe 'Get-Junction-Target' {
     Context 'Provided path is a junction' {
         BeforeAll {
-            Mock-PGVM-Dir
+            Mock-PSDK-Dir
             New-Item -ItemType Directory "$Global:PGVM_DIR\grails\1.3.7" | Out-Null
 
             Set-Junction-Via-Mklink "$Global:PGVM_DIR\grails\bla" "$Global:PGVM_DIR\grails\1.3.7"
@@ -788,7 +788,7 @@ Describe 'Get-Junction-Target' {
 
     Context 'Provided path is no junction' {
         BeforeAll {
-            Mock-PGVM-Dir
+            Mock-PSDK-Dir
             New-Item -ItemType Directory "$Global:PGVM_DIR\grails\1.3.7" | Out-Null
         }
 
@@ -948,7 +948,7 @@ Describe 'Cleanup-Directory' {
 Describe 'Handle-Broadcast' {
     Context 'Cache broadcast message different than new broadcast' {
         BeforeAll {
-            Mock-PGVM-Dir
+            Mock-PSDK-Dir
             $Script:PGVM_BROADCAST_PATH = "$Global:PGVM_DIR\broadcast.txt"
             Set-Content $Script:PGVM_BROADCAST_PATH 'Old Broadcast message'
             Mock Write-Output -verifiable -parameterFilter { $InputObject -eq 'New Broadcast message' }
@@ -972,7 +972,7 @@ Describe 'Handle-Broadcast' {
 
     Context 'No cached broadcast message' {
         BeforeAll {
-            Mock-PGVM-Dir
+            Mock-PSDK-Dir
 
             $Script:PGVM_BROADCAST_PATH = "$Global:PGVM_DIR\broadcast.txt"
             Mock Write-Output -verifiable -parameterFilter { $InputObject -eq 'New Broadcast message' }
@@ -995,7 +995,7 @@ Describe 'Handle-Broadcast' {
 
     Context 'b do not print the new broadcast message' {
         BeforeAll {
-            Mock-PGVM-Dir
+            Mock-PSDK-Dir
 
             $Script:PGVM_BROADCAST_PATH = "$Global:PGVM_DIR\broadcast.txt"
             Mock Write-Output -verifiable
@@ -1018,7 +1018,7 @@ Describe 'Handle-Broadcast' {
 
     Context 'Broadcast do nOt print the new broadcast message' {
         BeforeAll {
-            Mock-PGVM-Dir
+            Mock-PSDK-Dir
 
             $Script:PGVM_BROADCAST_PATH = "$Global:PGVM_DIR\broadcast.txt"
             Mock Write-Output -verifiable
@@ -1041,7 +1041,7 @@ Describe 'Handle-Broadcast' {
 
     Context 'selfupdate do not print the new broadcast message' {
         BeforeAll {
-            Mock-PGVM-Dir
+            Mock-PSDK-Dir
 
             $Script:PGVM_BROADCAST_PATH = "$Global:PGVM_DIR\broadcast.txt"
             Mock Write-Output -verifiable
@@ -1064,7 +1064,7 @@ Describe 'Handle-Broadcast' {
 
     Context 'flush do not print the new broadcast message' {
         BeforeAll {
-            Mock-PGVM-Dir
+            Mock-PSDK-Dir
 
             $Script:PGVM_BROADCAST_PATH = "$Global:PGVM_DIR\broadcast.txt"
             Mock Write-Output -verifiable
@@ -1089,7 +1089,7 @@ Describe 'Handle-Broadcast' {
 Describe 'Init-Candidate-Cache' {
     Context 'Candidate cache file does not exists' {
         BeforeAll {
-            Mock-PGVM-Dir
+            Mock-PSDK-Dir
             $Script:PGVM_CANDIDATES_PATH = "$Global:PGVM_DIR\candidates.txt"
         }
 
@@ -1104,7 +1104,7 @@ Describe 'Init-Candidate-Cache' {
 
     Context 'Candidate cache file does exists' {
         BeforeAll {
-            Mock-PGVM-Dir
+            Mock-PSDK-Dir
             $Script:PGVM_CANDIDATES_PATH = "$Global:PGVM_DIR\candidates.txt"
             Set-Content $Script:PGVM_CANDIDATES_PATH 'grails,groovy,test'
             $Script:GVM_CANDIDATES = $null
@@ -1125,7 +1125,7 @@ Describe 'Init-Candidate-Cache' {
 Describe 'Update-Candidate-Cache' {
     Context 'Checks online mode and than get version and candidates from api' {
         BeforeAll {
-            Mock-PGVM-Dir
+            Mock-PSDK-Dir
 
             $Script:GVM_API_VERSION_PATH = "$Global:PGVM_DIR\version.txt"
             $Script:PGVM_CANDIDATES_PATH = "$Global:PGVM_DIR\candidates.txt"
@@ -1217,7 +1217,7 @@ Describe 'Install-Local-Version' {
 Describe 'Install-Remote-Version' {
     Context 'Install of a valid version without local archive' {
         BeforeAll {
-            Mock-PGVM-Dir
+            Mock-PSDK-Dir
 
             Mock Write-Output
             Mock Check-Online-Mode -verifiable
@@ -1246,7 +1246,7 @@ Describe 'Install-Remote-Version' {
 
     Context 'Install of a valid version with local archive' {
         BeforeAll {
-            Mock-PGVM-Dir
+            Mock-PSDK-Dir
 
             Mock Write-Output
             Mock Download-File
@@ -1274,7 +1274,7 @@ Describe 'Install-Remote-Version' {
 
     Context 'Install of a currupt archive' {
         BeforeAll {
-            Mock-PGVM-Dir
+            Mock-PSDK-Dir
 
             Mock Write-Output
             Mock Download-File

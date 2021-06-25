@@ -40,7 +40,7 @@ function Mock-Api-Call-Grails-1.1.1-Available($Available) {
     }
 }
 
-function Mock-PGVM-Dir {
+function Mock-PSDK-Dir {
     $Script:backup_PGVM_DIR = $Global:PGVM_DIR
     New-Item -ItemType Directory "TestDrive:.posh-gvm" | Out-Null
     $Global:PGVM_DIR = (Get-Item "TestDrive:.posh-gvm").FullName
@@ -66,7 +66,7 @@ function Reset-Grails-Home {
 }
 
 function Mock-Dispatcher-Test([switch]$Offline) {
-    Mock-PGVM-Dir
+    Mock-PSDK-Dir
     $Script:SDK_FORCE_OFFLINE = $false
     $Script:FIRST_RUN = $false
     if ( !($Offline) ) {
