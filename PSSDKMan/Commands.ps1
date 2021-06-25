@@ -158,7 +158,7 @@ function Show-Current-Version($Candidate) {
 
     if ( !($Candidate) ) {
         Write-Output 'Using:'
-        foreach ( $c in $Script:GVM_CANDIDATES ) {
+        foreach ( $c in $Script:SDK_CANDIDATES ) {
             $v = Get-Env-Candidate-Version $c
             if ($v) {
                 Write-Output "$c`: $v"
@@ -248,7 +248,7 @@ Usage: gvm <command> <candidate> [version]
         offline           <enable|disable>
         selfupdate        [-Force]
         flush             <candidates|broadcast|archives|temp>
-    candidate  :  $($Script:GVM_CANDIDATES -join ', ')
+    candidate  :  $($Script:SDK_CANDIDATES -join ', ')
 
     version    :  where optional, defaults to latest stable if not provided
 

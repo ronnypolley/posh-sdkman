@@ -20,7 +20,7 @@ function Init-Posh-SDK() {
     Init-Candidate-Cache
 
     #Setup default paths
-    Foreach ( $candidate in $Script:GVM_CANDIDATES ) {
+    Foreach ( $candidate in $Script:SDK_CANDIDATES ) {
 		if ( !( Test-Path "$Global:PSDK_DIR\$candidate" ) ) {
 			New-Item -ItemType Directory "$Global:PSDK_DIR\$candidate" | Out-Null
 		}

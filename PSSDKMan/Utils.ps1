@@ -145,7 +145,7 @@ function Check-Candidate-Present($Candidate) {
         throw 'No candidate provided.'
     }
 
-    if ( !($Script:GVM_CANDIDATES -contains $Candidate) ) {
+    if ( !($Script:SDK_CANDIDATES -contains $Candidate) ) {
         throw "Stop! $Candidate is no valid candidate!"
     }
 }
@@ -341,8 +341,8 @@ function Init-Candidate-Cache() {
         throw 'Can not retrieve list of candidates'
     }
 
-    $Script:GVM_CANDIDATES = (Get-Content $Script:PGVM_CANDIDATES_PATH).Split(',')
-    Write-Verbose "Available candidates: $Script:GVM_CANDIDATES"
+    $Script:SDK_CANDIDATES = (Get-Content $Script:PGVM_CANDIDATES_PATH).Split(',')
+    Write-Verbose "Available candidates: $Script:SDK_CANDIDATES"
 }
 
 function Update-Candidates-Cache() {

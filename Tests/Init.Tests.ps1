@@ -15,7 +15,7 @@ Describe 'Init-Posh-SDK' {
             Mock Set-Env-Candidate-Version -verifiable -parameterFilter { $Candidate -eq 'groovy' -and $Version -eq 'current' }
             Mock Set-Env-Candidate-Version -verifiable -parameterFilter { $Candidate -eq 'bla' -and $Version -eq 'current' }
             $Script:PGVM_CANDIDATES_PATH = "$Global:PSDK_DIR\.meta\candidates.txt"
-            $Script:GVM_CANDIDATES = 'grails', 'groovy', 'bla'
+            $Script:SDK_CANDIDATES = 'grails', 'groovy', 'bla'
         }
 
         BeforeEach {
@@ -59,7 +59,7 @@ Describe 'Init-Posh-SDK' {
             $Script:PGVM_CANDIDATES_PATH = "$Global:PSDK_DIR\.meta\candidates.txt"
             New-Item -ItemType Directory "$Global:PSDK_DIR\.meta" | Out-Null
             New-Item -ItemType File $Script:PGVM_CANDIDATES_PATH | Out-Null
-            $Script:GVM_CANDIDATES = 'grails', 'groovy', 'bla'
+            $Script:SDK_CANDIDATES = 'grails', 'groovy', 'bla'
         }
 
         BeforeEach {

@@ -802,7 +802,7 @@ Describe 'Set-Default-Version' {
 Describe 'Show-Current-Version' {
     Context 'If called without candidate' {
         BeforeAll {
-            $Script:GVM_CANDIDATES = @('grails', 'groovy', 'bla')
+            $Script:SDK_CANDIDATES = @('grails', 'groovy', 'bla')
             Mock Get-Env-Candidate-Version { '1.1.0' } -parameterFilter { $Candidate -eq 'grails' }
             Mock Get-Env-Candidate-Version { '2.1.0' } -parameterFilter { $Candidate -eq 'groovy' }
             Mock Get-Env-Candidate-Version { '0.1.0' } -parameterFilter { $Candidate -eq 'bla' }

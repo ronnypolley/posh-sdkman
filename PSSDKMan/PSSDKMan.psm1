@@ -37,7 +37,7 @@ $Script:PGVM_VERSION_SERVICE = "https://raw.githubusercontent.com/flofreud/posh-
 $Script:GVM_AVAILABLE = $true
 $Script:GVM_ONLINE = $true
 $Script:SDK_FORCE_OFFLINE = $false
-$Script:GVM_CANDIDATES = $null
+$Script:SDK_CANDIDATES = $null
 $Script:FIRST_RUN = $true
 
 $Script:UNZIP_ON_PATH = $false

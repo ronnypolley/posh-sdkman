@@ -56,10 +56,10 @@ function gvmTabExpandion-Need-Candidate($Command, $LastBlock) {
 
     if ( !($arguments) ) {
         # Try to complete the command
-        return $Script:GVM_CANDIDATES | Where-Object { $_.StartsWith($candidate) }
+        return $Script:SDK_CANDIDATES | Where-Object { $_.StartsWith($candidate) }
     }
 
-    if ( !($Script:GVM_CANDIDATES -contains $candidate) ) {
+    if ( !($Script:SDK_CANDIDATES -contains $candidate) ) {
         return
     }
 

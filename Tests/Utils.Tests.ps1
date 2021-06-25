@@ -401,12 +401,12 @@ Describe 'Check-Candidate-Present checks if candidate parameter is valid' {
     }
     
     It 'throws error if candidate unknown' {
-        $Script:GVM_CANDIDATES = @('grails', 'groovy')
+        $Script:SDK_CANDIDATES = @('grails', 'groovy')
         { Check-Candidate-Present java } | Should -Throw
     }
 
     It 'throws no error if candidate known' {
-        $Script:GVM_CANDIDATES = @('grails', 'groovy')
+        $Script:SDK_CANDIDATES = @('grails', 'groovy')
         { Check-Candidate-Present groovy } | Should -Not -Throw
     }
 }
@@ -1107,13 +1107,13 @@ Describe 'Init-Candidate-Cache' {
             Mock-PSDK-Dir
             $Script:PGVM_CANDIDATES_PATH = "$Global:PSDK_DIR\candidates.txt"
             Set-Content $Script:PGVM_CANDIDATES_PATH 'grails,groovy,test'
-            $Script:GVM_CANDIDATES = $null
+            $Script:SDK_CANDIDATES = $null
 
             Init-Candidate-Cache
         }
 
-        It 'sets `$Script:GVM_CANDIDATES' {
-            $Script:GVM_CANDIDATEs | Should -Be grails, groovy, test
+        It 'sets `$Script:SDK_CANDIDATES' {
+            $Script:SDK_CANDIDATES | Should -Be grails, groovy, test
         }
 
         AfterAll {
