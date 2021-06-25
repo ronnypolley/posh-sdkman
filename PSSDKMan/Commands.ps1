@@ -184,7 +184,7 @@ function Show-Posh-SDK-Version() {
 
 function Show-Broadcast-Message() {
     Write-Verbose 'Perform Show-Broadcast-Message'
-    Get-Content $Script:PGVM_BROADCAST_PATH | Write-Output
+    Get-Content $Script:PSDK_BROADCAST_PATH | Write-Output
 }
 
 function Set-Offline-Mode($Flag) {
@@ -208,8 +208,8 @@ function Flush-Cache($DataType) {
                         }
                      }
         'broadcast'  {
-                        if ( Test-Path $Script:PGVM_BROADCAST_PATH ) {
-                            Remove-Item $Script:PGVM_BROADCAST_PATH
+                        if ( Test-Path $Script:PSDK_BROADCAST_PATH ) {
+                            Remove-Item $Script:PSDK_BROADCAST_PATH
                             Write-Output 'Broadcast have been flushed.'
                         } else {
                             Write-Warning 'No prior broadcast found so not flushed.'

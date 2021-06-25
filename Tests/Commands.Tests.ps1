@@ -873,7 +873,7 @@ Describe 'Show-Posh-SDK-Version' {
 Describe 'Show-Broadcast-Message' {
     Context 'When called' {
         BeforeAll {
-            $Script:PGVM_BROADCAST_PATH = 'broadcast'
+            $Script:PSDK_BROADCAST_PATH = 'broadcast'
             Mock Get-Content { 'broadcast' } -verifiable -parameterFilter { $Path -eq 'broadcast' }
             Mock Write-Output -verifiable
         }
@@ -969,7 +969,7 @@ Describe 'Flush-Cache' {
 
     Context 'Try to delete existing broadcast cache' {
         BeforeAll {
-            $Script:PGVM_BROADCAST_PATH = 'test'
+            $Script:PSDK_BROADCAST_PATH = 'test'
             Mock Test-Path { $true } -parameterFilter { $Path -eq 'test' }
             Mock Remove-Item -verifiable -parameterFilter { $Path -eq 'test' }
             Mock Write-Output -verifiable
@@ -984,7 +984,7 @@ Describe 'Flush-Cache' {
 
     Context 'Try to delete non-existing broadcast cache' {
         BeforeAll {
-            $Script:PGVM_BROADCAST_PATH = 'test2'
+            $Script:PSDK_BROADCAST_PATH = 'test2'
             Mock Test-Path { $false } -parameterFilter { $Path -eq 'test2' }
             Mock Write-Warning -verifiable
         }

@@ -949,8 +949,8 @@ Describe 'Handle-Broadcast' {
     Context 'Cache broadcast message different than new broadcast' {
         BeforeAll {
             Mock-PSDK-Dir
-            $Script:PGVM_BROADCAST_PATH = "$Global:PSDK_DIR\broadcast.txt"
-            Set-Content $Script:PGVM_BROADCAST_PATH 'Old Broadcast message'
+            $Script:PSDK_BROADCAST_PATH = "$Global:PSDK_DIR\broadcast.txt"
+            Set-Content $Script:PSDK_BROADCAST_PATH 'Old Broadcast message'
             Mock Write-Output -verifiable -parameterFilter { $InputObject -eq 'New Broadcast message' }
 
             Handle-Broadcast list 'New Broadcast message'
@@ -961,7 +961,7 @@ Describe 'Handle-Broadcast' {
         }
 
         It 'sets the new broadcast message in file' {
-            Get-Content $Script:PGVM_BROADCAST_PATH | Should -Be 'New Broadcast message'
+            Get-Content $Script:PSDK_BROADCAST_PATH | Should -Be 'New Broadcast message'
         }
 
 
@@ -974,7 +974,7 @@ Describe 'Handle-Broadcast' {
         BeforeAll {
             Mock-PSDK-Dir
 
-            $Script:PGVM_BROADCAST_PATH = "$Global:PSDK_DIR\broadcast.txt"
+            $Script:PSDK_BROADCAST_PATH = "$Global:PSDK_DIR\broadcast.txt"
             Mock Write-Output -verifiable -parameterFilter { $InputObject -eq 'New Broadcast message' }
 
             Handle-Broadcast list 'New Broadcast message'
@@ -985,7 +985,7 @@ Describe 'Handle-Broadcast' {
         }
 
         It 'sets the new broadcast message in file' {
-            Get-Content $Script:PGVM_BROADCAST_PATH | Should -Be 'New Broadcast message'
+            Get-Content $Script:PSDK_BROADCAST_PATH | Should -Be 'New Broadcast message'
         }
 
         AfterAll {
@@ -997,7 +997,7 @@ Describe 'Handle-Broadcast' {
         BeforeAll {
             Mock-PSDK-Dir
 
-            $Script:PGVM_BROADCAST_PATH = "$Global:PSDK_DIR\broadcast.txt"
+            $Script:PSDK_BROADCAST_PATH = "$Global:PSDK_DIR\broadcast.txt"
             Mock Write-Output -verifiable
 
             Handle-Broadcast b 'New Broadcast message'
@@ -1008,7 +1008,7 @@ Describe 'Handle-Broadcast' {
         }
 
         It 'sets the new broadcast message in file' {
-            Test-Path $Script:PGVM_BROADCAST_PATH | Should -Be $false
+            Test-Path $Script:PSDK_BROADCAST_PATH | Should -Be $false
         }
 
         AfterAll {
@@ -1020,7 +1020,7 @@ Describe 'Handle-Broadcast' {
         BeforeAll {
             Mock-PSDK-Dir
 
-            $Script:PGVM_BROADCAST_PATH = "$Global:PSDK_DIR\broadcast.txt"
+            $Script:PSDK_BROADCAST_PATH = "$Global:PSDK_DIR\broadcast.txt"
             Mock Write-Output -verifiable
 
             Handle-Broadcast broadcast 'New Broadcast message'
@@ -1031,7 +1031,7 @@ Describe 'Handle-Broadcast' {
         }
 
         It 'sets the new broadcast message in file' {
-            Test-Path $Script:PGVM_BROADCAST_PATH | Should -Be $false
+            Test-Path $Script:PSDK_BROADCAST_PATH | Should -Be $false
         }
 
         AfterAll {
@@ -1043,7 +1043,7 @@ Describe 'Handle-Broadcast' {
         BeforeAll {
             Mock-PSDK-Dir
 
-            $Script:PGVM_BROADCAST_PATH = "$Global:PSDK_DIR\broadcast.txt"
+            $Script:PSDK_BROADCAST_PATH = "$Global:PSDK_DIR\broadcast.txt"
             Mock Write-Output -verifiable
 
             Handle-Broadcast selfupdate 'New Broadcast message'
@@ -1054,7 +1054,7 @@ Describe 'Handle-Broadcast' {
         }
 
         It 'sets the new broadcast message in file' {
-            Test-Path $Script:PGVM_BROADCAST_PATH | Should -Be $false
+            Test-Path $Script:PSDK_BROADCAST_PATH | Should -Be $false
         }
 
         AfterAll {
@@ -1066,7 +1066,7 @@ Describe 'Handle-Broadcast' {
         BeforeAll {
             Mock-PSDK-Dir
 
-            $Script:PGVM_BROADCAST_PATH = "$Global:PSDK_DIR\broadcast.txt"
+            $Script:PSDK_BROADCAST_PATH = "$Global:PSDK_DIR\broadcast.txt"
             Mock Write-Output -verifiable
 
             Handle-Broadcast flush 'New Broadcast message'
@@ -1077,7 +1077,7 @@ Describe 'Handle-Broadcast' {
         }
 
         It 'sets the new broadcast message in file' {
-            Test-Path $Script:PGVM_BROADCAST_PATH | Should -Be $false
+            Test-Path $Script:PSDK_BROADCAST_PATH | Should -Be $false
         }
 
         AfterAll {

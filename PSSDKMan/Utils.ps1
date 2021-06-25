@@ -324,14 +324,14 @@ function Cleanup-Directory($Path) {
 
 function Handle-Broadcast($Command, $Broadcast) {
     $oldBroadcast = $null
-    if (Test-Path $Script:PGVM_BROADCAST_PATH) {
-        $oldBroadcast = (Get-Content $Script:PGVM_BROADCAST_PATH) -join "`n"
+    if (Test-Path $Script:PSDK_BROADCAST_PATH) {
+        $oldBroadcast = (Get-Content $Script:PSDK_BROADCAST_PATH) -join "`n"
         Write-Verbose 'Old broadcast message loaded'
     }
 
     if ($oldBroadcast -ne $Broadcast -and !($Command -match 'b(roadcast)?') -and $Command -ne 'selfupdate' -and $Command -ne 'flush' ) {
         Write-Verbose 'Showing the new broadcast message'
-        Set-Content $Script:PGVM_BROADCAST_PATH $Broadcast
+        Set-Content $Script:PSDK_BROADCAST_PATH $Broadcast
         Write-Output $Broadcast
     }
 }
