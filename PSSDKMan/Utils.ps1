@@ -20,7 +20,7 @@ ONLINE MODE RE-ENABLED! All functionality now restored.
 }
 
 function Write-New-Version-Broadcast() {
-    if ( $Script:GVM_API_NEW_VERSION -or $Script:PGVM_NEW_VERSION ) {
+    if ( $Script:PSDK_API_NEW_VERSION -or $Script:PGVM_NEW_VERSION ) {
 Write-Output @"
 ==== UPDATE AVAILABLE ==========================================================
 
@@ -43,11 +43,11 @@ function Check-PSDK-API-Version() {
             if ( $Global:PGVM_AUTO_SELFUPDATE ) {
                 Invoke-Self-Update
             } else {
-                $Script:GVM_API_NEW_VERSION = $true
+                $Script:PSDK_API_NEW_VERSION = $true
             }
         }
     } catch {
-        $Script:GVM_AVAILABLE = $false
+        $Script:PSDK_AVAILABLE = $false
     }
 }
 
@@ -94,14 +94,14 @@ function Check-Available-Broadcast($Command) {
 
     $liveBroadcast = Invoke-Broadcast-API-Call
 
-	Write-Verbose "Online-Mode: $Script:GVM_AVAILABLE"
+	Write-Verbose "Online-Mode: $Script:PSDK_AVAILABLE"
 
-	if ( $Script:PSDK_ONLINE -and !($Script:GVM_AVAILABLE) ) {
+	if ( $Script:PSDK_ONLINE -and !($Script:PSDK_AVAILABLE) ) {
 		Write-Offline-Broadcast
-	} elseif ( !($Script:PSDK_ONLINE) -and $Script:GVM_AVAILABLE ) {
+	} elseif ( !($Script:PSDK_ONLINE) -and $Script:PSDK_AVAILABLE ) {
 		Write-Online-Broadcast
 	}
-	$Script:PSDK_ONLINE = $Script:GVM_AVAILABLE
+	$Script:PSDK_ONLINE = $Script:PSDK_AVAILABLE
 
 	if ( $liveBroadcast ) {
 		Handle-Broadcast $Command $liveBroadcast
@@ -115,7 +115,7 @@ function Invoke-Broadcast-API-Call {
         return Invoke-RestMethod $target
     } catch {
         Write-Verbose "Could not reached broadcast API"
-        $Script:GVM_AVAILABLE = $false
+        $Script:PSDK_AVAILABLE = $false
         return $null
     }
 }
@@ -124,7 +124,7 @@ function Invoke-Self-Update($Force) {
     Write-Verbose 'Perform Invoke-Self-Update'
     Write-Output 'Update list of available candidates...'
     Update-Candidates-Cache
-    $Script:GVM_API_NEW_VERSION = $false
+    $Script:PSDK_API_NEW_VERSION = $false
     if ( $Force ) {
         Invoke-Posh-Gvm-Update
     } else {
@@ -286,7 +286,7 @@ function Set-Junction-Via-Mklink($Link, $Target) {
 }
 
 function Get-Online-Mode() {
-    return $Script:GVM_AVAILABLE -and ! ($Script:SDK_FORCE_OFFLINE)
+    return $Script:PSDK_AVAILABLE -and ! ($Script:SDK_FORCE_OFFLINE)
 }
 
 function Check-Online-Mode() {
@@ -305,7 +305,7 @@ function Invoke-API-Call([string]$Path, [string]$FileTarget, [switch]$IgnoreFail
 
         return Invoke-RestMethod $target
     } catch {
-        $Script:GVM_AVAILABLE = $false
+        $Script:PSDK_AVAILABLE = $false
         if ( ! ($IgnoreFailure) ) {
             Check-Online-Mode
         } else {

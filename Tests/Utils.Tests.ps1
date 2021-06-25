@@ -6,19 +6,19 @@
 Describe 'Check-PSDK-API-Version' {
     Context 'API offline' {
         BeforeAll {
-            $Script:GVM_AVAILABLE = $true
-            $Script:GVM_API_NEW_VERSION = $false
+            $Script:PSDK_AVAILABLE = $true
+            $Script:PSDK_API_NEW_VERSION = $false
             Mock Get-SDK-API-Version
             Mock Invoke-API-Call { throw 'error' }  -parameterFilter { $Path -eq 'app/Version' }
             Check-PSDK-API-Version
         }
         
         It 'the error handling set the app in offline mode' {
-            $Script:GVM_AVAILABLE | Should -Be $false
+            $Script:PSDK_AVAILABLE | Should -Be $false
         }
 
         It 'does not informs about new version' {
-            $Script:GVM_API_NEW_VERSION | Should -Be $false
+            $Script:PSDK_API_NEW_VERSION | Should -Be $false
         }
     }
 
@@ -26,7 +26,7 @@ Describe 'Check-PSDK-API-Version' {
         BeforeAll {
             $Global:backup_Global_PGVM_AUTO_SELFUPDTE = $Global:PGVM_AUTO_SELFUPDATE
             $Global:PGVM_AUTO_SELFUPDATE = $true
-            $Script:GVM_API_NEW_VERSION = $false
+            $Script:PSDK_API_NEW_VERSION = $false
 
             Mock Get-SDK-API-Version { 1.2.2 }
             Mock Invoke-API-Call { 1.2.2 } -parameterFilter { $Path -eq 'app/Version' }
@@ -40,7 +40,7 @@ Describe 'Check-PSDK-API-Version' {
         }
 
         It 'does not informs about new version' {
-            $Script:GVM_API_NEW_VERSION | Should -Be $false
+            $Script:PSDK_API_NEW_VERSION | Should -Be $false
         }
 
         AfterAll {
@@ -52,7 +52,7 @@ Describe 'Check-PSDK-API-Version' {
         BeforeAll {
             $Global:backup_Global_PGVM_AUTO_SELFUPDTE = $Global:PGVM_AUTO_SELFUPDATE
             $Global:PGVM_AUTO_SELFUPDATE = $false
-            $Script:GVM_API_NEW_VERSION = $false
+            $Script:PSDK_API_NEW_VERSION = $false
 
             Mock Get-SDK-API-Version { '1.2.2' }
             Mock Invoke-API-Call { '1.2.3' } -parameterFilter { $Path -eq 'broker/download/sdkman/version/stable' }
@@ -61,7 +61,7 @@ Describe 'Check-PSDK-API-Version' {
         }
 
         It 'informs about new version' {
-            $Script:GVM_API_NEW_VERSION | Should -Be $true
+            $Script:PSDK_API_NEW_VERSION | Should -Be $true
         }
 
         It 'write a warning about needed update' {
@@ -77,7 +77,7 @@ Describe 'Check-PSDK-API-Version' {
         BeforeAll {
             $Global:backup_Global_PGVM_AUTO_SELFUPDTE = $Global:PGVM_AUTO_SELFUPDATE
             $Global:PGVM_AUTO_SELFUPDATE = $true
-            $Script:GVM_API_NEW_VERSION = $false
+            $Script:PSDK_API_NEW_VERSION = $false
 
             Mock Get-SDK-API-Version { '1.2.2' }
             Mock Invoke-API-Call { '1.2.3' } -parameterFilter { $Path -eq 'broker/download/sdkman/version/stable' }
@@ -91,7 +91,7 @@ Describe 'Check-PSDK-API-Version' {
         }
 
         It 'does not informs about new version' {
-            $Script:GVM_API_NEW_VERSION | Should -Be $false
+            $Script:PSDK_API_NEW_VERSION | Should -Be $false
         }
 
         AfterAll {
@@ -251,7 +251,7 @@ Describe 'Check-Available-Broadcast' {
     Context 'Last execution was online, still online' {
         BeforeAll {
             $Script:PSDK_ONLINE = $true
-            $Script:GVM_AVAILABLE = $true
+            $Script:PSDK_AVAILABLE = $true
             Mock Get-SDK-API-Version { '1.2.3' }
             Mock Invoke-Broadcast-API-Call { 'Broadcast message' }
             Mock Handle-Broadcast -verifiable -parameterFilter { $Command -eq $null -and $Broadcast -eq 'Broadcast message' }
@@ -274,7 +274,7 @@ Describe 'Check-Available-Broadcast' {
     Context 'Last execution was online, now offline' {
         BeforeAll {
             $Script:PSDK_ONLINE = $true
-            $Script:GVM_AVAILABLE = $false
+            $Script:PSDK_AVAILABLE = $false
             Mock Get-SDK-API-Version { '1.2.4' }
             Mock Invoke-Broadcast-API-Call { $null }
             Mock Handle-Broadcast
@@ -298,7 +298,7 @@ Describe 'Check-Available-Broadcast' {
     Context 'Last execution was offline, still offline' {
         BeforeAll {
             $Script:PSDK_ONLINE = $false
-            $Script:GVM_AVAILABLE = $false
+            $Script:PSDK_AVAILABLE = $false
             Mock Get-SDK-API-Version { '1.2.4' }
             Mock Invoke-Broadcast-API-Call { $null }
             Mock Handle-Broadcast
@@ -322,7 +322,7 @@ Describe 'Check-Available-Broadcast' {
     Context 'Last execution was offline, now online' {
         BeforeAll {
             $Script:PSDK_ONLINE = $false
-            $Script:GVM_AVAILABLE = $true
+            $Script:PSDK_AVAILABLE = $true
             Mock Get-SDK-API-Version { '1.2.5' }
             Mock Invoke-Broadcast-API-Call { 'Broadcast message' }
             Mock Handle-Broadcast -verifiable -parameterFilter { $Command -eq $null -and $Broadcast -eq 'Broadcast message' }
@@ -806,7 +806,7 @@ Describe 'Get-Online-Mode check the state variables for GVM-API availablitiy and
     Context 'GVM-Api unavailable but may be connected' {
         
         It 'returns $false' {
-            $Script:GVM_AVAILABLE = $false
+            $Script:PSDK_AVAILABLE = $false
             $Script:SDK_FORCE_OFFLINE = $false
             Get-Online-Mode | Should -Be $false
         }
@@ -815,7 +815,7 @@ Describe 'Get-Online-Mode check the state variables for GVM-API availablitiy and
     Context 'GVM-Api unavailable and may not be connected' {
         
         It 'returns $false' {
-            $Script:GVM_AVAILABLE = $false
+            $Script:PSDK_AVAILABLE = $false
             $Script:SDK_FORCE_OFFLINE = $true
             Get-Online-Mode | Should -Be $false
         }
@@ -824,7 +824,7 @@ Describe 'Get-Online-Mode check the state variables for GVM-API availablitiy and
     Context 'GVM-Api is available and may not be connected' {
         
         It 'returns $false' {
-            $Script:GVM_AVAILABLE = $true
+            $Script:PSDK_AVAILABLE = $true
             $Script:SDK_FORCE_OFFLINE = $true
             Get-Online-Mode | Should -Be $false
         }
@@ -833,7 +833,7 @@ Describe 'Get-Online-Mode check the state variables for GVM-API availablitiy and
     Context 'GVM-Api is available and may be connected' {
         
         It 'returns $true' {
-            $Script:GVM_AVAILABLE = $true
+            $Script:PSDK_AVAILABLE = $true
             $Script:SDK_FORCE_OFFLINE = $false
             Get-Online-Mode | Should -Be $true
         }
@@ -872,7 +872,7 @@ Describe 'Invoke-API-Call helps doing calls to the GVM-API' {
     Context 'Failed API call only with API path' {
         BeforeAll {
             $Script:PGVM_SERVICE = 'blub'
-            $Script:GVM_AVAILABLE = $true
+            $Script:PSDK_AVAILABLE = $true
             Mock Invoke-RestMethod { throw 'error' } -parameterFilter { $Uri -eq 'blub/na/rock' }
             Mock Check-Online-Mode -verifiable
 
@@ -880,7 +880,7 @@ Describe 'Invoke-API-Call helps doing calls to the GVM-API' {
         }
 
         It 'sets GVM_AVAILABLE to false' {
-            $Script:GVM_AVAILABLE | Should -Be $false
+            $Script:PSDK_AVAILABLE | Should -Be $false
         }
 
         It 'calls Check-Online-Mode which throws an error' {
@@ -891,7 +891,7 @@ Describe 'Invoke-API-Call helps doing calls to the GVM-API' {
     Context 'Failed API call with API path and IgnoreFailure' {
         BeforeAll {
             $Script:PGVM_SERVICE = 'blub'
-            $Script:GVM_AVAILABLE = $true
+            $Script:PSDK_AVAILABLE = $true
             Mock Invoke-RestMethod { throw 'error' } -parameterFilter { $Uri -eq 'blub/na/rock' }
             Mock Check-Online-Mode
 
@@ -899,7 +899,7 @@ Describe 'Invoke-API-Call helps doing calls to the GVM-API' {
         }
 
         It 'sets GVM_AVAILABLE to false' {
-            $Script:GVM_AVAILABLE | Should -Be $false
+            $Script:PSDK_AVAILABLE | Should -Be $false
         }
 
         It 'do not call Check-Online-Mode' {

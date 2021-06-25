@@ -8,11 +8,11 @@
         Init-Posh-SDK
     }
 
-    $Script:GVM_AVAILABLE = $true
+    $Script:PSDK_AVAILABLE = $true
     if ( !($Script:SDK_FORCE_OFFLINE) -and $Command -ne 'offline' ) {
         Check-Available-Broadcast $Command
 
-        if ( $Script:GVM_AVAILABLE ) {
+        if ( $Script:PSDK_AVAILABLE ) {
             if ( $Script:FIRST_RUN ) {
                 Check-PSDK-API-Version
                 Check-Posh-Gvm-Version

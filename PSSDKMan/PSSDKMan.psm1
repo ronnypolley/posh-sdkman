@@ -29,12 +29,12 @@ $Script:PSDK_API_VERSION_PATH = "$Global:PSDK_DIR\.meta\version.txt"
 $Script:PSDK_ARCHIVES_PATH = "$Global:PSDK_DIR\.meta\archives"
 $Script:PSDK_TEMP_PATH = "$Global:PSDK_DIR\.meta\tmp"
 
-$Script:GVM_API_NEW_VERSION = $false
+$Script:PSDK_API_NEW_VERSION = $false
 $Script:PGVM_NEW_VERSION = $false
 $Script:PGVM_VERSION_PATH = "$psScriptRoot\VERSION.txt"
 $Script:PGVM_VERSION_SERVICE = "https://raw.githubusercontent.com/flofreud/posh-gvm/master/VERSION.txt"
 
-$Script:GVM_AVAILABLE = $true
+$Script:PSDK_AVAILABLE = $true
 $Script:PSDK_ONLINE = $true
 $Script:SDK_FORCE_OFFLINE = $false
 $Script:SDK_CANDIDATES = $null
