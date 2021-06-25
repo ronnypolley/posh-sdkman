@@ -914,7 +914,7 @@ Describe 'Set-Offline-Mode' {
 
     Context 'if called with disable flag' {
         BeforeAll {
-            $Script:GVM_ONLINE = $false
+            $Script:PSDK_ONLINE = $false
             $Script:SDK_FORCE_OFFLINE = $true
             Mock Write-Output -verifiable
         }
@@ -928,7 +928,7 @@ Describe 'Set-Offline-Mode' {
         }
 
         It "set gvm to online" {
-            $Script:GVM_ONLINE | Should -Be $true
+            $Script:PSDK_ONLINE | Should -Be $true
         }
 
         It "writes info to output" {

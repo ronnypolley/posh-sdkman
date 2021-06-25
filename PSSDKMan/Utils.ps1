@@ -96,12 +96,12 @@ function Check-Available-Broadcast($Command) {
 
 	Write-Verbose "Online-Mode: $Script:GVM_AVAILABLE"
 
-	if ( $Script:GVM_ONLINE -and !($Script:GVM_AVAILABLE) ) {
+	if ( $Script:PSDK_ONLINE -and !($Script:GVM_AVAILABLE) ) {
 		Write-Offline-Broadcast
-	} elseif ( !($Script:GVM_ONLINE) -and $Script:GVM_AVAILABLE ) {
+	} elseif ( !($Script:PSDK_ONLINE) -and $Script:GVM_AVAILABLE ) {
 		Write-Online-Broadcast
 	}
-	$Script:GVM_ONLINE = $Script:GVM_AVAILABLE
+	$Script:PSDK_ONLINE = $Script:GVM_AVAILABLE
 
 	if ( $liveBroadcast ) {
 		Handle-Broadcast $Command $liveBroadcast

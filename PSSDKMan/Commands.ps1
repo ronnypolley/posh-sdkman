@@ -191,7 +191,7 @@ function Set-Offline-Mode($Flag) {
     Write-Verbose 'Perform Set-Offline-Mode'
     switch ($Flag) {
         'enable'  { $Script:SDK_FORCE_OFFLINE = $true; Write-Output 'Forced offline mode enabled.' }
-        'disable' { $Script:SDK_FORCE_OFFLINE = $false; $Script:GVM_ONLINE = $true; Write-Output 'Online mode re-enabled!' }
+        'disable' { $Script:SDK_FORCE_OFFLINE = $false; $Script:PSDK_ONLINE = $true; Write-Output 'Online mode re-enabled!' }
         default   { throw "Stop! $Flag is not a valid offline offline mode." }
     }
 }

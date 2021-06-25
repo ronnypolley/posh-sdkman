@@ -250,7 +250,7 @@ Describe 'Get-SDK-API-Version' {
 Describe 'Check-Available-Broadcast' {
     Context 'Last execution was online, still online' {
         BeforeAll {
-            $Script:GVM_ONLINE = $true
+            $Script:PSDK_ONLINE = $true
             $Script:GVM_AVAILABLE = $true
             Mock Get-SDK-API-Version { '1.2.3' }
             Mock Invoke-Broadcast-API-Call { 'Broadcast message' }
@@ -273,7 +273,7 @@ Describe 'Check-Available-Broadcast' {
 
     Context 'Last execution was online, now offline' {
         BeforeAll {
-            $Script:GVM_ONLINE = $true
+            $Script:PSDK_ONLINE = $true
             $Script:GVM_AVAILABLE = $false
             Mock Get-SDK-API-Version { '1.2.4' }
             Mock Invoke-Broadcast-API-Call { $null }
@@ -297,7 +297,7 @@ Describe 'Check-Available-Broadcast' {
 
     Context 'Last execution was offline, still offline' {
         BeforeAll {
-            $Script:GVM_ONLINE = $false
+            $Script:PSDK_ONLINE = $false
             $Script:GVM_AVAILABLE = $false
             Mock Get-SDK-API-Version { '1.2.4' }
             Mock Invoke-Broadcast-API-Call { $null }
@@ -321,7 +321,7 @@ Describe 'Check-Available-Broadcast' {
 
     Context 'Last execution was offline, now online' {
         BeforeAll {
-            $Script:GVM_ONLINE = $false
+            $Script:PSDK_ONLINE = $false
             $Script:GVM_AVAILABLE = $true
             Mock Get-SDK-API-Version { '1.2.5' }
             Mock Invoke-Broadcast-API-Call { 'Broadcast message' }
