@@ -5,7 +5,7 @@ BeforeAll {
 }
 
 Describe 'Init-Posh-SDK' {
-    Context 'PGVM-Dir with only a grails folder' {
+    Context 'PSDK-Dir with only a grails folder' {
         BeforeAll {
             Mock-PSDK-Dir
             Mock Check-JAVA-HOME -verifiable
@@ -47,7 +47,7 @@ Describe 'Init-Posh-SDK' {
         }
     }
 
-    Context 'PGVM-Dir with only a grails folder and a candidates list' {
+    Context 'PSDK-Dir with only a grails folder and a candidates list' {
         BeforeAll {
             Mock-PSDK-Dir
             Mock Check-JAVA-HOME -verifiable
