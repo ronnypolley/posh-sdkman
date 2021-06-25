@@ -224,8 +224,8 @@ function Flush-Cache($DataType) {
                         }
                      }
         'archives'   { Cleanup-Directory $Script:PSDK_ARCHIVES_PATH }
-        'temp'       { Cleanup-Directory $Script:PGVM_TEMP_PATH }
-        'tmp'        { Cleanup-Directory $Script:PGVM_TEMP_PATH }
+        'temp'       { Cleanup-Directory $Script:PSDK_TEMP_PATH }
+        'tmp'        { Cleanup-Directory $Script:PSDK_TEMP_PATH }
         default      { throw 'Stop! Please specify what you want to flush.' }
     }
 }

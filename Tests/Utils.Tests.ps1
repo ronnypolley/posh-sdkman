@@ -1223,7 +1223,7 @@ Describe 'Install-Remote-Version' {
             Mock Check-Online-Mode -verifiable
             $Script:PGVM_SERVICE = 'foobar'
             $Script:PSDK_ARCHIVES_PATH = "$Global:PSDK_DIR\archives"
-            $Script:PGVM_TEMP_PATH = "$Global:PSDK_DIR\temp"
+            $Script:PSDK_TEMP_PATH = "$Global:PSDK_DIR\temp"
             $testFilePath = "$PSScriptRoot\test\grails-1.3.9.zip"
 
             Mock -CommandName Download-File -verifiable -MockWith { Copy-Item $testFilePath "$Script:PSDK_ARCHIVES_PATH\grails-1.3.9.zip" } -ParameterFilter { $Url -eq 'foobar/broker/download/grails/1.3.9/cygwin' -and $TargetFile -eq "$Script:PSDK_ARCHIVES_PATH\grails-1.3.9.zip" }
@@ -1252,7 +1252,7 @@ Describe 'Install-Remote-Version' {
             Mock Download-File
 
             $Script:PSDK_ARCHIVES_PATH = "$Global:PSDK_DIR\archives"
-            $Script:PGVM_TEMP_PATH = "$Global:PSDK_DIR\temp"
+            $Script:PSDK_TEMP_PATH = "$Global:PSDK_DIR\temp"
             New-Item -ItemType Directory $Script:PSDK_ARCHIVES_PATH | Out-Null
             Copy-Item "$PSScriptRoot\test\grails-1.3.9.zip" "$Script:PSDK_ARCHIVES_PATH\grails-1.3.9.zip"
 
@@ -1280,7 +1280,7 @@ Describe 'Install-Remote-Version' {
             Mock Download-File
 
             $Script:PSDK_ARCHIVES_PATH = "$Global:PSDK_DIR\archives"
-            $Script:PGVM_TEMP_PATH = "$Global:PSDK_DIR\temp"
+            $Script:PSDK_TEMP_PATH = "$Global:PSDK_DIR\temp"
             New-Item -ItemType Directory $Script:PSDK_ARCHIVES_PATH | Out-Null
             Copy-Item "$PSScriptRoot\test\grails-2.2.2.zip" "$Script:PSDK_ARCHIVES_PATH\grails-2.2.2.zip"
         }

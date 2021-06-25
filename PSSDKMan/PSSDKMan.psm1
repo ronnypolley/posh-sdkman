@@ -27,7 +27,7 @@ $Script:PSDK_CANDIDATES_PATH = "$Global:PSDK_DIR\.meta\candidates.txt"
 $Script:PSDK_BROADCAST_PATH = "$Global:PSDK_DIR\.meta\broadcast.txt"
 $Script:PSDK_API_VERSION_PATH = "$Global:PSDK_DIR\.meta\version.txt"
 $Script:PSDK_ARCHIVES_PATH = "$Global:PSDK_DIR\.meta\archives"
-$Script:PGVM_TEMP_PATH = "$Global:PSDK_DIR\.meta\tmp"
+$Script:PSDK_TEMP_PATH = "$Global:PSDK_DIR\.meta\tmp"
 
 $Script:GVM_API_NEW_VERSION = $false
 $Script:PGVM_NEW_VERSION = $false

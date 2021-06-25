@@ -1040,7 +1040,7 @@ Describe 'Flush-Cache' {
 
     Context 'Cleanup temp directory' {
         BeforeAll {
-            $Script:PGVM_TEMP_PATH = 'temp'
+            $Script:PSDK_TEMP_PATH = 'temp'
             Mock Cleanup-Directory -verifiable -parameterFilter { $Path -eq 'temp' }
         }
 
@@ -1053,7 +1053,7 @@ Describe 'Flush-Cache' {
 
     Context 'Cleanup tmp directory' {
         BeforeAll {
-            $Script:PGVM_TEMP_PATH = 'temp'
+            $Script:PSDK_TEMP_PATH = 'temp'
             Mock Cleanup-Directory -verifiable -parameterFilter { $Path -eq 'temp' }
         }
 

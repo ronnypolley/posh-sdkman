@@ -420,15 +420,15 @@ function Install-Remote-Version($Candidate, $Version) {
     Write-Output "Installing: $Candidate $Version"
 
     # create temp dir if necessary
-    if ( !(Test-Path $Script:PGVM_TEMP_PATH) ) {
-        New-Item -ItemType Directory $Script:PGVM_TEMP_PATH | Out-Null
+    if ( !(Test-Path $Script:PSDK_TEMP_PATH) ) {
+        New-Item -ItemType Directory $Script:PSDK_TEMP_PATH | Out-Null
     }
 
     # unzip downloaded archive
-    Unzip-Archive $archive $Script:PGVM_TEMP_PATH
+    Unzip-Archive $archive $Script:PSDK_TEMP_PATH
 
 	# check if unzip successfully
-	if ( ((Get-ChildItem -Directory $Script:PGVM_TEMP_PATH).count -gt 1) -or !(Test-Path "$Script:PGVM_TEMP_PATH\*-$Version") ) {
+	if ( ((Get-ChildItem -Directory $Script:PSDK_TEMP_PATH).count -gt 1) -or !(Test-Path "$Script:PSDK_TEMP_PATH\*-$Version") ) {
 		throw "Could not unzip the archive of $Candidate $Version. Please delete archive from $Script:PSDK_ARCHIVES_PATH (or delete all with 'gvm flush archives'"
 	}
 
@@ -437,9 +437,9 @@ function Install-Remote-Version($Candidate, $Version) {
     # move to target location
     # Move was replaced by copy and remove because of random access denied errors
     # when Unzip was done by via -com shell.application
-    # Move-Item "$Script:PGVM_TEMP_PATH\*-$Version" "$Global:PSDK_DIR\$Candidate\$Version"
-    Copy-Item -Path "$Script:PGVM_TEMP_PATH\$((Get-ChildItem -Directory $Script:PGVM_TEMP_PATH).name)\*" -Destination "$Global:PSDK_DIR\$Candidate\$Version" -Recurse
-    Remove-Item "$Script:PGVM_TEMP_PATH\*-$Version" -Recurse -Force
+    # Move-Item "$Script:PSDK_TEMP_PATH\*-$Version" "$Global:PSDK_DIR\$Candidate\$Version"
+    Copy-Item -Path "$Script:PSDK_TEMP_PATH\$((Get-ChildItem -Directory $Script:PSDK_TEMP_PATH).name)\*" -Destination "$Global:PSDK_DIR\$Candidate\$Version" -Recurse
+    Remove-Item "$Script:PSDK_TEMP_PATH\*-$Version" -Recurse -Force
     Write-Output "Done installing!"
 }
 
