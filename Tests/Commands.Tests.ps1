@@ -315,7 +315,7 @@ Describe 'gvm' {
     Context 'posh-sdk online and command v called' {
         BeforeAll {
             Mock-Dispatcher-Test
-            Mock Show-Posh-Gvm-Version -verifiable
+            Mock Show-Posh-SDK-Version -verifiable
         }
 
     
@@ -332,7 +332,7 @@ Describe 'gvm' {
     Context 'posh-sdk online and command version called' {
         BeforeAll {
             Mock-Dispatcher-Test
-            Mock Show-Posh-Gvm-Version -verifiable
+            Mock Show-Posh-SDK-Version -verifiable
         }
 
     
@@ -854,7 +854,7 @@ Describe 'Show-Current-Version' {
     }
 }
 
-Describe 'Show-Posh-Gvm-Version' {
+Describe 'Show-Posh-SDK-Version' {
     Context 'When called' {
         BeforeAll {
             Mock Get-GVM-API-Version -verifiable
@@ -864,7 +864,7 @@ Describe 'Show-Posh-Gvm-Version' {
 
     
         It 'write the version message to output' {
-            Show-Posh-Gvm-Version
+            Show-Posh-SDK-Version
             Assert-VerifiableMock
         }
     }

@@ -38,7 +38,7 @@
             '^u(se)?$'        { Use-Candidate-Version $Candidate $Version }
             '^d(efault)?$'    { Set-Default-Version $Candidate $Version }
             '^c(urrent)?$'    { Show-Current-Version $Candidate }
-            '^v(ersion)?$'    { Show-Posh-Gvm-Version }
+            '^v(ersion)?$'    { Show-Posh-SDK-Version }
             '^b(roadcast)?$'  { Show-Broadcast-Message }
             '^h(elp)?$'       { Show-Help }
             '^offline$'       { Set-Offline-Mode $Candidate }
@@ -176,7 +176,7 @@ function Show-Current-Version($Candidate) {
     }
 }
 
-function Show-Posh-Gvm-Version() {
+function Show-Posh-SDK-Version() {
     $poshGvmVersion = Get-Posh-Gvm-Version
     $apiVersion = Get-GVM-API-Version
     Write-Output "posh-gvm (POwer SHell Groovy enVironment Manager) $poshGvmVersion base on GVM $GVM_BASE_VERSION and GVM API $apiVersion"
