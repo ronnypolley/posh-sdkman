@@ -227,7 +227,7 @@ Describe 'Is-New-Posh-GVM-Version-Available' {
 Describe 'Get-SDK-API-Version' {
     Context 'No cached version' {
         BeforeAll { 
-            $Script:GVM_API_VERSION_PATH = 'TestDrive:version.txt' 
+            $Script:PSDK_API_VERSION_PATH = 'TestDrive:version.txt' 
         }
 
         It 'returns `$null' {
@@ -237,8 +237,8 @@ Describe 'Get-SDK-API-Version' {
 
     Context 'No cached version' {
         BeforeAll {
-            $Script:GVM_API_VERSION_PATH = 'TestDrive:version.txt'
-            Set-Content $Script:GVM_API_VERSION_PATH '1.1.1'
+            $Script:PSDK_API_VERSION_PATH = 'TestDrive:version.txt'
+            Set-Content $Script:PSDK_API_VERSION_PATH '1.1.1'
         }
 
         It 'returns $null' {
@@ -1127,7 +1127,7 @@ Describe 'Update-Candidate-Cache' {
         BeforeAll {
             Mock-PSDK-Dir
 
-            $Script:GVM_API_VERSION_PATH = "$Global:PSDK_DIR\version.txt"
+            $Script:PSDK_API_VERSION_PATH = "$Global:PSDK_DIR\version.txt"
             $Script:PSDK_CANDIDATES_PATH = "$Global:PSDK_DIR\candidates.txt"
 
             Mock Check-Online-Mode -verifiable

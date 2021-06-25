@@ -216,8 +216,8 @@ function Flush-Cache($DataType) {
                         }
                      }
         'version'    {
-                        if ( Test-Path $Script:GVM_API_VERSION_PATH ) {
-                            Remove-Item $Script:GVM_API_VERSION_PATH
+                        if ( Test-Path $Script:PSDK_API_VERSION_PATH ) {
+                            Remove-Item $Script:PSDK_API_VERSION_PATH
                             Write-Output 'Version Token have been flushed.'
                         } else {
                             Write-Warning 'No prior Remote Version found so not flushed.'

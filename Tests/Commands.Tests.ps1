@@ -998,7 +998,7 @@ Describe 'Flush-Cache' {
 
     Context 'Try to delete existing version cache' {
         BeforeAll {
-            $Script:GVM_API_VERSION_PATH = 'test'
+            $Script:PSDK_API_VERSION_PATH = 'test'
             Mock Test-Path { $true } -parameterFilter { $Path -eq 'test' }
             Mock Remove-Item -verifiable -parameterFilter { $Path -eq 'test' }
             Mock Write-Output -verifiable
@@ -1013,7 +1013,7 @@ Describe 'Flush-Cache' {
 
     Context 'Try to delete non-existing version cache' {
         BeforeAll {
-            $Script:GVM_API_VERSION_PATH = 'test2'
+            $Script:PSDK_API_VERSION_PATH = 'test2'
             Mock Test-Path { $false } -parameterFilter { $Path -eq 'test2' }
             Mock Write-Warning -verifiable
         }

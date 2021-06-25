@@ -80,10 +80,10 @@ function Is-New-Posh-GVM-Version-Available() {
 }
 
 function Get-SDK-API-Version() {
-	if ( !(Test-Path $Script:GVM_API_VERSION_PATH) ) {
+	if ( !(Test-Path $Script:PSDK_API_VERSION_PATH) ) {
 		return $null
 	}
-    return Get-Content $Script:GVM_API_VERSION_PATH
+    return Get-Content $Script:PSDK_API_VERSION_PATH
 }
 
 function Check-Available-Broadcast($Command) {
@@ -348,7 +348,7 @@ function Init-Candidate-Cache() {
 function Update-Candidates-Cache() {
     Write-Verbose 'Update candidates-cache from GVM-API'
     Check-Online-Mode
-    Invoke-Api-Call 'broker/download/sdkman/version/stable' $Script:GVM_API_VERSION_PATH
+    Invoke-Api-Call 'broker/download/sdkman/version/stable' $Script:PSDK_API_VERSION_PATH
     Invoke-API-Call 'candidates/all' $Script:PSDK_CANDIDATES_PATH
 }
 

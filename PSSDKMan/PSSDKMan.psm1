@@ -25,7 +25,7 @@ $Script:GVM_BASE_VERSION = '1.3.13'
 
 $Script:PSDK_CANDIDATES_PATH = "$Global:PSDK_DIR\.meta\candidates.txt"
 $Script:PSDK_BROADCAST_PATH = "$Global:PSDK_DIR\.meta\broadcast.txt"
-$Script:GVM_API_VERSION_PATH = "$Global:PSDK_DIR\.meta\version.txt"
+$Script:PSDK_API_VERSION_PATH = "$Global:PSDK_DIR\.meta\version.txt"
 $Script:PGVM_ARCHIVES_PATH = "$Global:PSDK_DIR\.meta\archives"
 $Script:PGVM_TEMP_PATH = "$Global:PSDK_DIR\.meta\tmp"
 
