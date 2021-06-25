@@ -40,7 +40,7 @@ function Check-PSDK-API-Version() {
         $gvmRemoteVersion = Invoke-API-Call "broker/download/sdkman/version/stable"
 
         if ( $gvmRemoteVersion -gt $apiVersion) {
-            if ( $Global:PGVM_AUTO_SELFUPDATE ) {
+            if ( $Global:PSDK_AUTO_SELFUPDATE ) {
                 Invoke-Self-Update
             } else {
                 $Script:PSDK_API_NEW_VERSION = $true
@@ -54,7 +54,7 @@ function Check-PSDK-API-Version() {
 function Check-Posh-Gvm-Version() {
     Write-Verbose 'Checking posh-gvm version'
     if ( Is-New-Posh-GVM-Version-Available ) {
-        if ( $Global:PGVM_AUTO_SELFUPDATE ) {
+        if ( $Global:PSDK_AUTO_SELFUPDATE ) {
             Invoke-Self-Update
         } else {
             $Script:PGVM_NEW_VERSION = $true

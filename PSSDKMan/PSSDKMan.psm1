@@ -15,7 +15,7 @@ if ( !(Test-Path Variable:Global:PGVM_AUTO_ANSWER) ) {
 	$Global:PSDK_AUTO_ANSWER = $false
 }
 if ( !(Test-Path Variable:Global:PGVM_AUTO_SELFUPDATE) ) {
-	$Global:PGVM_AUTO_SELFUPDATE = $false
+	$Global:PSDK_AUTO_SELFUPDATE = $false
 }
 
 $Script:PGVM_INIT = $false

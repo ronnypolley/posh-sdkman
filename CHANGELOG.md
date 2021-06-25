@@ -25,7 +25,7 @@
 * BUGFIX: installation routine in GetPoshGvm.ps1 broken
 
 ### Version 1.1.1
-* BUGFIX: default of $Global:PGVM_AUTO_SELFUPDATE was $true but should have been $false
+* BUGFIX: default of $Global:PSDK_AUTO_SELFUPDATE was $true but should have been $false
 
 ### Version 1.1.0
 * FEATURE: use unzip.exe if available on path for better install performance

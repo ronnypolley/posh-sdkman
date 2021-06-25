@@ -24,8 +24,8 @@ Describe 'Check-PSDK-API-Version' {
 
     Context 'No new version' {
         BeforeAll {
-            $Global:backup_Global_PGVM_AUTO_SELFUPDTE = $Global:PGVM_AUTO_SELFUPDATE
-            $Global:PGVM_AUTO_SELFUPDATE = $true
+            $Global:backup_Global_PGVM_AUTO_SELFUPDTE = $Global:PSDK_AUTO_SELFUPDATE
+            $Global:PSDK_AUTO_SELFUPDATE = $true
             $Script:PSDK_API_NEW_VERSION = $false
 
             Mock Get-SDK-API-Version { 1.2.2 }
@@ -44,14 +44,14 @@ Describe 'Check-PSDK-API-Version' {
         }
 
         AfterAll {
-            $Global:PGVM_AUTO_SELFUPDATE = $Global:backup_Global_PGVM_AUTO_SELFUPDTE
+            $Global:PSDK_AUTO_SELFUPDATE = $Global:backup_Global_PGVM_AUTO_SELFUPDTE
         }
     }
 
     Context 'New version and no auto selfupdate' {
         BeforeAll {
-            $Global:backup_Global_PGVM_AUTO_SELFUPDTE = $Global:PGVM_AUTO_SELFUPDATE
-            $Global:PGVM_AUTO_SELFUPDATE = $false
+            $Global:backup_Global_PGVM_AUTO_SELFUPDTE = $Global:PSDK_AUTO_SELFUPDATE
+            $Global:PSDK_AUTO_SELFUPDATE = $false
             $Script:PSDK_API_NEW_VERSION = $false
 
             Mock Get-SDK-API-Version { '1.2.2' }
@@ -69,14 +69,14 @@ Describe 'Check-PSDK-API-Version' {
         }
 
         AfterAll {
-            $Global:PGVM_AUTO_SELFUPDATE = $Global:backup_Global_PGVM_AUTO_SELFUPDTE
+            $Global:PSDK_AUTO_SELFUPDATE = $Global:backup_Global_PGVM_AUTO_SELFUPDTE
         }
     }
 
     Context 'New version and auto selfupdate' {
         BeforeAll {
-            $Global:backup_Global_PGVM_AUTO_SELFUPDTE = $Global:PGVM_AUTO_SELFUPDATE
-            $Global:PGVM_AUTO_SELFUPDATE = $true
+            $Global:backup_Global_PGVM_AUTO_SELFUPDTE = $Global:PSDK_AUTO_SELFUPDATE
+            $Global:PSDK_AUTO_SELFUPDATE = $true
             $Script:PSDK_API_NEW_VERSION = $false
 
             Mock Get-SDK-API-Version { '1.2.2' }
@@ -95,7 +95,7 @@ Describe 'Check-PSDK-API-Version' {
         }
 
         AfterAll {
-            $Global:PGVM_AUTO_SELFUPDATE = $Global:backup_Global_PGVM_AUTO_SELFUPDTE
+            $Global:PSDK_AUTO_SELFUPDATE = $Global:backup_Global_PGVM_AUTO_SELFUPDTE
         }
     }
 }
@@ -103,8 +103,8 @@ Describe 'Check-PSDK-API-Version' {
 Describe 'Check-Posh-Gvm-Version' {
     Context 'No new Version' {
         BeforeAll {
-            $Global:backup_Global_PGVM_AUTO_SELFUPDTE = $Global:PGVM_AUTO_SELFUPDATE
-            $Global:PGVM_AUTO_SELFUPDATE = $false
+            $Global:backup_Global_PGVM_AUTO_SELFUPDTE = $Global:PSDK_AUTO_SELFUPDATE
+            $Global:PSDK_AUTO_SELFUPDATE = $false
             $Script:PGVM_NEW_VERSION = $false
 
             Mock Is-New-Posh-GVM-Version-Available { $false }
@@ -122,14 +122,14 @@ Describe 'Check-Posh-Gvm-Version' {
         }
 
         AfterAll {
-            $Global:PGVM_AUTO_SELFUPDATE = $Global:backup_Global_PGVM_AUTO_SELFUPDTE
+            $Global:PSDK_AUTO_SELFUPDATE = $Global:backup_Global_PGVM_AUTO_SELFUPDTE
         }
     }
 
     Context 'New version and no auto selfupdate' {
         BeforeAll {
-            $Global:backup_Global_PGVM_AUTO_SELFUPDTE = $Global:PGVM_AUTO_SELFUPDATE
-            $Global:PGVM_AUTO_SELFUPDATE = $false
+            $Global:backup_Global_PGVM_AUTO_SELFUPDTE = $Global:PSDK_AUTO_SELFUPDATE
+            $Global:PSDK_AUTO_SELFUPDATE = $false
             $Script:PGVM_NEW_VERSION = $false
 
             Mock Is-New-Posh-GVM-Version-Available { $true }
@@ -147,14 +147,14 @@ Describe 'Check-Posh-Gvm-Version' {
         }
 
         AfterAll {
-            $Global:PGVM_AUTO_SELFUPDATE = $Global:backup_Global_PGVM_AUTO_SELFUPDTE
+            $Global:PSDK_AUTO_SELFUPDATE = $Global:backup_Global_PGVM_AUTO_SELFUPDTE
         }
     }
 
     Context 'New version and auto selfupdate' {
         BeforeAll {
-            $Global:backup_Global_PGVM_AUTO_SELFUPDTE = $Global:PGVM_AUTO_SELFUPDATE
-            $Global:PGVM_AUTO_SELFUPDATE = $true
+            $Global:backup_Global_PGVM_AUTO_SELFUPDTE = $Global:PSDK_AUTO_SELFUPDATE
+            $Global:PSDK_AUTO_SELFUPDATE = $true
             $Script:PGVM_NEW_VERSION = $false
 
             Mock Is-New-Posh-GVM-Version-Available { $true }
@@ -172,7 +172,7 @@ Describe 'Check-Posh-Gvm-Version' {
         }
 
         AfterAll {
-            $Global:PGVM_AUTO_SELFUPDATE = $Global:backup_Global_PGVM_AUTO_SELFUPDTE
+            $Global:PSDK_AUTO_SELFUPDATE = $Global:backup_Global_PGVM_AUTO_SELFUPDTE
         }
     }
 }
