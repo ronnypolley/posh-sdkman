@@ -200,8 +200,8 @@ function Flush-Cache($DataType) {
     Write-Verbose 'Perform Flush-Cache'
     switch ($DataType) {
         'candidates' {
-                        if ( Test-Path $Script:PGVM_CANDIDATES_PATH ) {
-                            Remove-Item $Script:PGVM_CANDIDATES_PATH
+                        if ( Test-Path $Script:PSDK_CANDIDATES_PATH ) {
+                            Remove-Item $Script:PSDK_CANDIDATES_PATH
                             Write-Output 'Candidates have been flushed.'
                         } else {
                             Write-Warning 'No candidate list found so not flushed.'

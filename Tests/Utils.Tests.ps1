@@ -1090,7 +1090,7 @@ Describe 'Init-Candidate-Cache' {
     Context 'Candidate cache file does not exists' {
         BeforeAll {
             Mock-PSDK-Dir
-            $Script:PGVM_CANDIDATES_PATH = "$Global:PSDK_DIR\candidates.txt"
+            $Script:PSDK_CANDIDATES_PATH = "$Global:PSDK_DIR\candidates.txt"
         }
 
         It 'throws an error' {
@@ -1105,8 +1105,8 @@ Describe 'Init-Candidate-Cache' {
     Context 'Candidate cache file does exists' {
         BeforeAll {
             Mock-PSDK-Dir
-            $Script:PGVM_CANDIDATES_PATH = "$Global:PSDK_DIR\candidates.txt"
-            Set-Content $Script:PGVM_CANDIDATES_PATH 'grails,groovy,test'
+            $Script:PSDK_CANDIDATES_PATH = "$Global:PSDK_DIR\candidates.txt"
+            Set-Content $Script:PSDK_CANDIDATES_PATH 'grails,groovy,test'
             $Script:SDK_CANDIDATES = $null
 
             Init-Candidate-Cache
@@ -1128,7 +1128,7 @@ Describe 'Update-Candidate-Cache' {
             Mock-PSDK-Dir
 
             $Script:GVM_API_VERSION_PATH = "$Global:PSDK_DIR\version.txt"
-            $Script:PGVM_CANDIDATES_PATH = "$Global:PSDK_DIR\candidates.txt"
+            $Script:PSDK_CANDIDATES_PATH = "$Global:PSDK_DIR\candidates.txt"
 
             Mock Check-Online-Mode -verifiable
             Mock Invoke-API-Call -verifiable -parameterFilter { $Path -eq 'broker/download/sdkman/version/stable' -and $FileTarget -eq "$Global:PSDK_DIR\version.txt" }

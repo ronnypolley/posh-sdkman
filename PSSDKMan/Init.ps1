@@ -13,7 +13,7 @@ function Init-Posh-SDK() {
     }
 
     # Load candidates cache
-    if ( ! (Test-Path $Script:PGVM_CANDIDATES_PATH) ) {
+    if ( ! (Test-Path $Script:PSDK_CANDIDATES_PATH) ) {
         Update-Candidates-Cache
     }
 

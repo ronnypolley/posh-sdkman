@@ -940,7 +940,7 @@ Describe 'Set-Offline-Mode' {
 Describe 'Flush-Cache' {
     Context 'Try to delete existing candidates cache' {
         BeforeAll {
-            $Script:PGVM_CANDIDATES_PATH = 'test'
+            $Script:PSDK_CANDIDATES_PATH = 'test'
             Mock Test-Path { $true } -parameterFilter { $Path -eq 'test' }
             Mock Remove-Item -verifiable -parameterFilter { $Path -eq 'test' }
             Mock Write-Output -verifiable
@@ -955,7 +955,7 @@ Describe 'Flush-Cache' {
 
     Context 'Try to delete non-existing candidates cache' {
         BeforeAll {
-            $Script:PGVM_CANDIDATES_PATH = 'test2'
+            $Script:PSDK_CANDIDATES_PATH = 'test2'
             Mock Test-Path { $false } -parameterFilter { $Path -eq 'test2' }
             Mock Write-Warning -verifiable
         }

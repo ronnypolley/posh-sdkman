@@ -337,11 +337,11 @@ function Handle-Broadcast($Command, $Broadcast) {
 }
 
 function Init-Candidate-Cache() {
-    if ( !(Test-Path $Script:PGVM_CANDIDATES_PATH) ) {
+    if ( !(Test-Path $Script:PSDK_CANDIDATES_PATH) ) {
         throw 'Can not retrieve list of candidates'
     }
 
-    $Script:SDK_CANDIDATES = (Get-Content $Script:PGVM_CANDIDATES_PATH).Split(',')
+    $Script:SDK_CANDIDATES = (Get-Content $Script:PSDK_CANDIDATES_PATH).Split(',')
     Write-Verbose "Available candidates: $Script:SDK_CANDIDATES"
 }
 
@@ -349,7 +349,7 @@ function Update-Candidates-Cache() {
     Write-Verbose 'Update candidates-cache from GVM-API'
     Check-Online-Mode
     Invoke-Api-Call 'broker/download/sdkman/version/stable' $Script:GVM_API_VERSION_PATH
-    Invoke-API-Call 'candidates/all' $Script:PGVM_CANDIDATES_PATH
+    Invoke-API-Call 'candidates/all' $Script:PSDK_CANDIDATES_PATH
 }
 
 function Write-Offline-Version-List($Candidate) {
