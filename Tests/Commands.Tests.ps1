@@ -616,9 +616,14 @@ Describe 'Uninstall-Candidate-Version' {
     }
 
     Context 'To be uninstalled Version is current version' {
-        BeforeEach {
+        BeforeAll {
             Mock-PGVM-Dir
-            New-Item -ItemType Directory "$Global:PGVM_DIR\grails\24.3" | Out-Null
+        }
+
+        BeforeEach {
+            if ( ! (Test-Path "$Global:PGVM_DIR\grails\24.3") ) {
+                New-Item -ItemType Directory "$Global:PGVM_DIR\grails\24.3" | Out-Null
+            }
             Set-Linked-Candidate-Version grails 24.3
         }
 
@@ -627,14 +632,16 @@ Describe 'Uninstall-Candidate-Version' {
         }
 
         Context "deletion testing" {
-            BeforeEach {
+            BeforeAll {
                 Mock Check-Candidate-Present -verifiable -parameterFilter { $Candidate -eq 'grails' }
                 Mock Is-Candidate-Version-Locally-Available { $true } -verifiable -parameterFilter { $Candidate -eq 'grails' -and $Version -eq '24.3' }
                 Mock Get-Current-Candidate-Version { '24.3' } -verifiable -parameterFilter { $Candidate -eq 'grails' }
                 Mock Write-Output -verifiable
+            }
+
+            BeforeEach {
                 Uninstall-Candidate-Version grails 24.3
             }
-    
     
             It 'delete the current-junction' {
                 Test-Path "$Global:PGVM_DIR\grails\current" | Should -Be $false
@@ -647,20 +654,15 @@ Describe 'Uninstall-Candidate-Version' {
             It "checks different preconditions correctly" {
                 Assert-VerifiableMock
             }
-
-            AfterEach {
-                Reset-PGVM-Dir
-            }
         }
 
-
-        AfterEach {
+        AfterAll {
             Reset-PGVM-Dir
         }
     }
 
     Context 'To be uninstalled version is installed' {
-        BeforeEach {
+        BeforeAll {
             Mock-PGVM-Dir
             New-Item -ItemType Directory "$Global:PGVM_DIR\grails\24.3" | Out-Null
 
@@ -668,6 +670,9 @@ Describe 'Uninstall-Candidate-Version' {
             Mock Is-Candidate-Version-Locally-Available { $true } -verifiable -parameterFilter { $Candidate -eq 'grails' -and $Version -eq '24.3' }
             Mock Get-Current-Candidate-Version { $null } -verifiable -parameterFilter { $Candidate -eq 'grails' }
             Mock Write-Output -verifiable
+        }
+
+        BeforeEach {
             Uninstall-Candidate-Version grails 24.3
         }
 
