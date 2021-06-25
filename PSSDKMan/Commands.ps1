@@ -177,7 +177,7 @@ function Show-Current-Version($Candidate) {
 }
 
 function Show-Posh-SDK-Version() {
-    $poshGvmVersion = Get-Posh-Gvm-Version
+    $poshGvmVersion = Get-Posh-SDK-Version
     $apiVersion = Get-SDK-API-Version
     Write-Output "posh-gvm (POwer SHell Groovy enVironment Manager) $poshGvmVersion base on GVM $GVM_BASE_VERSION and GVM API $apiVersion"
 }

@@ -858,7 +858,7 @@ Describe 'Show-Posh-SDK-Version' {
     Context 'When called' {
         BeforeAll {
             Mock Get-SDK-API-Version -verifiable
-            Mock Get-Posh-Gvm-Version -verifiable
+            Mock Get-Posh-SDK-Version -verifiable
             Mock Write-Output -verifiable
         }
 

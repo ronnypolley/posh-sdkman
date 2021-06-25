@@ -62,13 +62,13 @@ function Check-Posh-Gvm-Version() {
     }
 }
 
-function Get-Posh-Gvm-Version() {
+function Get-Posh-SDK-Version() {
     return Get-Content $Script:PGVM_VERSION_PATH
 }
 
 function Is-New-Posh-GVM-Version-Available() {
     try {
-        $localVersion = (Get-Posh-Gvm-Version).Trim()
+        $localVersion = (Get-Posh-SDK-Version).Trim()
         $currentVersion = (Invoke-RestMethod $Script:PGVM_VERSION_SERVICE).Trim()
 
         Write-Verbose "posh-gvm version check $currentVersion > $localVersion = $($currentVersion -gt $localVersion)"
