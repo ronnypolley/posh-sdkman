@@ -670,9 +670,6 @@ Describe 'Uninstall-Candidate-Version' {
             Mock Is-Candidate-Version-Locally-Available { $true } -verifiable -parameterFilter { $Candidate -eq 'grails' -and $Version -eq '24.3' }
             Mock Get-Current-Candidate-Version { $null } -verifiable -parameterFilter { $Candidate -eq 'grails' }
             Mock Write-Output -verifiable
-        }
-
-        BeforeEach {
             Uninstall-Candidate-Version grails 24.3
         }
 
