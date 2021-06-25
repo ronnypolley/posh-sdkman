@@ -1,4 +1,4 @@
-﻿function gvm([string]$Command, [string]$Candidate, [string]$Version, [string]$InstallPath, [switch]$Verbose, [switch]$Force) {
+﻿function psdk([string]$Command, [string]$Candidate, [string]$Version, [string]$InstallPath, [switch]$Verbose, [switch]$Force) {
     $ErrorActionPreference = 'Stop'
 	$ProgressPreference = 'SilentlyContinue'
 	if ($Verbose) { $VerbosePreference = 'Continue' }
@@ -9,12 +9,12 @@
     }
 
     $Script:PSDK_AVAILABLE = $true
-    if ( !($Script:SDK_FORCE_OFFLINE) -and $Command -ne 'offline' ) {
+    if ( !($Script:PSDK_FORCE_OFFLINE) -and $Command -ne 'offline' ) {
         Check-Available-Broadcast $Command
 
         if ( $Script:PSDK_AVAILABLE ) {
             if ( $Script:FIRST_RUN ) {
-                Check-PSDK-API-Version
+                Check-SDKMAN-API-Version
                 Check-Posh-SDK-Version
                 $Script:FIRST_RUN = $false
             }
@@ -44,7 +44,7 @@
             '^offline$'       { Set-Offline-Mode $Candidate }
             '^selfupdate$'    { Invoke-Self-Update($Force) }
             '^flush$'         { Flush-Cache $Candidate }
-            default           { Write-Warning "Invalid command: $Command. Check gvm help!" }
+            default           { Write-Warning "Invalid command: $Command. Check psdk help!" }
         }
     } catch {
         if ( $_.CategoryInfo.Category -eq 'OperationStopped') {
@@ -177,9 +177,9 @@ function Show-Current-Version($Candidate) {
 }
 
 function Show-Posh-SDK-Version() {
-    $poshGvmVersion = Get-Posh-SDK-Version
-    $apiVersion = Get-SDK-API-Version
-    Write-Output "posh-sdk (POwer SHell Groovy enVironment Manager) $poshGvmVersion base on GVM $GVM_BASE_VERSION and GVM API $apiVersion"
+    $poshSDKVersion = Get-Posh-SDK-Version
+    $apiVersion = Get-SDKMAN-API-Version
+    Write-Output "posh-sdk (POwer SHell Groovy enVironment Manager) $poshSDKVersion base on SDKMAN! $SDKMAN_BASE_VERSION and SDKMAN! API $apiVersion"
 }
 
 function Show-Broadcast-Message() {
@@ -190,8 +190,8 @@ function Show-Broadcast-Message() {
 function Set-Offline-Mode($Flag) {
     Write-Verbose 'Perform Set-Offline-Mode'
     switch ($Flag) {
-        'enable'  { $Script:SDK_FORCE_OFFLINE = $true; Write-Output 'Forced offline mode enabled.' }
-        'disable' { $Script:SDK_FORCE_OFFLINE = $false; $Script:PSDK_ONLINE = $true; Write-Output 'Online mode re-enabled!' }
+        'enable'  { $Script:PSDK_FORCE_OFFLINE = $true; Write-Output 'Forced offline mode enabled.' }
+        'disable' { $Script:PSDK_FORCE_OFFLINE = $false; $Script:PSDK_ONLINE = $true; Write-Output 'Online mode re-enabled!' }
         default   { throw "Stop! $Flag is not a valid offline offline mode." }
     }
 }
@@ -232,8 +232,8 @@ function Flush-Cache($DataType) {
 
 function Show-Help() {
     Write-Output @"
-Usage: gvm <command> <candidate> [version]
-    gvm offline <enable|disable>
+Usage: psdk <command> <candidate> [version]
+    psdk offline <enable|disable>
 
     commands:
         install   or i    <candidate> [version]
@@ -252,6 +252,6 @@ Usage: gvm <command> <candidate> [version]
 
     version    :  where optional, defaults to latest stable if not provided
 
-eg: gvm install groovy
+eg: psdk install groovy
 "@
 }

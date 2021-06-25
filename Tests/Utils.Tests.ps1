@@ -3,14 +3,14 @@
     . .\TestUtils.ps1
 }
 
-Describe 'Check-PSDK-API-Version' {
+Describe 'Check-SDKMAN-API-Version' {
     Context 'API offline' {
         BeforeAll {
             $Script:PSDK_AVAILABLE = $true
             $Script:PSDK_API_NEW_VERSION = $false
-            Mock Get-SDK-API-Version
+            Mock Get-SDKMAN-API-Version
             Mock Invoke-API-Call { throw 'error' }  -parameterFilter { $Path -eq 'app/Version' }
-            Check-PSDK-API-Version
+            Check-SDKMAN-API-Version
         }
         
         It 'the error handling set the app in offline mode' {
@@ -28,11 +28,11 @@ Describe 'Check-PSDK-API-Version' {
             $Global:PSDK_AUTO_SELFUPDATE = $true
             $Script:PSDK_API_NEW_VERSION = $false
 
-            Mock Get-SDK-API-Version { 1.2.2 }
+            Mock Get-SDKMAN-API-Version { 1.2.2 }
             Mock Invoke-API-Call { 1.2.2 } -parameterFilter { $Path -eq 'app/Version' }
             Mock Invoke-Self-Update
 
-            Check-PSDK-API-Version 
+            Check-SDKMAN-API-Version 
         }
 
         It 'do nothing' {
@@ -54,10 +54,10 @@ Describe 'Check-PSDK-API-Version' {
             $Global:PSDK_AUTO_SELFUPDATE = $false
             $Script:PSDK_API_NEW_VERSION = $false
 
-            Mock Get-SDK-API-Version { '1.2.2' }
+            Mock Get-SDKMAN-API-Version { '1.2.2' }
             Mock Invoke-API-Call { '1.2.3' } -parameterFilter { $Path -eq 'broker/download/sdkman/version/stable' }
 
-            Check-PSDK-API-Version
+            Check-SDKMAN-API-Version
         }
 
         It 'informs about new version' {
@@ -79,11 +79,11 @@ Describe 'Check-PSDK-API-Version' {
             $Global:PSDK_AUTO_SELFUPDATE = $true
             $Script:PSDK_API_NEW_VERSION = $false
 
-            Mock Get-SDK-API-Version { '1.2.2' }
+            Mock Get-SDKMAN-API-Version { '1.2.2' }
             Mock Invoke-API-Call { '1.2.3' } -parameterFilter { $Path -eq 'broker/download/sdkman/version/stable' }
             Mock Invoke-Self-Update -verifiable
 
-            Check-PSDK-API-Version 
+            Check-SDKMAN-API-Version 
         }
 
         It 'updates self' {
@@ -224,14 +224,14 @@ Describe 'Is-New-Posh-SDK-Version-Available' {
     }
 }
 
-Describe 'Get-SDK-API-Version' {
+Describe 'Get-SDKMAN-API-Version' {
     Context 'No cached version' {
         BeforeAll { 
             $Script:PSDK_API_VERSION_PATH = 'TestDrive:version.txt' 
         }
 
         It 'returns `$null' {
-            Get-SDK-API-Version | Should -Be $null
+            Get-SDKMAN-API-Version | Should -Be $null
         }
     }
 
@@ -242,7 +242,7 @@ Describe 'Get-SDK-API-Version' {
         }
 
         It 'returns $null' {
-            Get-SDK-API-Version | Should -Be 1.1.1
+            Get-SDKMAN-API-Version | Should -Be 1.1.1
         }
     }
 }
@@ -252,7 +252,7 @@ Describe 'Check-Available-Broadcast' {
         BeforeAll {
             $Script:PSDK_ONLINE = $true
             $Script:PSDK_AVAILABLE = $true
-            Mock Get-SDK-API-Version { '1.2.3' }
+            Mock Get-SDKMAN-API-Version { '1.2.3' }
             Mock Invoke-Broadcast-API-Call { 'Broadcast message' }
             Mock Handle-Broadcast -verifiable -parameterFilter { $Command -eq $null -and $Broadcast -eq 'Broadcast message' }
             Mock Write-Offline-Broadcast
@@ -275,7 +275,7 @@ Describe 'Check-Available-Broadcast' {
         BeforeAll {
             $Script:PSDK_ONLINE = $true
             $Script:PSDK_AVAILABLE = $false
-            Mock Get-SDK-API-Version { '1.2.4' }
+            Mock Get-SDKMAN-API-Version { '1.2.4' }
             Mock Invoke-Broadcast-API-Call { $null }
             Mock Handle-Broadcast
             Mock Write-Offline-Broadcast
@@ -299,7 +299,7 @@ Describe 'Check-Available-Broadcast' {
         BeforeAll {
             $Script:PSDK_ONLINE = $false
             $Script:PSDK_AVAILABLE = $false
-            Mock Get-SDK-API-Version { '1.2.4' }
+            Mock Get-SDKMAN-API-Version { '1.2.4' }
             Mock Invoke-Broadcast-API-Call { $null }
             Mock Handle-Broadcast
             Mock Write-Offline-Broadcast
@@ -323,7 +323,7 @@ Describe 'Check-Available-Broadcast' {
         BeforeAll {
             $Script:PSDK_ONLINE = $false
             $Script:PSDK_AVAILABLE = $true
-            Mock Get-SDK-API-Version { '1.2.5' }
+            Mock Get-SDKMAN-API-Version { '1.2.5' }
             Mock Invoke-Broadcast-API-Call { 'Broadcast message' }
             Mock Handle-Broadcast -verifiable -parameterFilter { $Command -eq $null -and $Broadcast -eq 'Broadcast message' }
             Mock Write-Offline-Broadcast
@@ -807,7 +807,7 @@ Describe 'Get-Online-Mode check the state variables for PSDK-API availablitiy an
         
         It 'returns $false' {
             $Script:PSDK_AVAILABLE = $false
-            $Script:SDK_FORCE_OFFLINE = $false
+            $Script:PSDK_FORCE_OFFLINE = $false
             Get-Online-Mode | Should -Be $false
         }
     }
@@ -816,7 +816,7 @@ Describe 'Get-Online-Mode check the state variables for PSDK-API availablitiy an
         
         It 'returns $false' {
             $Script:PSDK_AVAILABLE = $false
-            $Script:SDK_FORCE_OFFLINE = $true
+            $Script:PSDK_FORCE_OFFLINE = $true
             Get-Online-Mode | Should -Be $false
         }
     }
@@ -825,7 +825,7 @@ Describe 'Get-Online-Mode check the state variables for PSDK-API availablitiy an
         
         It 'returns $false' {
             $Script:PSDK_AVAILABLE = $true
-            $Script:SDK_FORCE_OFFLINE = $true
+            $Script:PSDK_FORCE_OFFLINE = $true
             Get-Online-Mode | Should -Be $false
         }
     }
@@ -834,7 +834,7 @@ Describe 'Get-Online-Mode check the state variables for PSDK-API availablitiy an
         
         It 'returns $true' {
             $Script:PSDK_AVAILABLE = $true
-            $Script:SDK_FORCE_OFFLINE = $false
+            $Script:PSDK_FORCE_OFFLINE = $false
             Get-Online-Mode | Should -Be $true
         }
     }

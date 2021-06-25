@@ -26,20 +26,20 @@ Write-Output @"
 
 A new version is available. Please consider to execute:
 
-    gvm selfupdate
+    psdk selfupdate
 
 ================================================================================
 "@
     }
 }
 
-function Check-PSDK-API-Version() {
+function Check-SDKMAN-API-Version() {
     Write-Verbose 'Checking PSDK-Api version'
     try {
-        $apiVersion = Get-SDK-API-Version
-        $gvmRemoteVersion = Invoke-API-Call "broker/download/sdkman/version/stable"
+        $apiVersion = Get-SDKMAN-API-Version
+        $sdkmanRemoteVersion = Invoke-API-Call "broker/download/sdkman/version/stable"
 
-        if ( $gvmRemoteVersion -gt $apiVersion) {
+        if ( $sdkmanRemoteVersion -gt $apiVersion) {
             if ( $Global:PSDK_AUTO_SELFUPDATE ) {
                 Invoke-Self-Update
             } else {
@@ -79,7 +79,7 @@ function Is-New-Posh-SDK-Version-Available() {
     }
 }
 
-function Get-SDK-API-Version() {
+function Get-SDKMAN-API-Version() {
 	if ( !(Test-Path $Script:PSDK_API_VERSION_PATH) ) {
 		return $null
 	}
@@ -87,7 +87,7 @@ function Get-SDK-API-Version() {
 }
 
 function Check-Available-Broadcast($Command) {
-    $version = Get-SDK-API-Version
+    $version = Get-SDKMAN-API-Version
     if ( !( $version ) ) {
         return
     }
@@ -110,7 +110,7 @@ function Check-Available-Broadcast($Command) {
 
 function Invoke-Broadcast-API-Call {
     try {
-        $target = "$Script:PGVM_BROADCAST_SERVICE/broadcast/latest"
+        $target = "$Script:PSDK_BROADCAST_SERVICE/broadcast/latest"
         Write-Verbose "Broadcast API call to: $target"
         return Invoke-RestMethod $target
     } catch {
@@ -137,7 +137,7 @@ function Invoke-Self-Update($Force) {
 
 function Invoke-Posh-SDK-Update {
     Write-Output 'Update posh-sdk...'
-    . "$psScriptRoot\GetPoshGvm.ps1"
+    . "$psScriptRoot\GetPoshSDK.ps1"
 }
 
 function Check-Candidate-Present($Candidate) {
@@ -286,7 +286,7 @@ function Set-Junction-Via-Mklink($Link, $Target) {
 }
 
 function Get-Online-Mode() {
-    return $Script:PSDK_AVAILABLE -and ! ($Script:SDK_FORCE_OFFLINE)
+    return $Script:PSDK_AVAILABLE -and ! ($Script:PSDK_FORCE_OFFLINE)
 }
 
 function Check-Online-Mode() {
@@ -429,7 +429,7 @@ function Install-Remote-Version($Candidate, $Version) {
 
 	# check if unzip successfully
 	if ( ((Get-ChildItem -Directory $Script:PSDK_TEMP_PATH).count -gt 1) -or !(Test-Path "$Script:PSDK_TEMP_PATH\*-$Version") ) {
-		throw "Could not unzip the archive of $Candidate $Version. Please delete archive from $Script:PSDK_ARCHIVES_PATH (or delete all with 'gvm flush archives'"
+		throw "Could not unzip the archive of $Candidate $Version. Please delete archive from $Script:PSDK_ARCHIVES_PATH (or delete all with 'psdk flush archives'"
 	}
 
     # needed to create the folder ahead. Else the copy process failed on the first try

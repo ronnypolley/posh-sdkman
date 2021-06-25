@@ -5,10 +5,10 @@ BeforeAll {
     . .\TestUtils.ps1
 }
 
-Describe 'gvm' {
+Describe 'psdk' {
     Context 'No posh-sdk dir available' {
         BeforeAll {
-            $Script:SDK_FORCE_OFFLINE = $true
+            $Script:PSDK_FORCE_OFFLINE = $true
             Mock-PSDK-Dir
             Remove-Item $Global:PSDK_DIR -Recurse
             Mock Init-Posh-SDK -verifiable
@@ -17,12 +17,12 @@ Describe 'gvm' {
         }
 
         It 'initalize posh-sdk' {
-            gvm
+            psdk
             Assert-VerifiableMock
         }
 
         It 'prints help' {
-            gvm
+            psdk
             Assert-MockCalled Show-Help 1
         }
 
@@ -33,7 +33,7 @@ Describe 'gvm' {
 
     Context 'posh-sdk dir available' {
         BeforeAll {
-            $Script:SDK_FORCE_OFFLINE = $true
+            $Script:PSDK_FORCE_OFFLINE = $true
             Mock-PSDK-Dir
             Mock Init-Posh-SDK
             Mock Init-Candidate-Cache -verifiable
@@ -41,7 +41,7 @@ Describe 'gvm' {
         }
 
         BeforeEach {
-            gvm
+            psdk
         }
         
         It 'initalize posh-sdk' {
@@ -64,17 +64,17 @@ Describe 'gvm' {
             Mock Init-Candidate-Cache -verifiable
             Mock Check-Available-Broadcast
             Mock Show-Help -verifiable
-            $Script:SDK_FORCE_OFFLINE = $true
+            $Script:PSDK_FORCE_OFFLINE = $true
         }
 
     
         It 'does not load broadcast message from api' {
-            gvm
+            psdk
             Assert-MockCalled Check-Available-Broadcast 0
         }
     
         It 'performs default command actions' {
-            gvm
+            psdk
             Assert-VerifiableMock
         }
 
@@ -89,17 +89,17 @@ Describe 'gvm' {
             Mock Init-Candidate-Cache -verifiable
             Mock Check-Available-Broadcast
             Mock Set-Offline-Mode -verifiable
-            $Script:SDK_FORCE_OFFLINE = $false
+            $Script:PSDK_FORCE_OFFLINE = $false
         }
 
     
         It 'does not load broadcast message from api' {
-            gvm offline
+            psdk offline
             Assert-MockCalled Check-Available-Broadcast 0
         }
         
         It 'performs offline command actions' {
-            gvm offline
+            psdk offline
             Assert-VerifiableMock
         }
 
@@ -116,7 +116,7 @@ Describe 'gvm' {
 
     
         It 'checks for new broadcast, inits the Candidate-Cache and calls install-command' {
-            gvm i grails 2.2.2 \bla
+            psdk i grails 2.2.2 \bla
             Assert-VerifiableMock
         }
 
@@ -133,7 +133,7 @@ Describe 'gvm' {
 
     
         It 'checks for new broadcast, inits the Candidate-Cache and calls install-command' {
-            gvm install grails 2.2.2
+            psdk install grails 2.2.2
             Assert-VerifiableMock
         }
 
@@ -150,7 +150,7 @@ Describe 'gvm' {
 
     
         It 'checks for new broadcast, inits the Candidate-Cache and calls uninstall-command' {
-            gvm uninstall grails 2.2.2
+            psdk uninstall grails 2.2.2
             Assert-VerifiableMock
         }
 
@@ -167,7 +167,7 @@ Describe 'gvm' {
 
     
         It 'checks for new broadcast, inits the Candidate-Cache and calls uninstall-command' {
-            gvm rm grails 2.2.1
+            psdk rm grails 2.2.1
             Assert-VerifiableMock
         }
 
@@ -184,7 +184,7 @@ Describe 'gvm' {
 
     
         It 'checks for new broadcast, inits the Candidate-Cache and calls list-command' {
-            gvm ls grails
+            psdk ls grails
             Assert-VerifiableMock
         }
 
@@ -201,7 +201,7 @@ Describe 'gvm' {
 
     
         It 'checks for new broadcast, inits the Candidate-Cache and calls list-command' {
-            gvm list grails
+            psdk list grails
             Assert-VerifiableMock
         }
 
@@ -218,7 +218,7 @@ Describe 'gvm' {
 
     
         It 'checks for new broadcast, inits the Candidate-Cache and calls use-command' {
-            gvm u grails 2.2.1
+            psdk u grails 2.2.1
             Assert-VerifiableMock
         }
 
@@ -235,7 +235,7 @@ Describe 'gvm' {
 
     
         It 'checks for new broadcast, inits the Candidate-Cache and calls use-command' {
-            gvm use grails 2.2.1
+            psdk use grails 2.2.1
             Assert-VerifiableMock
         }
 
@@ -252,7 +252,7 @@ Describe 'gvm' {
 
     
         It 'checks for new broadcast, inits the Candidate-Cache and calls default-command' {
-            gvm d grails 2.2.1
+            psdk d grails 2.2.1
             Assert-VerifiableMock
         }
 
@@ -269,7 +269,7 @@ Describe 'gvm' {
 
     
         It 'checks for new broadcast, inits the Candidate-Cache and calls default-command' {
-            gvm default grails 2.2.1
+            psdk default grails 2.2.1
             Assert-VerifiableMock
         }
 
@@ -286,7 +286,7 @@ Describe 'gvm' {
 
     
         It 'checks for new broadcast, inits the Candidate-Cache and calls current-command' {
-            gvm c grails
+            psdk c grails
             Assert-VerifiableMock
         }
 
@@ -303,7 +303,7 @@ Describe 'gvm' {
 
     
         It 'checks for new broadcast, inits the Candidate-Cache and calls current-command' {
-            gvm current grails
+            psdk current grails
             Assert-VerifiableMock
         }
 
@@ -320,7 +320,7 @@ Describe 'gvm' {
 
     
         It 'checks for new broadcast, inits the Candidate-Cache and calls version-command' {
-            gvm v
+            psdk v
             Assert-VerifiableMock
         }
 
@@ -337,7 +337,7 @@ Describe 'gvm' {
 
     
         It 'checks for new broadcast, inits the Candidate-Cache and calls version-command' {
-            gvm version
+            psdk version
             Assert-VerifiableMock
         }
 
@@ -354,7 +354,7 @@ Describe 'gvm' {
 
     
         It 'checks for new broadcast, inits the Candidate-Cache and calls broadcast-command' {
-            gvm b
+            psdk b
             Assert-VerifiableMock
         }
 
@@ -371,7 +371,7 @@ Describe 'gvm' {
 
     
         It 'checks for new broadcast, inits the Candidate-Cache and calls broadcast-command' {
-            gvm broadcast
+            psdk broadcast
             Assert-VerifiableMock
         }
 
@@ -388,7 +388,7 @@ Describe 'gvm' {
 
     
         It 'checks for new broadcast, inits the Candidate-Cache and calls help-command' {
-            gvm h
+            psdk h
             Assert-VerifiableMock
         }
 
@@ -405,7 +405,7 @@ Describe 'gvm' {
 
     
         It 'checks for new broadcast, inits the Candidate-Cache and calls help-command' {
-            gvm help
+            psdk help
             Assert-VerifiableMock
         }
 
@@ -422,7 +422,7 @@ Describe 'gvm' {
 
     
         It 'checks for new broadcast, inits the Candidate-Cache and calls offline-command' {
-            gvm offline enable
+            psdk offline enable
             Assert-VerifiableMock
         }
 
@@ -439,7 +439,7 @@ Describe 'gvm' {
 
     
         It 'checks for new broadcast, inits the Candidate-Cache and calls selfupdate-command' {
-            gvm selfupdate
+            psdk selfupdate
             Assert-VerifiableMock
         }
 
@@ -456,7 +456,7 @@ Describe 'gvm' {
 
     
         It 'checks for new broadcast, inits the Candidate-Cache and calls flush-command' {
-            gvm flush version
+            psdk flush version
             Assert-VerifiableMock
         }
 
@@ -857,7 +857,7 @@ Describe 'Show-Current-Version' {
 Describe 'Show-Posh-SDK-Version' {
     Context 'When called' {
         BeforeAll {
-            Mock Get-SDK-API-Version -verifiable
+            Mock Get-SDKMAN-API-Version -verifiable
             Mock Get-Posh-SDK-Version -verifiable
             Mock Write-Output -verifiable
         }
@@ -895,7 +895,7 @@ Describe 'Set-Offline-Mode' {
 
     Context 'If called with enable flag' {
         BeforeAll {
-            $Script:SDK_FORCE_OFFLINE = $false
+            $Script:PSDK_FORCE_OFFLINE = $false
             Mock Write-Output -verifiable
         }
 
@@ -904,7 +904,7 @@ Describe 'Set-Offline-Mode' {
         }
 
         It "set offline mode" {
-            $Script:SDK_FORCE_OFFLINE | Should -Be $true
+            $Script:PSDK_FORCE_OFFLINE | Should -Be $true
         }
 
         It "writes info to output" {
@@ -915,7 +915,7 @@ Describe 'Set-Offline-Mode' {
     Context 'if called with disable flag' {
         BeforeAll {
             $Script:PSDK_ONLINE = $false
-            $Script:SDK_FORCE_OFFLINE = $true
+            $Script:PSDK_FORCE_OFFLINE = $true
             Mock Write-Output -verifiable
         }
 
@@ -924,10 +924,10 @@ Describe 'Set-Offline-Mode' {
         }
 
         It "deactivate offline mode" {
-            $Script:SDK_FORCE_OFFLINE | Should -Be $false
+            $Script:PSDK_FORCE_OFFLINE | Should -Be $false
         }
 
-        It "set gvm to online" {
+        It "set psdk to online" {
             $Script:PSDK_ONLINE | Should -Be $true
         }
 

@@ -37,7 +37,7 @@ Requirements:
 
 ### Via short script
 
-1. Execute `(new-object Net.WebClient).DownloadString('https://raw.githubusercontent.com/ronnypolley/posh-sdkman/main/PSSDKMan/GetPoshGvm.ps1') | iex`
+1. Execute `(new-object Net.WebClient).DownloadString('https://raw.githubusercontent.com/ronnypolley/posh-sdkman/main/PSSDKMan/GetPoshSDK.ps1') | iex`
 2. Execute `Import-Module posh-sdk`(best add it to your profile.ps1)
 3. Execute `psdk help` to get started!
 
@@ -61,7 +61,7 @@ Update-Module posh-sdk
 
 #### Via short Script
 
-(new-object Net.WebClient).DownloadString('https://raw.githubusercontent.com/ronnypolley/posh-sdkman/main/PSSDKMan/GetPoshGvm.ps1') | iex
+(new-object Net.WebClient).DownloadString('https://raw.githubusercontent.com/ronnypolley/posh-sdkman/main/PSSDKMan/GetPoshSDK.ps1') | iex
 
 #### Classic way
 
@@ -93,7 +93,7 @@ If you want to remove posh-sdk you need to perform 3 steps:
 
 1. Remove the `Import-Module posh-sdk` statement from your powershell profile (The path can be found with `PS> $PROFILE`).
 2. Remove the `posh-sdk` folder from you powershell modules (Most likely posh-sdk is in the first path of `PS> $env:PSModulePath`).
-3. Remove the `~\posh_gvm` folder in your home folder.
+3. Remove the `~\posh_sdk` folder in your home folder.
 
 If you now restart your powershell instance, posh-sdk is gone.
 

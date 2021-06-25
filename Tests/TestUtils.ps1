@@ -67,7 +67,7 @@ function Reset-Grails-Home {
 
 function Mock-Dispatcher-Test([switch]$Offline) {
     Mock-PSDK-Dir
-    $Script:SDK_FORCE_OFFLINE = $false
+    $Script:PSDK_FORCE_OFFLINE = $false
     $Script:FIRST_RUN = $false
     if ( !($Offline) ) {
         Mock Check-Available-Broadcast -verifiable

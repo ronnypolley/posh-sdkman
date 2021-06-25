@@ -1,7 +1,7 @@
 ﻿# Check if function TabExpansion already exists and backup existing version to
 # prevent breaking other TabExpansion implementations.
 # Taken from posh-git https://github.com/dahlbyk/posh-git/blob/master/GitTabExpansion.ps1#L297
-$tabExpansionBackup = 'PoshGVM_DefaultTabExpansion'
+$tabExpansionBackup = 'PoshSDK_DefaultTabExpansion'
 if (Test-Path Function:\TabExpansion) {
     Rename-Item Function:\TabExpansion $tabExpansionBackup -ErrorAction SilentlyContinue
 }
@@ -10,16 +10,16 @@ function TabExpansion($line, $lastWord) {
     $lastBlock = [regex]::Split($line, '[|;]')[-1].TrimStart()
 
     switch -regex ($lastBlock) {
-        # Execute gvm tab expansion for gvm command
-        '^gvm (.*)' { gvmTabExpansion($lastBlock) }
+        # Execute psdk tab expansion for psdk command
+        '^psdk (.*)' { psdkTabExpansion($lastBlock) }
         # Fall back on existing tab expansion
         default { if (Test-Path Function:\$tabExpansionBackup) { & $tabExpansionBackup $line $lastWord } }
     }
 }
 
-$Script:PGVM_TAB_COMMANDS = @('install','uninstall','rm','list','use','default','current','version','broadcast','help','offline','selfupdate','flush')
-function gvmTabExpansion($lastBlock) {
-    if ( !($lastBlock -match '^gvm\s+(?<cmd>\S+)?(?<args> .*)?$') ) {
+$Script:PSDK_TAB_COMMANDS = @('install','uninstall','rm','list','use','default','current','version','broadcast','help','offline','selfupdate','flush')
+function psdkTabExpansion($lastBlock) {
+    if ( !($lastBlock -match '^psdk\s+(?<cmd>\S+)?(?<args> .*)?$') ) {
         return
     }
     $command = $Matches['cmd']
@@ -27,25 +27,25 @@ function gvmTabExpansion($lastBlock) {
 
     if ( !($arguments) ) {
         # Try to complete the command
-        return $Script:PGVM_TAB_COMMANDS | Where-Object { $_.StartsWith($command) }
+        return $Script:PSDK_TAB_COMMANDS | Where-Object { $_.StartsWith($command) }
     }
 
     $arguments = $arguments.TrimStart()
     # Help add correct parameters
     switch -regex ($command) {
-        '^i(nstall)?'    { gvmTabExpandion-Need-Candidate $command $arguments }
-        '^(uninstall|rm)'{ gvmTabExpandion-Need-Candidate $command $arguments }
-        '^(ls|list)'     { gvmTabExpandion-Need-Candidate $command $arguments }
-        '^u(se)?'        { gvmTabExpandion-Need-Candidate $command $arguments }
-        '^d(efault)?'    { gvmTabExpandion-Need-Candidate $command $arguments }
-        '^c(urrent)?'    { gvmTabExpandion-Need-Candidate $command $arguments }
-        '^offline'       { gvmTabExpansion-Offline $arguments }
-        '^flush'         { gvmTabExpansion-Flush $arguments }
+        '^i(nstall)?'    { psdkTabExpansion-Need-Candidate $command $arguments }
+        '^(uninstall|rm)'{ psdkTabExpansion-Need-Candidate $command $arguments }
+        '^(ls|list)'     { psdkTabExpansion-Need-Candidate $command $arguments }
+        '^u(se)?'        { psdkTabExpansion-Need-Candidate $command $arguments }
+        '^d(efault)?'    { psdkTabExpansion-Need-Candidate $command $arguments }
+        '^c(urrent)?'    { psdkTabExpansion-Need-Candidate $command $arguments }
+        '^offline'       { psdkTabExpansion-Offline $arguments }
+        '^flush'         { psdkTabExpansion-Flush $arguments }
         default          {}
     }
 }
 
-function gvmTabExpandion-Need-Candidate($Command, $LastBlock) {
+function psdkTabExpansion-Need-Candidate($Command, $LastBlock) {
     if ( !($LastBlock -match "^(?<candidate>\S+)?(?<args> .*)?$") ) {
         return
     }
@@ -66,25 +66,25 @@ function gvmTabExpandion-Need-Candidate($Command, $LastBlock) {
     $arguments = $arguments.TrimStart()
     # Help add correct parameters
     switch -regex ($command) {
-        #'^i(nstall)?'    { gvmTabExpandion-Need-Version $candidate $arguments }
-        '^(uninstall|rm)'{ gvmTabExpandion-Need-Version $candidate $arguments }
-        '^u(se)?'        { gvmTabExpandion-Need-Version $candidate $arguments }
-        '^d(efault)?'    { gvmTabExpandion-Need-Version $candidate $arguments }
+        #'^i(nstall)?'    { psdkTabExpansion-Need-Version $candidate $arguments }
+        '^(uninstall|rm)'{ psdkTabExpansion-Need-Version $candidate $arguments }
+        '^u(se)?'        { psdkTabExpansion-Need-Version $candidate $arguments }
+        '^d(efault)?'    { psdkTabExpansion-Need-Version $candidate $arguments }
         default          {}
     }
 }
 
-function gvmTabExpandion-Need-Version($Candidate, $LastBlock) {
+function psdkTabExpansion-Need-Version($Candidate, $LastBlock) {
     Get-Installed-Candidate-Version-List $Candidate | Where-Object { $_.StartsWith($LastBlock) }
 }
 
-function gvmTabExpansion-Offline($Arguments) {
+function psdkTabExpansion-Offline($Arguments) {
     @('enable','disable') | Where-Object { ([string]$_).StartsWith($Arguments) }
 }
 
-function gvmTabExpansion-Flush($Arguments) {
+function psdkTabExpansion-Flush($Arguments) {
     @('candidates','broadcast','archives','temp') | Where-Object { ([string]$_).StartsWith($Arguments) }
 }
 
 Export-ModuleMember TabExpansion
-Export-ModuleMember gvmTabExpansion
+Export-ModuleMember psdkTabExpansion
