@@ -9,7 +9,7 @@ Needed:
 
 #region Config
 if ( !(Test-Path Variable:Global:PGVM_DIR) ) {
-	$Global:PGVM_DIR = "$env:USERPROFILE\.posh_gvm"
+	$Global:PSDK_DIR = "$env:USERPROFILE\.posh_gvm"
 }
 if ( !(Test-Path Variable:Global:PGVM_AUTO_ANSWER) ) {
 	$Global:PGVM_AUTO_ANSWER = $false
@@ -23,11 +23,11 @@ $Script:PGVM_SERVICE = 'https://api.sdkman.io/2'
 $Script:PGVM_BROADCAST_SERVICE = $Script:PGVM_SERVICE
 $Script:GVM_BASE_VERSION = '1.3.13'
 
-$Script:PGVM_CANDIDATES_PATH = "$Global:PGVM_DIR\.meta\candidates.txt"
-$Script:PGVM_BROADCAST_PATH = "$Global:PGVM_DIR\.meta\broadcast.txt"
-$Script:GVM_API_VERSION_PATH = "$Global:PGVM_DIR\.meta\version.txt"
-$Script:PGVM_ARCHIVES_PATH = "$Global:PGVM_DIR\.meta\archives"
-$Script:PGVM_TEMP_PATH = "$Global:PGVM_DIR\.meta\tmp"
+$Script:PGVM_CANDIDATES_PATH = "$Global:PSDK_DIR\.meta\candidates.txt"
+$Script:PGVM_BROADCAST_PATH = "$Global:PSDK_DIR\.meta\broadcast.txt"
+$Script:GVM_API_VERSION_PATH = "$Global:PSDK_DIR\.meta\version.txt"
+$Script:PGVM_ARCHIVES_PATH = "$Global:PSDK_DIR\.meta\archives"
+$Script:PGVM_TEMP_PATH = "$Global:PSDK_DIR\.meta\tmp"
 
 $Script:GVM_API_NEW_VERSION = $false
 $Script:PGVM_NEW_VERSION = $false

@@ -199,7 +199,7 @@ function Check-Candidate-Version-Available($Candidate, $Version) {
 }
 
 function Get-Current-Candidate-Version($Candidate) {
-    $currentLink = "$Global:PGVM_DIR\$Candidate\current"
+    $currentLink = "$Global:PSDK_DIR\$Candidate\current"
 
     $targetItem = Get-Junction-Target $currentLink
 
@@ -248,19 +248,19 @@ function Check-Candidate-Version-Locally-Available($Candidate, $Version) {
 
 function Is-Candidate-Version-Locally-Available($Candidate, $Version) {
     if ( $Version ) {
-        return Test-Path "$Global:PGVM_DIR\$Candidate\$Version"
+        return Test-Path "$Global:PSDK_DIR\$Candidate\$Version"
     } else {
         return $false
     }
 }
 
 function Get-Installed-Candidate-Version-List($Candidate) {
-    return Get-ChildItem "$Global:PGVM_DIR\$Candidate" | ?{ $_.PSIsContainer -and $_.Name -ne 'current' } | Foreach { $_.Name }
+    return Get-ChildItem "$Global:PSDK_DIR\$Candidate" | ?{ $_.PSIsContainer -and $_.Name -ne 'current' } | Foreach { $_.Name }
 }
 
 function Set-Env-Candidate-Version($Candidate, $Version) {
     $candidateEnv = ([string]$candidate).ToUpper() + "_HOME"
-    $candidateDir = "$Global:PGVM_DIR\$candidate"
+    $candidateDir = "$Global:PSDK_DIR\$candidate"
     $candidateHome = "$candidateDir\$Version"
     $candidateBin = "$candidateHome\bin"
 
@@ -272,8 +272,8 @@ function Set-Env-Candidate-Version($Candidate, $Version) {
 }
 
 function Set-Linked-Candidate-Version($Candidate, $Version) {
-    $Link = "$Global:PGVM_DIR\$Candidate\current"
-    $Target = "$Global:PGVM_DIR\$Candidate\$Version"
+    $Link = "$Global:PSDK_DIR\$Candidate\current"
+    $Target = "$Global:PSDK_DIR\$Candidate\$Version"
     Set-Junction-Via-Mklink $Link $Target
 }
 
@@ -397,7 +397,7 @@ function Install-Local-Version($Candidate, $Version, $LocalPath) {
     }
 
     Write-Output "Linking $Candidate $Version to $LocalPath"
-    $link = "$Global:PGVM_DIR\$Candidate\$Version"
+    $link = "$Global:PSDK_DIR\$Candidate\$Version"
     Set-Junction-Via-Mklink $link $LocalPath
     Write-Output "Done installing!"
 }
@@ -433,12 +433,12 @@ function Install-Remote-Version($Candidate, $Version) {
 	}
 
     # needed to create the folder ahead. Else the copy process failed on the first try
-    New-Item -ItemType Directory "$Global:PGVM_DIR\$Candidate\$Version" | Out-Null
+    New-Item -ItemType Directory "$Global:PSDK_DIR\$Candidate\$Version" | Out-Null
     # move to target location
     # Move was replaced by copy and remove because of random access denied errors
     # when Unzip was done by via -com shell.application
-    # Move-Item "$Script:PGVM_TEMP_PATH\*-$Version" "$Global:PGVM_DIR\$Candidate\$Version"
-    Copy-Item -Path "$Script:PGVM_TEMP_PATH\$((Get-ChildItem -Directory $Script:PGVM_TEMP_PATH).name)\*" -Destination "$Global:PGVM_DIR\$Candidate\$Version" -Recurse
+    # Move-Item "$Script:PGVM_TEMP_PATH\*-$Version" "$Global:PSDK_DIR\$Candidate\$Version"
+    Copy-Item -Path "$Script:PGVM_TEMP_PATH\$((Get-ChildItem -Directory $Script:PGVM_TEMP_PATH).name)\*" -Destination "$Global:PSDK_DIR\$Candidate\$Version" -Recurse
     Remove-Item "$Script:PGVM_TEMP_PATH\*-$Version" -Recurse -Force
     Write-Output "Done installing!"
 }

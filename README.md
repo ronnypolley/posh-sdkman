@@ -67,7 +67,7 @@ Add `Import-Module posh-gvm` to your powershell profile to be able to use it aft
 ### Configuration
 By default posh-gvm put all the data (inclusive the to be installed executables) into ~/.posh_gvm. You can change the location by setting:
 
-	$Global:PGVM_DIR = <path>
+	$Global:PSDK_DIR = <path>
 
 n your profile BEFORE the `Import-Module posh-gvm` line.
 

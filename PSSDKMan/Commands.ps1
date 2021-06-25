@@ -3,8 +3,8 @@
 	$ProgressPreference = 'SilentlyContinue'
 	if ($Verbose) { $VerbosePreference = 'Continue' }
 
-    if ( !( Test-Path $Global:PGVM_DIR ) ) {
-        Write-Warning "$Global:PGVM_DIR does not exists. Reinitialize posh-gvm"
+    if ( !( Test-Path $Global:PSDK_DIR ) ) {
+        Write-Warning "$Global:PSDK_DIR does not exists. Reinitialize posh-gvm"
         Init-Posh-Gvm
     }
 
@@ -110,11 +110,11 @@ function Uninstall-Candidate-Version($Candidate, $Version) {
 
     if ( $current -eq $Version ) {
         Write-Output "Unselecting $Candidate $Version..."
-        (Get-Item "$Global:PGVM_DIR\$Candidate\current").Delete()
+        (Get-Item "$Global:PSDK_DIR\$Candidate\current").Delete()
     }
 
     Write-Output "Uninstalling $Candidate $Version..."
-    Remove-Item -Recurse -Force "$Global:PGVM_DIR\$Candidate\$Version"
+    Remove-Item -Recurse -Force "$Global:PSDK_DIR\$Candidate\$Version"
 }
 
 function List-Candidate-Versions($Candidate) {

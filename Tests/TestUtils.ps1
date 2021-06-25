@@ -41,24 +41,24 @@ function Mock-Api-Call-Grails-1.1.1-Available($Available) {
 }
 
 function Mock-PSDK-Dir {
-    $Script:backup_PGVM_DIR = $Global:PGVM_DIR
+    $Script:backup_PGVM_DIR = $Global:PSDK_DIR
     New-Item -ItemType Directory "TestDrive:.posh-gvm" | Out-Null
-    $Global:PGVM_DIR = (Get-Item "TestDrive:.posh-gvm").FullName
-    New-Item -ItemType Directory "$Global:PGVM_DIR\grails" | Out-Null
+    $Global:PSDK_DIR = (Get-Item "TestDrive:.posh-gvm").FullName
+    New-Item -ItemType Directory "$Global:PSDK_DIR\grails" | Out-Null
 }
 
 function Reset-PGVM-Dir {
-    $link = "$Global:PGVM_DIR\grails\current"
+    $link = "$Global:PSDK_DIR\grails\current"
     if ( Test-Path $link ) {
         (Get-Item $link).Delete()
     }
 
-    $Global:PGVM_DIR = $Script:backup_PGVM_DIR
+    $Global:PSDK_DIR = $Script:backup_PGVM_DIR
 }
 
 function Mock-Grails-Home($Version) {
     $Script:backup_GRAILS_HOME = [System.Environment]::GetEnvironmentVariable('GRAILS_HOME')
-    [System.Environment]::SetEnvironmentVariable('GRAILS_HOME', "$Global:PGVM_DIR\grails\$Version")
+    [System.Environment]::SetEnvironmentVariable('GRAILS_HOME', "$Global:PSDK_DIR\grails\$Version")
 }
 
 function Reset-Grails-Home {

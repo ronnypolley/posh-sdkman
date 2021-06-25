@@ -10,7 +10,7 @@ Describe 'gvm' {
         BeforeAll {
             $Script:SDK_FORCE_OFFLINE = $true
             Mock-PSDK-Dir
-            Remove-Item $global:PGVM_DIR -Recurse
+            Remove-Item $Global:PSDK_DIR -Recurse
             Mock Init-Posh-Gvm -verifiable
             Mock Init-Candidate-Cache -verifiable
             Mock Show-Help
@@ -621,14 +621,14 @@ Describe 'Uninstall-Candidate-Version' {
         }
 
         BeforeEach {
-            if ( ! (Test-Path "$Global:PGVM_DIR\grails\24.3") ) {
-                New-Item -ItemType Directory "$Global:PGVM_DIR\grails\24.3" | Out-Null
+            if ( ! (Test-Path "$Global:PSDK_DIR\grails\24.3") ) {
+                New-Item -ItemType Directory "$Global:PSDK_DIR\grails\24.3" | Out-Null
             }
             Set-Linked-Candidate-Version grails 24.3
         }
 
         It 'finds current-junction defined' {
-            Test-Path "$Global:PGVM_DIR\grails\current" | Should -Be $true
+            Test-Path "$Global:PSDK_DIR\grails\current" | Should -Be $true
         }
 
         Context "deletion testing" {
@@ -644,11 +644,11 @@ Describe 'Uninstall-Candidate-Version' {
             }
     
             It 'delete the current-junction' {
-                Test-Path "$Global:PGVM_DIR\grails\current" | Should -Be $false
+                Test-Path "$Global:PSDK_DIR\grails\current" | Should -Be $false
             }
     
             It 'delete the version' {
-                Test-Path "$Global:PGVM_DIR\grails\24.3" | Should -Be $false
+                Test-Path "$Global:PSDK_DIR\grails\24.3" | Should -Be $false
             }
     
             It "checks different preconditions correctly" {
@@ -664,7 +664,7 @@ Describe 'Uninstall-Candidate-Version' {
     Context 'To be uninstalled version is installed' {
         BeforeAll {
             Mock-PSDK-Dir
-            New-Item -ItemType Directory "$Global:PGVM_DIR\grails\24.3" | Out-Null
+            New-Item -ItemType Directory "$Global:PSDK_DIR\grails\24.3" | Out-Null
 
             Mock Check-Candidate-Present -verifiable -parameterFilter { $Candidate -eq 'grails' }
             Mock Is-Candidate-Version-Locally-Available { $true } -verifiable -parameterFilter { $Candidate -eq 'grails' -and $Version -eq '24.3' }
@@ -674,7 +674,7 @@ Describe 'Uninstall-Candidate-Version' {
         }
 
         It 'delete the version' {
-            Test-Path "$Global:PGVM_DIR\grails\24.3" | Should -Be $false
+            Test-Path "$Global:PSDK_DIR\grails\24.3" | Should -Be $false
         }
 
         It "checks different preconditions correctly" {

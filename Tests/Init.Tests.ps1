@@ -14,7 +14,7 @@ Describe 'Init-Posh-Gvm' {
             Mock Set-Env-Candidate-Version -verifiable -parameterFilter { $Candidate -eq 'grails' -and $Version -eq 'current' }
             Mock Set-Env-Candidate-Version -verifiable -parameterFilter { $Candidate -eq 'groovy' -and $Version -eq 'current' }
             Mock Set-Env-Candidate-Version -verifiable -parameterFilter { $Candidate -eq 'bla' -and $Version -eq 'current' }
-            $Script:PGVM_CANDIDATES_PATH = "$Global:PGVM_DIR\.meta\candidates.txt"
+            $Script:PGVM_CANDIDATES_PATH = "$Global:PSDK_DIR\.meta\candidates.txt"
             $Script:GVM_CANDIDATES = 'grails', 'groovy', 'bla'
         }
 
@@ -23,19 +23,19 @@ Describe 'Init-Posh-Gvm' {
         }
 
         It "creates .meta" {
-            Test-Path "$Global:PGVM_DIR\.meta" | Should -Be $true
+            Test-Path "$Global:PSDK_DIR\.meta" | Should -Be $true
         }
 
         It "creates grails" {
-            Test-Path "$Global:PGVM_DIR\grails" | Should -Be $true
+            Test-Path "$Global:PSDK_DIR\grails" | Should -Be $true
         }
 
         It "creates groovy" {
-            Test-Path "$Global:PGVM_DIR\groovy" | Should -Be $true
+            Test-Path "$Global:PSDK_DIR\groovy" | Should -Be $true
         }
 
         It "creates bla" {
-            Test-Path "$Global:PGVM_DIR\bla" | Should -Be $true
+            Test-Path "$Global:PSDK_DIR\bla" | Should -Be $true
         }
 
         It "calls methods to test JAVA_HOME, API version, loads candidate cache and setup env variables" {
@@ -56,8 +56,8 @@ Describe 'Init-Posh-Gvm' {
             Mock Set-Env-Candidate-Version -verifiable -parameterFilter { $Candidate -eq 'grails' -and $Version -eq 'current' }
             Mock Set-Env-Candidate-Version -verifiable -parameterFilter { $Candidate -eq 'groovy' -and $Version -eq 'current' }
             Mock Set-Env-Candidate-Version -verifiable -parameterFilter { $Candidate -eq 'bla' -and $Version -eq 'current' }
-            $Script:PGVM_CANDIDATES_PATH = "$Global:PGVM_DIR\.meta\candidates.txt"
-            New-Item -ItemType Directory "$Global:PGVM_DIR\.meta" | Out-Null
+            $Script:PGVM_CANDIDATES_PATH = "$Global:PSDK_DIR\.meta\candidates.txt"
+            New-Item -ItemType Directory "$Global:PSDK_DIR\.meta" | Out-Null
             New-Item -ItemType File $Script:PGVM_CANDIDATES_PATH | Out-Null
             $Script:GVM_CANDIDATES = 'grails', 'groovy', 'bla'
         }
@@ -67,19 +67,19 @@ Describe 'Init-Posh-Gvm' {
         }
 
         It "creates .meta" {
-            Test-Path "$Global:PGVM_DIR\.meta" | Should -Be $true
+            Test-Path "$Global:PSDK_DIR\.meta" | Should -Be $true
         }
 
         It "creates grails" {
-            Test-Path "$Global:PGVM_DIR\grails" | Should -Be $true
+            Test-Path "$Global:PSDK_DIR\grails" | Should -Be $true
         }
 
         It "creates groovy" {
-            Test-Path "$Global:PGVM_DIR\groovy" | Should -Be $true
+            Test-Path "$Global:PSDK_DIR\groovy" | Should -Be $true
         }
 
         It "creates bla" {
-            Test-Path "$Global:PGVM_DIR\bla" | Should -Be $true
+            Test-Path "$Global:PSDK_DIR\bla" | Should -Be $true
         }
 
         It "calls methods to test JAVA_HOME, API version, loads candidate cache and setup env variables" {

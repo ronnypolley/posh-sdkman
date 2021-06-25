@@ -562,8 +562,8 @@ Describe 'Get-Current-Candidate-Version reads the currently linked version' {
     Context 'When current is defined' {
         BeforeAll {
             Mock-PSDK-Dir
-            New-Item -ItemType Directory "$Global:PGVM_DIR\grails\2.2.2" | Out-Null
-            Set-Junction-Via-Mklink "$Global:PGVM_DIR\grails\current" "$Global:PGVM_DIR\grails\2.2.2"
+            New-Item -ItemType Directory "$Global:PSDK_DIR\grails\2.2.2" | Out-Null
+            Set-Junction-Via-Mklink "$Global:PSDK_DIR\grails\current" "$Global:PSDK_DIR\grails\2.2.2"
         }
 
         It 'returns the liked version' {
@@ -580,7 +580,7 @@ Describe 'Get-Env-Candidate-Version reads the version set in $Candidate-Home' {
     Context 'When GRAILS_HOME is set to a specific version' {
         BeforeAll {
             Mock-PSDK-Dir
-            New-Item -ItemType Directory "$Global:PGVM_DIR\grails\2.2.1" | Out-Null
+            New-Item -ItemType Directory "$Global:PSDK_DIR\grails\2.2.1" | Out-Null
             Mock-Grails-Home 2.2.1
         }
 
@@ -597,8 +597,8 @@ Describe 'Get-Env-Candidate-Version reads the version set in $Candidate-Home' {
     Context 'When GRAILS_HOME is set to current' {
         BeforeAll {
             Mock-PSDK-Dir
-            New-Item -ItemType Directory "$Global:PGVM_DIR\grails\2.2.1" | Out-Null
-            Set-Junction-Via-Mklink "$Global:PGVM_DIR\grails\current" "$Global:PGVM_DIR\grails\2.2.1"
+            New-Item -ItemType Directory "$Global:PSDK_DIR\grails\2.2.1" | Out-Null
+            Set-Junction-Via-Mklink "$Global:PSDK_DIR\grails\current" "$Global:PSDK_DIR\grails\2.2.1"
 
             Mock-Grails-Home current
         }
@@ -652,7 +652,7 @@ Describe 'Is-Candidate-Version-Locally-Available check the path exists' {
         
         it 'returns $true' {
             Mock-PSDK-Dir
-            New-Item -ItemType Directory "$Global:PGVM_DIR\grails\1.1.1" | Out-Null
+            New-Item -ItemType Directory "$Global:PSDK_DIR\grails\1.1.1" | Out-Null
             Is-Candidate-Version-Locally-Available grails 1.1.1 | Should -Be $true
             Reset-PGVM-Dir
         }
@@ -664,10 +664,10 @@ Describe 'Get-Installed-Candidate-Version-List' {
     Context 'Version 1.1, 1.3.7 and 2.2.1 of grails installed' {
         BeforeAll {
             Mock-PSDK-Dir
-            New-Item -ItemType Directory "$Global:PGVM_DIR\grails\1.1" | Out-Null
-            New-Item -ItemType Directory "$Global:PGVM_DIR\grails\1.3.7" | Out-Null
-            New-Item -ItemType Directory "$Global:PGVM_DIR\grails\2.2.1" | Out-Null
-            Set-Junction-Via-Mklink "$Global:PGVM_DIR\grails\current" "$Global:PGVM_DIR\grails\2.2.1"
+            New-Item -ItemType Directory "$Global:PSDK_DIR\grails\1.1" | Out-Null
+            New-Item -ItemType Directory "$Global:PSDK_DIR\grails\1.3.7" | Out-Null
+            New-Item -ItemType Directory "$Global:PSDK_DIR\grails\2.2.1" | Out-Null
+            Set-Junction-Via-Mklink "$Global:PSDK_DIR\grails\current" "$Global:PSDK_DIR\grails\2.2.1"
         }
 
         It 'returns list of installed versions' {
@@ -684,9 +684,9 @@ Describe 'Set-Env-Candidate-Version' {
     Context 'Env-Version of grails is current' {
         BeforeAll {
             Mock-PSDK-Dir
-            New-Item -ItemType Directory "$Global:PGVM_DIR\grails\1.3.7" | Out-Null
-            New-Item -ItemType Directory "$Global:PGVM_DIR\grails\2.2.1" | Out-Null
-            Set-Junction-Via-Mklink "$Global:PGVM_DIR\grails\current" "$Global:PGVM_DIR\grails\2.2.1"
+            New-Item -ItemType Directory "$Global:PSDK_DIR\grails\1.3.7" | Out-Null
+            New-Item -ItemType Directory "$Global:PSDK_DIR\grails\2.2.1" | Out-Null
+            Set-Junction-Via-Mklink "$Global:PSDK_DIR\grails\current" "$Global:PSDK_DIR\grails\2.2.1"
             Mock-Grails-Home current
             $Global:backupPATH = $env:Path
 
@@ -694,11 +694,11 @@ Describe 'Set-Env-Candidate-Version' {
         }
 
         It 'sets GRAILS_HOME' {
-            $env:GRAILS_HOME -eq "$Global:PGVM_DIR\grails\1.3.7"
+            $env:GRAILS_HOME -eq "$Global:PSDK_DIR\grails\1.3.7"
         }
 
         It 'extends the Path' {
-            $env:Path -eq "$Global:PGVM_DIR\grails\1.3.7\bin"
+            $env:Path -eq "$Global:PSDK_DIR\grails\1.3.7\bin"
         }
 
         AfterAll {
@@ -732,17 +732,17 @@ Describe 'Set-Junction-Via-Mklink' {
     Context 'No junction for the link-path exists' {
         BeforeAll {
             Mock-PSDK-Dir
-            New-Item -ItemType Directory "$Global:PGVM_DIR\grails\1.3.7" | Out-Null
+            New-Item -ItemType Directory "$Global:PSDK_DIR\grails\1.3.7" | Out-Null
 
-            Set-Junction-Via-Mklink "$Global:PGVM_DIR\grails\bla" "$Global:PGVM_DIR\grails\1.3.7"
+            Set-Junction-Via-Mklink "$Global:PSDK_DIR\grails\bla" "$Global:PSDK_DIR\grails\1.3.7"
         }
 
         It 'creates a junction to the target location' {
-            (Get-Junction-Target "$Global:PGVM_DIR\grails\bla").FullName -eq "$Global:PGVM_DIR\grails\1.3.7" 
+            (Get-Junction-Target "$Global:PSDK_DIR\grails\bla").FullName -eq "$Global:PSDK_DIR\grails\1.3.7" 
         }
 
         AfterAll {
-            (Get-Item "$Global:PGVM_DIR\grails\bla").Delete()
+            (Get-Item "$Global:PSDK_DIR\grails\bla").Delete()
             Reset-PGVM-Dir
         }
     }
@@ -750,18 +750,18 @@ Describe 'Set-Junction-Via-Mklink' {
     Context 'A Junction for the link-path exists' {
         BeforeAll {
             Mock-PSDK-Dir
-            New-Item -ItemType Directory "$Global:PGVM_DIR\grails\1.3.7" | Out-Null
-            New-Item -ItemType Directory "$Global:PGVM_DIR\grails\1.3.8" | Out-Null
-            Set-Junction-Via-Mklink "$Global:PGVM_DIR\grails\bla" "$Global:PGVM_DIR\grails\1.3.8"
-            Set-Junction-Via-Mklink "$Global:PGVM_DIR\grails\bla" "$Global:PGVM_DIR\grails\1.3.7"
+            New-Item -ItemType Directory "$Global:PSDK_DIR\grails\1.3.7" | Out-Null
+            New-Item -ItemType Directory "$Global:PSDK_DIR\grails\1.3.8" | Out-Null
+            Set-Junction-Via-Mklink "$Global:PSDK_DIR\grails\bla" "$Global:PSDK_DIR\grails\1.3.8"
+            Set-Junction-Via-Mklink "$Global:PSDK_DIR\grails\bla" "$Global:PSDK_DIR\grails\1.3.7"
         }
 
         It 'creates a junction to the target location without errors' {
-            (Get-Junction-Target "$Global:PGVM_DIR\grails\bla").FullName -eq "$Global:PGVM_DIR\grails\1.3.7"
+            (Get-Junction-Target "$Global:PSDK_DIR\grails\bla").FullName -eq "$Global:PSDK_DIR\grails\1.3.7"
         }
 
         AfterAll {
-            (Get-Item "$Global:PGVM_DIR\grails\bla").Delete()
+            (Get-Item "$Global:PSDK_DIR\grails\bla").Delete()
             Reset-PGVM-Dir
         }
     }
@@ -771,17 +771,17 @@ Describe 'Get-Junction-Target' {
     Context 'Provided path is a junction' {
         BeforeAll {
             Mock-PSDK-Dir
-            New-Item -ItemType Directory "$Global:PGVM_DIR\grails\1.3.7" | Out-Null
+            New-Item -ItemType Directory "$Global:PSDK_DIR\grails\1.3.7" | Out-Null
 
-            Set-Junction-Via-Mklink "$Global:PGVM_DIR\grails\bla" "$Global:PGVM_DIR\grails\1.3.7"
+            Set-Junction-Via-Mklink "$Global:PSDK_DIR\grails\bla" "$Global:PSDK_DIR\grails\1.3.7"
         }
 
         It 'returns the item of the junction correctly' {
-            (Get-Junction-Target "$Global:PGVM_DIR\grails\bla").FullName -eq "$Global:PGVM_DIR\grails\1.3.7"
+            (Get-Junction-Target "$Global:PSDK_DIR\grails\bla").FullName -eq "$Global:PSDK_DIR\grails\1.3.7"
         }
 
         AfterAll {
-            (Get-Item "$Global:PGVM_DIR\grails\bla").Delete()
+            (Get-Item "$Global:PSDK_DIR\grails\bla").Delete()
             Reset-PGVM-Dir
         }
     }
@@ -789,11 +789,11 @@ Describe 'Get-Junction-Target' {
     Context 'Provided path is no junction' {
         BeforeAll {
             Mock-PSDK-Dir
-            New-Item -ItemType Directory "$Global:PGVM_DIR\grails\1.3.7" | Out-Null
+            New-Item -ItemType Directory "$Global:PSDK_DIR\grails\1.3.7" | Out-Null
         }
 
         It 'returns correctly a null object without exception' {
-            Get-Junction-Target "$Global:PGVM_DIR\grails\1.3.7" -eq $null
+            Get-Junction-Target "$Global:PSDK_DIR\grails\1.3.7" -eq $null
         }
 
         AfterAll {
@@ -949,7 +949,7 @@ Describe 'Handle-Broadcast' {
     Context 'Cache broadcast message different than new broadcast' {
         BeforeAll {
             Mock-PSDK-Dir
-            $Script:PGVM_BROADCAST_PATH = "$Global:PGVM_DIR\broadcast.txt"
+            $Script:PGVM_BROADCAST_PATH = "$Global:PSDK_DIR\broadcast.txt"
             Set-Content $Script:PGVM_BROADCAST_PATH 'Old Broadcast message'
             Mock Write-Output -verifiable -parameterFilter { $InputObject -eq 'New Broadcast message' }
 
@@ -974,7 +974,7 @@ Describe 'Handle-Broadcast' {
         BeforeAll {
             Mock-PSDK-Dir
 
-            $Script:PGVM_BROADCAST_PATH = "$Global:PGVM_DIR\broadcast.txt"
+            $Script:PGVM_BROADCAST_PATH = "$Global:PSDK_DIR\broadcast.txt"
             Mock Write-Output -verifiable -parameterFilter { $InputObject -eq 'New Broadcast message' }
 
             Handle-Broadcast list 'New Broadcast message'
@@ -997,7 +997,7 @@ Describe 'Handle-Broadcast' {
         BeforeAll {
             Mock-PSDK-Dir
 
-            $Script:PGVM_BROADCAST_PATH = "$Global:PGVM_DIR\broadcast.txt"
+            $Script:PGVM_BROADCAST_PATH = "$Global:PSDK_DIR\broadcast.txt"
             Mock Write-Output -verifiable
 
             Handle-Broadcast b 'New Broadcast message'
@@ -1020,7 +1020,7 @@ Describe 'Handle-Broadcast' {
         BeforeAll {
             Mock-PSDK-Dir
 
-            $Script:PGVM_BROADCAST_PATH = "$Global:PGVM_DIR\broadcast.txt"
+            $Script:PGVM_BROADCAST_PATH = "$Global:PSDK_DIR\broadcast.txt"
             Mock Write-Output -verifiable
 
             Handle-Broadcast broadcast 'New Broadcast message'
@@ -1043,7 +1043,7 @@ Describe 'Handle-Broadcast' {
         BeforeAll {
             Mock-PSDK-Dir
 
-            $Script:PGVM_BROADCAST_PATH = "$Global:PGVM_DIR\broadcast.txt"
+            $Script:PGVM_BROADCAST_PATH = "$Global:PSDK_DIR\broadcast.txt"
             Mock Write-Output -verifiable
 
             Handle-Broadcast selfupdate 'New Broadcast message'
@@ -1066,7 +1066,7 @@ Describe 'Handle-Broadcast' {
         BeforeAll {
             Mock-PSDK-Dir
 
-            $Script:PGVM_BROADCAST_PATH = "$Global:PGVM_DIR\broadcast.txt"
+            $Script:PGVM_BROADCAST_PATH = "$Global:PSDK_DIR\broadcast.txt"
             Mock Write-Output -verifiable
 
             Handle-Broadcast flush 'New Broadcast message'
@@ -1090,7 +1090,7 @@ Describe 'Init-Candidate-Cache' {
     Context 'Candidate cache file does not exists' {
         BeforeAll {
             Mock-PSDK-Dir
-            $Script:PGVM_CANDIDATES_PATH = "$Global:PGVM_DIR\candidates.txt"
+            $Script:PGVM_CANDIDATES_PATH = "$Global:PSDK_DIR\candidates.txt"
         }
 
         It 'throws an error' {
@@ -1105,7 +1105,7 @@ Describe 'Init-Candidate-Cache' {
     Context 'Candidate cache file does exists' {
         BeforeAll {
             Mock-PSDK-Dir
-            $Script:PGVM_CANDIDATES_PATH = "$Global:PGVM_DIR\candidates.txt"
+            $Script:PGVM_CANDIDATES_PATH = "$Global:PSDK_DIR\candidates.txt"
             Set-Content $Script:PGVM_CANDIDATES_PATH 'grails,groovy,test'
             $Script:GVM_CANDIDATES = $null
 
@@ -1127,12 +1127,12 @@ Describe 'Update-Candidate-Cache' {
         BeforeAll {
             Mock-PSDK-Dir
 
-            $Script:GVM_API_VERSION_PATH = "$Global:PGVM_DIR\version.txt"
-            $Script:PGVM_CANDIDATES_PATH = "$Global:PGVM_DIR\candidates.txt"
+            $Script:GVM_API_VERSION_PATH = "$Global:PSDK_DIR\version.txt"
+            $Script:PGVM_CANDIDATES_PATH = "$Global:PSDK_DIR\candidates.txt"
 
             Mock Check-Online-Mode -verifiable
-            Mock Invoke-API-Call -verifiable -parameterFilter { $Path -eq 'broker/download/sdkman/version/stable' -and $FileTarget -eq "$Global:PGVM_DIR\version.txt" }
-            Mock Invoke-API-Call -verifiable -parameterFilter { $Path -eq 'candidates/all' -and $FileTarget -eq "$Global:PGVM_DIR\candidates.txt" }
+            Mock Invoke-API-Call -verifiable -parameterFilter { $Path -eq 'broker/download/sdkman/version/stable' -and $FileTarget -eq "$Global:PSDK_DIR\version.txt" }
+            Mock Invoke-API-Call -verifiable -parameterFilter { $Path -eq 'candidates/all' -and $FileTarget -eq "$Global:PSDK_DIR\candidates.txt" }
 
             Update-Candidates-Cache
         }
@@ -1203,7 +1203,7 @@ Describe 'Install-Local-Version' {
         BeforeAll {
             New-Item -ItemType Directory TestDrive:Snapshot | Out-Null
             Mock Write-Output
-            Mock Set-Junction-Via-Mklink -verifiable -parameterFilter { $Link -eq "$Global:PGVM_DIR\grails\snapshot" -and $Target -eq 'TestDrive:Snapshot' }
+            Mock Set-Junction-Via-Mklink -verifiable -parameterFilter { $Link -eq "$Global:PSDK_DIR\grails\snapshot" -and $Target -eq 'TestDrive:Snapshot' }
 
             Install-Local-Version grails snapshot TestDrive:Snapshot
         }
@@ -1222,8 +1222,8 @@ Describe 'Install-Remote-Version' {
             Mock Write-Output
             Mock Check-Online-Mode -verifiable
             $Script:PGVM_SERVICE = 'foobar'
-            $Script:PGVM_ARCHIVES_PATH = "$Global:PGVM_DIR\archives"
-            $Script:PGVM_TEMP_PATH = "$Global:PGVM_DIR\temp"
+            $Script:PGVM_ARCHIVES_PATH = "$Global:PSDK_DIR\archives"
+            $Script:PGVM_TEMP_PATH = "$Global:PSDK_DIR\temp"
             $testFilePath = "$PSScriptRoot\test\grails-1.3.9.zip"
 
             Mock -CommandName Download-File -verifiable -MockWith { Copy-Item $testFilePath "$Script:PGVM_ARCHIVES_PATH\grails-1.3.9.zip" } -ParameterFilter { $Url -eq 'foobar/broker/download/grails/1.3.9/cygwin' -and $TargetFile -eq "$Script:PGVM_ARCHIVES_PATH\grails-1.3.9.zip" }
@@ -1236,7 +1236,7 @@ Describe 'Install-Remote-Version' {
         }
 
         It 'install it correctly' {
-            Test-Path "$Global:PGVM_DIR\grails\1.3.9\bin\grails" | Should -Be $true
+            Test-Path "$Global:PSDK_DIR\grails\1.3.9\bin\grails" | Should -Be $true
         }
 
         AfterAll {
@@ -1251,8 +1251,8 @@ Describe 'Install-Remote-Version' {
             Mock Write-Output
             Mock Download-File
 
-            $Script:PGVM_ARCHIVES_PATH = "$Global:PGVM_DIR\archives"
-            $Script:PGVM_TEMP_PATH = "$Global:PGVM_DIR\temp"
+            $Script:PGVM_ARCHIVES_PATH = "$Global:PSDK_DIR\archives"
+            $Script:PGVM_TEMP_PATH = "$Global:PSDK_DIR\temp"
             New-Item -ItemType Directory $Script:PGVM_ARCHIVES_PATH | Out-Null
             Copy-Item "$PSScriptRoot\test\grails-1.3.9.zip" "$Script:PGVM_ARCHIVES_PATH\grails-1.3.9.zip"
 
@@ -1264,7 +1264,7 @@ Describe 'Install-Remote-Version' {
         }
 
         It 'install it correctly' {
-            Test-Path "$Global:PGVM_DIR\grails\1.3.9\bin\grails" | Should -Be $true
+            Test-Path "$Global:PSDK_DIR\grails\1.3.9\bin\grails" | Should -Be $true
         }
 
         AfterAll {
@@ -1279,8 +1279,8 @@ Describe 'Install-Remote-Version' {
             Mock Write-Output
             Mock Download-File
 
-            $Script:PGVM_ARCHIVES_PATH = "$Global:PGVM_DIR\archives"
-            $Script:PGVM_TEMP_PATH = "$Global:PGVM_DIR\temp"
+            $Script:PGVM_ARCHIVES_PATH = "$Global:PSDK_DIR\archives"
+            $Script:PGVM_TEMP_PATH = "$Global:PSDK_DIR\temp"
             New-Item -ItemType Directory $Script:PGVM_ARCHIVES_PATH | Out-Null
             Copy-Item "$PSScriptRoot\test\grails-2.2.2.zip" "$Script:PGVM_ARCHIVES_PATH\grails-2.2.2.zip"
         }

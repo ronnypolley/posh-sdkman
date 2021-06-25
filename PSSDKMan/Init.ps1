@@ -7,9 +7,9 @@ function Init-Posh-Gvm() {
 
     Check-JAVA-HOME
 
-    # Check if $Global:PGVM_DIR is available, if not create it
-    if ( !( Test-Path "$Global:PGVM_DIR\.meta" ) ) {
-        New-Item -ItemType Directory "$Global:PGVM_DIR\.meta" | Out-Null
+    # Check if $Global:PSDK_DIR is available, if not create it
+    if ( !( Test-Path "$Global:PSDK_DIR\.meta" ) ) {
+        New-Item -ItemType Directory "$Global:PSDK_DIR\.meta" | Out-Null
     }
 
     # Load candidates cache
@@ -21,8 +21,8 @@ function Init-Posh-Gvm() {
 
     #Setup default paths
     Foreach ( $candidate in $Script:GVM_CANDIDATES ) {
-		if ( !( Test-Path "$Global:PGVM_DIR\$candidate" ) ) {
-			New-Item -ItemType Directory "$Global:PGVM_DIR\$candidate" | Out-Null
+		if ( !( Test-Path "$Global:PSDK_DIR\$candidate" ) ) {
+			New-Item -ItemType Directory "$Global:PSDK_DIR\$candidate" | Out-Null
 		}
 
         Set-Env-Candidate-Version $candidate 'current'
