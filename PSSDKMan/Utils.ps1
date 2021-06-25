@@ -33,7 +33,7 @@ A new version is available. Please consider to execute:
     }
 }
 
-function Check-GVM-API-Version() {
+function Check-PSDK-API-Version() {
     Write-Verbose 'Checking GVM-API version'
     try {
         $apiVersion = Get-SDK-API-Version

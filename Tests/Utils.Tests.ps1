@@ -3,14 +3,14 @@
     . .\TestUtils.ps1
 }
 
-Describe 'Check-GVM-API-Version' {
+Describe 'Check-PSDK-API-Version' {
     Context 'API offline' {
         BeforeAll {
             $Script:GVM_AVAILABLE = $true
             $Script:GVM_API_NEW_VERSION = $false
             Mock Get-SDK-API-Version
             Mock Invoke-API-Call { throw 'error' }  -parameterFilter { $Path -eq 'app/Version' }
-            Check-GVM-API-Version
+            Check-PSDK-API-Version
         }
         
         It 'the error handling set the app in offline mode' {
@@ -32,7 +32,7 @@ Describe 'Check-GVM-API-Version' {
             Mock Invoke-API-Call { 1.2.2 } -parameterFilter { $Path -eq 'app/Version' }
             Mock Invoke-Self-Update
 
-            Check-GVM-API-Version 
+            Check-PSDK-API-Version 
         }
 
         It 'do nothing' {
@@ -57,7 +57,7 @@ Describe 'Check-GVM-API-Version' {
             Mock Get-SDK-API-Version { '1.2.2' }
             Mock Invoke-API-Call { '1.2.3' } -parameterFilter { $Path -eq 'broker/download/sdkman/version/stable' }
 
-            Check-GVM-API-Version
+            Check-PSDK-API-Version
         }
 
         It 'informs about new version' {
@@ -83,7 +83,7 @@ Describe 'Check-GVM-API-Version' {
             Mock Invoke-API-Call { '1.2.3' } -parameterFilter { $Path -eq 'broker/download/sdkman/version/stable' }
             Mock Invoke-Self-Update -verifiable
 
-            Check-GVM-API-Version 
+            Check-PSDK-API-Version 
         }
 
         It 'updates self' {
