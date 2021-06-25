@@ -9,7 +9,7 @@
     }
 
     $Script:GVM_AVAILABLE = $true
-    if ( !($Script:GVM_FORCE_OFFLINE) -and $Command -ne 'offline' ) {
+    if ( !($Script:SDK_FORCE_OFFLINE) -and $Command -ne 'offline' ) {
         Check-Available-Broadcast $Command
 
         if ( $Script:GVM_AVAILABLE ) {
@@ -190,8 +190,8 @@ function Show-Broadcast-Message() {
 function Set-Offline-Mode($Flag) {
     Write-Verbose 'Perform Set-Offline-Mode'
     switch ($Flag) {
-        'enable'  { $Script:GVM_FORCE_OFFLINE = $true; Write-Output 'Forced offline mode enabled.' }
-        'disable' { $Script:GVM_FORCE_OFFLINE = $false; $Script:GVM_ONLINE = $true; Write-Output 'Online mode re-enabled!' }
+        'enable'  { $Script:SDK_FORCE_OFFLINE = $true; Write-Output 'Forced offline mode enabled.' }
+        'disable' { $Script:SDK_FORCE_OFFLINE = $false; $Script:GVM_ONLINE = $true; Write-Output 'Online mode re-enabled!' }
         default   { throw "Stop! $Flag is not a valid offline offline mode." }
     }
 }

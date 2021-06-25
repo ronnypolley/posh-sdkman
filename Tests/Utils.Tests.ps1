@@ -807,7 +807,7 @@ Describe 'Get-Online-Mode check the state variables for GVM-API availablitiy and
         
         It 'returns $false' {
             $Script:GVM_AVAILABLE = $false
-            $Script:GVM_FORCE_OFFLINE = $false
+            $Script:SDK_FORCE_OFFLINE = $false
             Get-Online-Mode | Should -Be $false
         }
     }
@@ -816,7 +816,7 @@ Describe 'Get-Online-Mode check the state variables for GVM-API availablitiy and
         
         It 'returns $false' {
             $Script:GVM_AVAILABLE = $false
-            $Script:GVM_FORCE_OFFLINE = $true
+            $Script:SDK_FORCE_OFFLINE = $true
             Get-Online-Mode | Should -Be $false
         }
     }
@@ -825,7 +825,7 @@ Describe 'Get-Online-Mode check the state variables for GVM-API availablitiy and
         
         It 'returns $false' {
             $Script:GVM_AVAILABLE = $true
-            $Script:GVM_FORCE_OFFLINE = $true
+            $Script:SDK_FORCE_OFFLINE = $true
             Get-Online-Mode | Should -Be $false
         }
     }
@@ -834,7 +834,7 @@ Describe 'Get-Online-Mode check the state variables for GVM-API availablitiy and
         
         It 'returns $true' {
             $Script:GVM_AVAILABLE = $true
-            $Script:GVM_FORCE_OFFLINE = $false
+            $Script:SDK_FORCE_OFFLINE = $false
             Get-Online-Mode | Should -Be $true
         }
     }

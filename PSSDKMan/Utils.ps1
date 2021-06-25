@@ -286,7 +286,7 @@ function Set-Junction-Via-Mklink($Link, $Target) {
 }
 
 function Get-Online-Mode() {
-    return $Script:GVM_AVAILABLE -and ! ($Script:GVM_FORCE_OFFLINE)
+    return $Script:GVM_AVAILABLE -and ! ($Script:SDK_FORCE_OFFLINE)
 }
 
 function Check-Online-Mode() {

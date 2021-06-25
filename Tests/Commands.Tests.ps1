@@ -8,7 +8,7 @@ BeforeAll {
 Describe 'gvm' {
     Context 'No posh-gvm dir available' {
         BeforeAll {
-            $Script:GVM_FORCE_OFFLINE = $true
+            $Script:SDK_FORCE_OFFLINE = $true
             Mock-PGVM-Dir
             Remove-Item $global:PGVM_DIR -Recurse
             Mock Init-Posh-Gvm -verifiable
@@ -33,7 +33,7 @@ Describe 'gvm' {
 
     Context 'Posh-gvm dir available' {
         BeforeAll {
-            $Script:GVM_FORCE_OFFLINE = $true
+            $Script:SDK_FORCE_OFFLINE = $true
             Mock-PGVM-Dir
             Mock Init-Posh-Gvm
             Mock Init-Candidate-Cache -verifiable
@@ -64,7 +64,7 @@ Describe 'gvm' {
             Mock Init-Candidate-Cache -verifiable
             Mock Check-Available-Broadcast
             Mock Show-Help -verifiable
-            $Script:GVM_FORCE_OFFLINE = $true
+            $Script:SDK_FORCE_OFFLINE = $true
         }
 
     
@@ -89,7 +89,7 @@ Describe 'gvm' {
             Mock Init-Candidate-Cache -verifiable
             Mock Check-Available-Broadcast
             Mock Set-Offline-Mode -verifiable
-            $Script:GVM_FORCE_OFFLINE = $false
+            $Script:SDK_FORCE_OFFLINE = $false
         }
 
     
@@ -895,7 +895,7 @@ Describe 'Set-Offline-Mode' {
 
     Context 'If called with enable flag' {
         BeforeAll {
-            $Script:GVM_FORCE_OFFLINE = $false
+            $Script:SDK_FORCE_OFFLINE = $false
             Mock Write-Output -verifiable
         }
 
@@ -904,7 +904,7 @@ Describe 'Set-Offline-Mode' {
         }
 
         It "set offline mode" {
-            $Script:GVM_FORCE_OFFLINE | Should -Be $true
+            $Script:SDK_FORCE_OFFLINE | Should -Be $true
         }
 
         It "writes info to output" {
@@ -915,7 +915,7 @@ Describe 'Set-Offline-Mode' {
     Context 'if called with disable flag' {
         BeforeAll {
             $Script:GVM_ONLINE = $false
-            $Script:GVM_FORCE_OFFLINE = $true
+            $Script:SDK_FORCE_OFFLINE = $true
             Mock Write-Output -verifiable
         }
 
@@ -924,7 +924,7 @@ Describe 'Set-Offline-Mode' {
         }
 
         It "deactivate offline mode" {
-            $Script:GVM_FORCE_OFFLINE | Should -Be $false
+            $Script:SDK_FORCE_OFFLINE | Should -Be $false
         }
 
         It "set gvm to online" {
