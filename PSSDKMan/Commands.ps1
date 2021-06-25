@@ -223,7 +223,7 @@ function Flush-Cache($DataType) {
                             Write-Warning 'No prior Remote Version found so not flushed.'
                         }
                      }
-        'archives'   { Cleanup-Directory $Script:PGVM_ARCHIVES_PATH }
+        'archives'   { Cleanup-Directory $Script:PSDK_ARCHIVES_PATH }
         'temp'       { Cleanup-Directory $Script:PGVM_TEMP_PATH }
         'tmp'        { Cleanup-Directory $Script:PGVM_TEMP_PATH }
         default      { throw 'Stop! Please specify what you want to flush.' }

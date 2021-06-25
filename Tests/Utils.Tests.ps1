@@ -1222,11 +1222,11 @@ Describe 'Install-Remote-Version' {
             Mock Write-Output
             Mock Check-Online-Mode -verifiable
             $Script:PGVM_SERVICE = 'foobar'
-            $Script:PGVM_ARCHIVES_PATH = "$Global:PSDK_DIR\archives"
+            $Script:PSDK_ARCHIVES_PATH = "$Global:PSDK_DIR\archives"
             $Script:PGVM_TEMP_PATH = "$Global:PSDK_DIR\temp"
             $testFilePath = "$PSScriptRoot\test\grails-1.3.9.zip"
 
-            Mock -CommandName Download-File -verifiable -MockWith { Copy-Item $testFilePath "$Script:PGVM_ARCHIVES_PATH\grails-1.3.9.zip" } -ParameterFilter { $Url -eq 'foobar/broker/download/grails/1.3.9/cygwin' -and $TargetFile -eq "$Script:PGVM_ARCHIVES_PATH\grails-1.3.9.zip" }
+            Mock -CommandName Download-File -verifiable -MockWith { Copy-Item $testFilePath "$Script:PSDK_ARCHIVES_PATH\grails-1.3.9.zip" } -ParameterFilter { $Url -eq 'foobar/broker/download/grails/1.3.9/cygwin' -and $TargetFile -eq "$Script:PSDK_ARCHIVES_PATH\grails-1.3.9.zip" }
 
             Install-Remote-Version grails 1.3.9
         }
@@ -1251,10 +1251,10 @@ Describe 'Install-Remote-Version' {
             Mock Write-Output
             Mock Download-File
 
-            $Script:PGVM_ARCHIVES_PATH = "$Global:PSDK_DIR\archives"
+            $Script:PSDK_ARCHIVES_PATH = "$Global:PSDK_DIR\archives"
             $Script:PGVM_TEMP_PATH = "$Global:PSDK_DIR\temp"
-            New-Item -ItemType Directory $Script:PGVM_ARCHIVES_PATH | Out-Null
-            Copy-Item "$PSScriptRoot\test\grails-1.3.9.zip" "$Script:PGVM_ARCHIVES_PATH\grails-1.3.9.zip"
+            New-Item -ItemType Directory $Script:PSDK_ARCHIVES_PATH | Out-Null
+            Copy-Item "$PSScriptRoot\test\grails-1.3.9.zip" "$Script:PSDK_ARCHIVES_PATH\grails-1.3.9.zip"
 
             Install-Remote-Version grails 1.3.9
         }
@@ -1279,10 +1279,10 @@ Describe 'Install-Remote-Version' {
             Mock Write-Output
             Mock Download-File
 
-            $Script:PGVM_ARCHIVES_PATH = "$Global:PSDK_DIR\archives"
+            $Script:PSDK_ARCHIVES_PATH = "$Global:PSDK_DIR\archives"
             $Script:PGVM_TEMP_PATH = "$Global:PSDK_DIR\temp"
-            New-Item -ItemType Directory $Script:PGVM_ARCHIVES_PATH | Out-Null
-            Copy-Item "$PSScriptRoot\test\grails-2.2.2.zip" "$Script:PGVM_ARCHIVES_PATH\grails-2.2.2.zip"
+            New-Item -ItemType Directory $Script:PSDK_ARCHIVES_PATH | Out-Null
+            Copy-Item "$PSScriptRoot\test\grails-2.2.2.zip" "$Script:PSDK_ARCHIVES_PATH\grails-2.2.2.zip"
         }
 
         It 'fails because of no unziped files' {

@@ -404,11 +404,11 @@ function Install-Local-Version($Candidate, $Version, $LocalPath) {
 
 function Install-Remote-Version($Candidate, $Version) {
 
-    if ( !(Test-Path $Script:PGVM_ARCHIVES_PATH) ) {
-        New-Item -ItemType Directory $Script:PGVM_ARCHIVES_PATH | Out-Null
+    if ( !(Test-Path $Script:PSDK_ARCHIVES_PATH) ) {
+        New-Item -ItemType Directory $Script:PSDK_ARCHIVES_PATH | Out-Null
     }
 
-    $archive = "$Script:PGVM_ARCHIVES_PATH\$Candidate-$Version.zip"
+    $archive = "$Script:PSDK_ARCHIVES_PATH\$Candidate-$Version.zip"
     if ( Test-Path $archive ) {
         Write-Output "Found a previously downloaded $Candidate $Version archive. Not downloading it again..."
     } else {
@@ -429,7 +429,7 @@ function Install-Remote-Version($Candidate, $Version) {
 
 	# check if unzip successfully
 	if ( ((Get-ChildItem -Directory $Script:PGVM_TEMP_PATH).count -gt 1) -or !(Test-Path "$Script:PGVM_TEMP_PATH\*-$Version") ) {
-		throw "Could not unzip the archive of $Candidate $Version. Please delete archive from $Script:PGVM_ARCHIVES_PATH (or delete all with 'gvm flush archives'"
+		throw "Could not unzip the archive of $Candidate $Version. Please delete archive from $Script:PSDK_ARCHIVES_PATH (or delete all with 'gvm flush archives'"
 	}
 
     # needed to create the folder ahead. Else the copy process failed on the first try

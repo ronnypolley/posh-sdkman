@@ -1027,7 +1027,7 @@ Describe 'Flush-Cache' {
 
     Context 'Cleanup archives directory' {
         BeforeAll {
-            $Script:PGVM_ARCHIVES_PATH = 'archives'
+            $Script:PSDK_ARCHIVES_PATH = 'archives'
             Mock Cleanup-Directory -verifiable -parameterFilter { $Path -eq 'archives' }
         }
 
