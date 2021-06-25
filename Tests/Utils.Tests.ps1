@@ -8,7 +8,7 @@ Describe 'Check-GVM-API-Version' {
         BeforeAll {
             $Script:GVM_AVAILABLE = $true
             $Script:GVM_API_NEW_VERSION = $false
-            Mock Get-GVM-API-Version
+            Mock Get-SDK-API-Version
             Mock Invoke-API-Call { throw 'error' }  -parameterFilter { $Path -eq 'app/Version' }
             Check-GVM-API-Version
         }
@@ -28,7 +28,7 @@ Describe 'Check-GVM-API-Version' {
             $Global:PGVM_AUTO_SELFUPDATE = $true
             $Script:GVM_API_NEW_VERSION = $false
 
-            Mock Get-GVM-API-Version { 1.2.2 }
+            Mock Get-SDK-API-Version { 1.2.2 }
             Mock Invoke-API-Call { 1.2.2 } -parameterFilter { $Path -eq 'app/Version' }
             Mock Invoke-Self-Update
 
@@ -54,7 +54,7 @@ Describe 'Check-GVM-API-Version' {
             $Global:PGVM_AUTO_SELFUPDATE = $false
             $Script:GVM_API_NEW_VERSION = $false
 
-            Mock Get-GVM-API-Version { '1.2.2' }
+            Mock Get-SDK-API-Version { '1.2.2' }
             Mock Invoke-API-Call { '1.2.3' } -parameterFilter { $Path -eq 'broker/download/sdkman/version/stable' }
 
             Check-GVM-API-Version
@@ -79,7 +79,7 @@ Describe 'Check-GVM-API-Version' {
             $Global:PGVM_AUTO_SELFUPDATE = $true
             $Script:GVM_API_NEW_VERSION = $false
 
-            Mock Get-GVM-API-Version { '1.2.2' }
+            Mock Get-SDK-API-Version { '1.2.2' }
             Mock Invoke-API-Call { '1.2.3' } -parameterFilter { $Path -eq 'broker/download/sdkman/version/stable' }
             Mock Invoke-Self-Update -verifiable
 
@@ -224,14 +224,14 @@ Describe 'Is-New-Posh-GVM-Version-Available' {
     }
 }
 
-Describe 'Get-GVM-API-Version' {
+Describe 'Get-SDK-API-Version' {
     Context 'No cached version' {
         BeforeAll { 
             $Script:GVM_API_VERSION_PATH = 'TestDrive:version.txt' 
         }
 
         It 'returns `$null' {
-            Get-GVM-API-Version | Should -Be $null
+            Get-SDK-API-Version | Should -Be $null
         }
     }
 
@@ -242,7 +242,7 @@ Describe 'Get-GVM-API-Version' {
         }
 
         It 'returns $null' {
-            Get-GVM-API-Version | Should -Be 1.1.1
+            Get-SDK-API-Version | Should -Be 1.1.1
         }
     }
 }
@@ -252,7 +252,7 @@ Describe 'Check-Available-Broadcast' {
         BeforeAll {
             $Script:GVM_ONLINE = $true
             $Script:GVM_AVAILABLE = $true
-            Mock Get-GVM-API-Version { '1.2.3' }
+            Mock Get-SDK-API-Version { '1.2.3' }
             Mock Invoke-Broadcast-API-Call { 'Broadcast message' }
             Mock Handle-Broadcast -verifiable -parameterFilter { $Command -eq $null -and $Broadcast -eq 'Broadcast message' }
             Mock Write-Offline-Broadcast
@@ -275,7 +275,7 @@ Describe 'Check-Available-Broadcast' {
         BeforeAll {
             $Script:GVM_ONLINE = $true
             $Script:GVM_AVAILABLE = $false
-            Mock Get-GVM-API-Version { '1.2.4' }
+            Mock Get-SDK-API-Version { '1.2.4' }
             Mock Invoke-Broadcast-API-Call { $null }
             Mock Handle-Broadcast
             Mock Write-Offline-Broadcast
@@ -299,7 +299,7 @@ Describe 'Check-Available-Broadcast' {
         BeforeAll {
             $Script:GVM_ONLINE = $false
             $Script:GVM_AVAILABLE = $false
-            Mock Get-GVM-API-Version { '1.2.4' }
+            Mock Get-SDK-API-Version { '1.2.4' }
             Mock Invoke-Broadcast-API-Call { $null }
             Mock Handle-Broadcast
             Mock Write-Offline-Broadcast
@@ -323,7 +323,7 @@ Describe 'Check-Available-Broadcast' {
         BeforeAll {
             $Script:GVM_ONLINE = $false
             $Script:GVM_AVAILABLE = $true
-            Mock Get-GVM-API-Version { '1.2.5' }
+            Mock Get-SDK-API-Version { '1.2.5' }
             Mock Invoke-Broadcast-API-Call { 'Broadcast message' }
             Mock Handle-Broadcast -verifiable -parameterFilter { $Command -eq $null -and $Broadcast -eq 'Broadcast message' }
             Mock Write-Offline-Broadcast

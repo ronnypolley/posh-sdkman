@@ -36,7 +36,7 @@ A new version is available. Please consider to execute:
 function Check-GVM-API-Version() {
     Write-Verbose 'Checking GVM-API version'
     try {
-        $apiVersion = Get-GVM-API-Version
+        $apiVersion = Get-SDK-API-Version
         $gvmRemoteVersion = Invoke-API-Call "broker/download/sdkman/version/stable"
 
         if ( $gvmRemoteVersion -gt $apiVersion) {
@@ -79,7 +79,7 @@ function Is-New-Posh-GVM-Version-Available() {
     }
 }
 
-function Get-GVM-API-Version() {
+function Get-SDK-API-Version() {
 	if ( !(Test-Path $Script:GVM_API_VERSION_PATH) ) {
 		return $null
 	}
@@ -87,7 +87,7 @@ function Get-GVM-API-Version() {
 }
 
 function Check-Available-Broadcast($Command) {
-    $version = Get-GVM-API-Version
+    $version = Get-SDK-API-Version
     if ( !( $version ) ) {
         return
     }
