@@ -30,7 +30,7 @@
 ### Version 1.1.0
 * FEATURE: use unzip.exe if available on path for better install performance
 * FEATURE: self-update
-* FEATURE: automatic check for new posh-gvm versions
+* FEATURE: automatic check for new posh-sdk versions
 
 ### Version 1.0.0
-* posh-gvm before it has self-update functionality
+* posh-sdk before it has self-update functionality

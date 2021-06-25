@@ -42,8 +42,8 @@ function Mock-Api-Call-Grails-1.1.1-Available($Available) {
 
 function Mock-PSDK-Dir {
     $Script:backup_PGVM_DIR = $Global:PSDK_DIR
-    New-Item -ItemType Directory "TestDrive:.posh-gvm" | Out-Null
-    $Global:PSDK_DIR = (Get-Item "TestDrive:.posh-gvm").FullName
+    New-Item -ItemType Directory "TestDrive:.posh-sdk" | Out-Null
+    $Global:PSDK_DIR = (Get-Item "TestDrive:.posh-sdk").FullName
     New-Item -ItemType Directory "$Global:PSDK_DIR\grails" | Out-Null
 }
 

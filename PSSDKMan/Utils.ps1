@@ -52,7 +52,7 @@ function Check-PSDK-API-Version() {
 }
 
 function Check-Posh-SDK-Version() {
-    Write-Verbose 'Checking posh-gvm version'
+    Write-Verbose 'Checking posh-sdk version'
     if ( Is-New-Posh-SDK-Version-Available ) {
         if ( $Global:PSDK_AUTO_SELFUPDATE ) {
             Invoke-Self-Update
@@ -71,7 +71,7 @@ function Is-New-Posh-SDK-Version-Available() {
         $localVersion = (Get-Posh-SDK-Version).Trim()
         $currentVersion = (Invoke-RestMethod $Script:PSDK_VERSION_SERVICE).Trim()
 
-        Write-Verbose "posh-gvm version check $currentVersion > $localVersion = $($currentVersion -gt $localVersion)"
+        Write-Verbose "posh-sdk version check $currentVersion > $localVersion = $($currentVersion -gt $localVersion)"
 
         return ( $currentVersion -gt $localVersion )
     } catch {
@@ -136,7 +136,7 @@ function Invoke-Self-Update($Force) {
 }
 
 function Invoke-Posh-SDK-Update {
-    Write-Output 'Update posh-gvm...'
+    Write-Output 'Update posh-sdk...'
     . "$psScriptRoot\GetPoshGvm.ps1"
 }
 

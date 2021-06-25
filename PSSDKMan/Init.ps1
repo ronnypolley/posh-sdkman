@@ -1,6 +1,6 @@
 #region Initialization
 function Init-Posh-SDK() {
-    Write-Verbose 'Init posh-gvm'
+    Write-Verbose 'Init posh-sdk'
 
     $ErrorActionPreference = 'Stop'
     $ProgressPreference = 'SilentlyContinue'

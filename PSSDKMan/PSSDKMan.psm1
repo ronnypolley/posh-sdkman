@@ -1,7 +1,7 @@
 ﻿<#
-posh-gvm / POwerSHell Groovy enVironment Manager
+posh-sdk / POwerSHell Groovy enVironment Manager
 
-https://github.com/flofreud/posh-gvm
+https://github.com/flofreud/posh-sdk
 
 Needed:
 - Powershell 3.0 (For Windows 7 install Windows Management Framework 3.0)
@@ -32,7 +32,7 @@ $Script:PSDK_TEMP_PATH = "$Global:PSDK_DIR\.meta\tmp"
 $Script:PSDK_API_NEW_VERSION = $false
 $Script:PSDK_NEW_VERSION = $false
 $Script:PSDK_VERSION_PATH = "$psScriptRoot\VERSION.txt"
-$Script:PSDK_VERSION_SERVICE = "https://raw.githubusercontent.com/flofreud/posh-gvm/master/VERSION.txt"
+$Script:PSDK_VERSION_SERVICE = "https://raw.githubusercontent.com/flofreud/posh-sdk/master/VERSION.txt"
 
 $Script:PSDK_AVAILABLE = $true
 $Script:PSDK_ONLINE = $true
