@@ -8,7 +8,6 @@ Describe 'Initialize-Posh-SDK' {
     Context 'PSDK-Dir with only a grails folder' {
         BeforeAll {
             Mock-PSDK-Dir
-            Mock Test-JAVA-HOME -verifiable
             Mock Update-Candidates-Cache -verifiable
             Mock Initialize-Candidate-Cache -verifiable
             Mock Set-Env-Candidate-Version -verifiable -parameterFilter { $Candidate -eq 'grails' -and $Version -eq 'current' }
@@ -38,7 +37,7 @@ Describe 'Initialize-Posh-SDK' {
             Test-Path "$Global:PSDK_DIR\bla" | Should -Be $true
         }
 
-        It "calls methods to test JAVA_HOME, API version, loads candidate cache and setup env variables" {
+        It "calls methods to test API version, loads candidate cache and setup env variables" {
             Assert-VerifiableMock
         }
 
@@ -96,50 +95,3 @@ Describe 'Initialize-Posh-SDK' {
     }
 }
 
-Describe 'Test-JAVA-HOME' {
-    Context 'JAVA_HOME is set' {
-        BeforeAll {
-            Mock Get-Command
-            Mock Test-Path { $true } -parameterFilter { $Path -eq 'env:Java_HOME' }
-        }
-
-        BeforeEach {
-            Test-JAVA-HOME
-        }
-
-        It "changes nothing" {
-            Assert-MockCalled Get-Command 0
-        }
-    }
-
-    Context 'JAVA_HOME is not set but javac is on path' {
-        BeforeAll { $Global:backupJAVAHOME = [Environment]::GetEnvironmentVariable('JAVA_HOME')
-            Mock Test-Path { $false } -parameterFilter { $Path -eq 'env:Java_HOME' }
-            Mock Get-Command { New-Object PSObject -Property @{ Path = (Get-Item 'C:\Windows\explorer.exe') } } -parameterFilter { $Name -eq 'javac' }
-            $Global:expectedNewJAVAHOME = 'C:\'
-        }
-
-        BeforeEach {
-            Test-JAVA-HOME
-        }
-
-        It "sets JAVA_HOME to javac parent" {
-            [Environment]::GetEnvironmentVariable('JAVA_HOME') | Should -Be $Global:expectedNewJAVAHOME
-        }
-
-        AfterAll {
-            [Environment]::SetEnvironmentVariable('JAVA_HOME', $Global:backupJAVAHOME)
-        }
-    }
-
-    Context 'JAVA_HOME is not set and javax is not on path' {
-        BeforeAll {
-            Mock Test-Path { $false } -parameterFilter { $Path -eq 'env:Java_HOME' }
-            Mock Get-Command { throw 'error' } -parameterFilter { $Name -eq 'javac' }
-        }
-
-        It "throws an error" {
-            { Test-JAVA-HOME } | Should -Throw
-        }
-    }
-}
