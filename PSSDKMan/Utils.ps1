@@ -428,7 +428,7 @@ function Install-Remote-Version($Candidate, $Version) {
     Expand-Archive -Path $archive -DestinationPath $Script:PSDK_TEMP_PATH -Force
 
 	# check if unzip successfully
-	if ( ((Get-ChildItem -Directory $Script:PSDK_TEMP_PATH).count -gt 1) -or !(Test-Path "$Script:PSDK_TEMP_PATH\*-$Version") ) {
+	if ( ((Get-ChildItem -Directory $Script:PSDK_TEMP_PATH).count -ne 1) ) {
 		throw "Could not unzip the archive of $Candidate $Version. Please delete archive from $Script:PSDK_ARCHIVES_PATH (or delete all with 'psdk flush archives'"
 	}
 
