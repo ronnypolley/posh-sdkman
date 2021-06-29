@@ -49,7 +49,6 @@ Describe 'Initialize-Posh-SDK' {
     Context 'PSDK-Dir with only a grails folder and a candidates list' {
         BeforeAll {
             Mock-PSDK-Dir
-            Mock Test-JAVA-HOME -verifiable
             Mock Update-Candidates-Cache
             Mock Initialize-Candidate-Cache -verifiable
             Mock Set-Env-Candidate-Version -verifiable -parameterFilter { $Candidate -eq 'grails' -and $Version -eq 'current' }
