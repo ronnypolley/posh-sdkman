@@ -33,23 +33,23 @@ Requirements:
 
 1. Execute `Install-Module posh-sdk`
 2. Execute `Import-Module posh-sdk`(best add it to your profile.ps1)
-3. Execute `psdk help` to get started!
+3. Execute `sdk help` to get started!
 
 ### Via short script
 
 1. Execute `(new-object Net.WebClient).DownloadString('https://raw.githubusercontent.com/ronnypolley/posh-sdkman/main/PSSDKMan/GetPoshSDK.ps1') | iex`
 2. Execute `Import-Module posh-sdk`(best add it to your profile.ps1)
-3. Execute `psdk help` to get started!
+3. Execute `sdk help` to get started!
 
 ### Classic way
 
 1. Checkout this repository to your Powershell module-directory.
 2. Execute `Import-Module posh-sdk`(best add it to your profile.ps1)
-3. Execute `psdk help` to get started!
+3. Execute `sdk help` to get started!
 
 ## Update
 
-Newer versions of posh-sdk will notify you about new versions which can be installed by `psdk selfupdate`. If `psdk version` does not show a version of posh-sdk you have to update manually.
+Newer versions of posh-sdk will notify you about new versions which can be installed by `sdk selfupdate`. If `sdk version` does not show a version of posh-sdk you have to update manually.
 
 ### How to get a update of posh-sdk manually ?
 

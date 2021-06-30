@@ -26,7 +26,7 @@ Write-Output @"
 
 A new version is available. Please consider to execute:
 
-    psdk selfupdate
+    sdk selfupdate
 
 ================================================================================
 "@
@@ -429,7 +429,7 @@ function Install-Remote-Version($Candidate, $Version) {
 
 	# check if unzip successfully
 	if ( ((Get-ChildItem -Directory $Script:PSDK_TEMP_PATH).count -ne 1) ) {
-		throw "Could not unzip the archive of $Candidate $Version. Please delete archive from $Script:PSDK_ARCHIVES_PATH (or delete all with 'psdk flush archives'"
+		throw "Could not unzip the archive of $Candidate $Version. Please delete archive from $Script:PSDK_ARCHIVES_PATH (or delete all with 'sdk flush archives'"
 	}
 
     # needed to create the folder ahead. Else the copy process failed on the first try

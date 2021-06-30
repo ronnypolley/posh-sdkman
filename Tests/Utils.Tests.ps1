@@ -439,7 +439,7 @@ Describe 'Test-Candidate-Version-Available select or vadidates a version for a c
         }
     }
 
-    Context 'When psdk is offline and the provided version is not locally available' {
+    Context 'When sdk is offline and the provided version is not locally available' {
         BeforeAll {
             Mock Test-Candidate-Present -verifiable -parameterFilter { $Candidate -eq 'grails' }
             Mock Get-Online-Mode { return $false }
@@ -455,7 +455,7 @@ Describe 'Test-Candidate-Version-Available select or vadidates a version for a c
         }
     }
 
-    Context 'When psdk is offline and no version is provided but there is a current version' {
+    Context 'When sdk is offline and no version is provided but there is a current version' {
         BeforeAll {
             Mock Test-Candidate-Present -verifiable -parameterFilter { $Candidate -eq 'grails' }
             Mock Get-Online-Mode { return $false }
@@ -473,7 +473,7 @@ Describe 'Test-Candidate-Version-Available select or vadidates a version for a c
         }
     }
 
-    Context 'When psdk is offline and no version is provided and no current version is defined' {
+    Context 'When sdk is offline and no version is provided and no current version is defined' {
         BeforeAll {
             Mock Test-Candidate-Present -verifiable -parameterFilter { $Candidate -eq 'grails' }
             Mock Get-Online-Mode { return $false }
@@ -489,7 +489,7 @@ Describe 'Test-Candidate-Version-Available select or vadidates a version for a c
         }
     }
 
-    Context 'When psdk is online and no version is provided' {
+    Context 'When sdk is online and no version is provided' {
         BeforeAll {
             Mock Test-Candidate-Present -verifiable -parameterFilter { $Candidate -eq 'grails' }
             Mock Get-Online-Mode { return $true }
@@ -508,7 +508,7 @@ Describe 'Test-Candidate-Version-Available select or vadidates a version for a c
         }
     }
 
-    Context 'When psdk is online and the provided version is valid' {
+    Context 'When sdk is online and the provided version is valid' {
         BeforeAll {
             Mock Test-Candidate-Present -verifiable -parameterFilter { $Candidate -eq 'grails' }
             Mock Get-Online-Mode { return $true }
@@ -527,7 +527,7 @@ Describe 'Test-Candidate-Version-Available select or vadidates a version for a c
         }
     }
 
-    Context 'When psdk is online and the provided version is invalid' {
+    Context 'When sdk is online and the provided version is invalid' {
         BeforeAll {
             Mock Test-Candidate-Present -verifiable -parameterFilter { $Candidate -eq 'grails' }
             Mock Get-Online-Mode { return $true }

@@ -1,4 +1,4 @@
-﻿function psdk([string]$Command, [string]$Candidate, [string]$Version, [string]$InstallPath, [switch]$Verbose, [switch]$Force) {
+﻿function sdk([string]$Command, [string]$Candidate, [string]$Version, [string]$InstallPath, [switch]$Verbose, [switch]$Force) {
     $ErrorActionPreference = 'Stop'
 	$ProgressPreference = 'SilentlyContinue'
 	if ($Verbose) { $VerbosePreference = 'Continue' }
@@ -44,7 +44,7 @@
             '^offline$'       { Set-Offline-Mode $Candidate }
             '^selfupdate$'    { Invoke-Self-Update($Force) }
             '^flush$'         { Clear-Cache $Candidate }
-            default           { Write-Warning "Invalid command: $Command. Check psdk help!" }
+            default           { Write-Warning "Invalid command: $Command. Check sdk help!" }
         }
     } catch {
         if ( $_.CategoryInfo.Category -eq 'OperationStopped') {
@@ -232,8 +232,8 @@ function Clear-Cache($DataType) {
 
 function Show-Help() {
     Write-Output @"
-Usage: psdk <command> <candidate> [version]
-    psdk offline <enable|disable>
+Usage: sdk <command> <candidate> [version]
+    sdk offline <enable|disable>
 
     commands:
         install   or i    <candidate> [version]
@@ -252,6 +252,6 @@ Usage: psdk <command> <candidate> [version]
 
     version    :  where optional, defaults to latest stable if not provided
 
-eg: psdk install groovy
+eg: sdk install groovy
 "@
 }

@@ -5,7 +5,7 @@ BeforeAll {
     . .\TestUtils.ps1
 }
 
-Describe 'psdk' {
+Describe 'sdk' {
     Context 'No posh-sdk dir available' {
         BeforeAll {
             $Script:PSDK_FORCE_OFFLINE = $true
@@ -17,12 +17,12 @@ Describe 'psdk' {
         }
 
         It 'initalize posh-sdk' {
-            psdk
+            sdk
             Assert-VerifiableMock
         }
 
         It 'prints help' {
-            psdk
+            sdk
             Assert-MockCalled Show-Help 1
         }
 
@@ -41,7 +41,7 @@ Describe 'psdk' {
         }
 
         BeforeEach {
-            psdk
+            sdk
         }
         
         It 'initalize posh-sdk' {
@@ -69,12 +69,12 @@ Describe 'psdk' {
 
     
         It 'does not load broadcast message from api' {
-            psdk
+            sdk
             Assert-MockCalled Test-Available-Broadcast 0
         }
     
         It 'performs default command actions' {
-            psdk
+            sdk
             Assert-VerifiableMock
         }
 
@@ -94,12 +94,12 @@ Describe 'psdk' {
 
     
         It 'does not load broadcast message from api' {
-            psdk offline
+            sdk offline
             Assert-MockCalled Test-Available-Broadcast 0
         }
         
         It 'performs offline command actions' {
-            psdk offline
+            sdk offline
             Assert-VerifiableMock
         }
 
@@ -116,7 +116,7 @@ Describe 'psdk' {
 
     
         It 'checks for new broadcast, inits the Candidate-Cache and calls install-command' {
-            psdk i grails 2.2.2 \bla
+            sdk i grails 2.2.2 \bla
             Assert-VerifiableMock
         }
 
@@ -133,7 +133,7 @@ Describe 'psdk' {
 
     
         It 'checks for new broadcast, inits the Candidate-Cache and calls install-command' {
-            psdk install grails 2.2.2
+            sdk install grails 2.2.2
             Assert-VerifiableMock
         }
 
@@ -150,7 +150,7 @@ Describe 'psdk' {
 
     
         It 'checks for new broadcast, inits the Candidate-Cache and calls uninstall-command' {
-            psdk uninstall grails 2.2.2
+            sdk uninstall grails 2.2.2
             Assert-VerifiableMock
         }
 
@@ -167,7 +167,7 @@ Describe 'psdk' {
 
     
         It 'checks for new broadcast, inits the Candidate-Cache and calls uninstall-command' {
-            psdk rm grails 2.2.1
+            sdk rm grails 2.2.1
             Assert-VerifiableMock
         }
 
@@ -184,7 +184,7 @@ Describe 'psdk' {
 
     
         It 'checks for new broadcast, inits the Candidate-Cache and calls list-command' {
-            psdk ls grails
+            sdk ls grails
             Assert-VerifiableMock
         }
 
@@ -201,7 +201,7 @@ Describe 'psdk' {
 
     
         It 'checks for new broadcast, inits the Candidate-Cache and calls list-command' {
-            psdk list grails
+            sdk list grails
             Assert-VerifiableMock
         }
 
@@ -218,7 +218,7 @@ Describe 'psdk' {
 
     
         It 'checks for new broadcast, inits the Candidate-Cache and calls use-command' {
-            psdk u grails 2.2.1
+            sdk u grails 2.2.1
             Assert-VerifiableMock
         }
 
@@ -235,7 +235,7 @@ Describe 'psdk' {
 
     
         It 'checks for new broadcast, inits the Candidate-Cache and calls use-command' {
-            psdk use grails 2.2.1
+            sdk use grails 2.2.1
             Assert-VerifiableMock
         }
 
@@ -252,7 +252,7 @@ Describe 'psdk' {
 
     
         It 'checks for new broadcast, inits the Candidate-Cache and calls default-command' {
-            psdk d grails 2.2.1
+            sdk d grails 2.2.1
             Assert-VerifiableMock
         }
 
@@ -269,7 +269,7 @@ Describe 'psdk' {
 
     
         It 'checks for new broadcast, inits the Candidate-Cache and calls default-command' {
-            psdk default grails 2.2.1
+            sdk default grails 2.2.1
             Assert-VerifiableMock
         }
 
@@ -286,7 +286,7 @@ Describe 'psdk' {
 
     
         It 'checks for new broadcast, inits the Candidate-Cache and calls current-command' {
-            psdk c grails
+            sdk c grails
             Assert-VerifiableMock
         }
 
@@ -303,7 +303,7 @@ Describe 'psdk' {
 
     
         It 'checks for new broadcast, inits the Candidate-Cache and calls current-command' {
-            psdk current grails
+            sdk current grails
             Assert-VerifiableMock
         }
 
@@ -320,7 +320,7 @@ Describe 'psdk' {
 
     
         It 'checks for new broadcast, inits the Candidate-Cache and calls version-command' {
-            psdk v
+            sdk v
             Assert-VerifiableMock
         }
 
@@ -337,7 +337,7 @@ Describe 'psdk' {
 
     
         It 'checks for new broadcast, inits the Candidate-Cache and calls version-command' {
-            psdk version
+            sdk version
             Assert-VerifiableMock
         }
 
@@ -354,7 +354,7 @@ Describe 'psdk' {
 
     
         It 'checks for new broadcast, inits the Candidate-Cache and calls broadcast-command' {
-            psdk b
+            sdk b
             Assert-VerifiableMock
         }
 
@@ -371,7 +371,7 @@ Describe 'psdk' {
 
     
         It 'checks for new broadcast, inits the Candidate-Cache and calls broadcast-command' {
-            psdk broadcast
+            sdk broadcast
             Assert-VerifiableMock
         }
 
@@ -388,7 +388,7 @@ Describe 'psdk' {
 
     
         It 'checks for new broadcast, inits the Candidate-Cache and calls help-command' {
-            psdk h
+            sdk h
             Assert-VerifiableMock
         }
 
@@ -405,7 +405,7 @@ Describe 'psdk' {
 
     
         It 'checks for new broadcast, inits the Candidate-Cache and calls help-command' {
-            psdk help
+            sdk help
             Assert-VerifiableMock
         }
 
@@ -422,7 +422,7 @@ Describe 'psdk' {
 
     
         It 'checks for new broadcast, inits the Candidate-Cache and calls offline-command' {
-            psdk offline enable
+            sdk offline enable
             Assert-VerifiableMock
         }
 
@@ -439,7 +439,7 @@ Describe 'psdk' {
 
     
         It 'checks for new broadcast, inits the Candidate-Cache and calls selfupdate-command' {
-            psdk selfupdate
+            sdk selfupdate
             Assert-VerifiableMock
         }
 
@@ -456,7 +456,7 @@ Describe 'psdk' {
 
     
         It 'checks for new broadcast, inits the Candidate-Cache and calls flush-command' {
-            psdk flush version
+            sdk flush version
             Assert-VerifiableMock
         }
 
@@ -927,7 +927,7 @@ Describe 'Set-Offline-Mode' {
             $Script:PSDK_FORCE_OFFLINE | Should -Be $false
         }
 
-        It "set psdk to online" {
+        It "set sdk to online" {
             $Script:PSDK_ONLINE | Should -Be $true
         }
 
