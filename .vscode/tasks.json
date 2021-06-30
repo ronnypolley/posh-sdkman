@@ -6,7 +6,7 @@
         {
             "label": "Run Pester",
             "type": "shell",
-            "command": "Set-Location ${workspaceFolder}/Tests/; Invoke-Pester",
+            "command": "$config = New-PesterConfiguration;$config.CodeCoverage.Enabled=$true;Set-Location ${workspaceFolder}/Tests/; Invoke-Pester -Configuration $config",
             "group": "test"
         }
     ]
