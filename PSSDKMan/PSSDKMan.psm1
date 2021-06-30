@@ -52,4 +52,4 @@ Pop-Location
 
 Initialize-Posh-SDK
 
-Export-ModuleMember 'psdk'
+Export-ModuleMember 'sdk'

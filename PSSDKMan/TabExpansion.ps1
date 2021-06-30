@@ -10,16 +10,16 @@ function TabExpansion($line, $lastWord) {
     $lastBlock = [regex]::Split($line, '[|;]')[-1].TrimStart()
 
     switch -regex ($lastBlock) {
-        # Execute psdk tab expansion for psdk command
-        '^psdk (.*)' { psdkTabExpansion($lastBlock) }
+        # Execute sdk tab expansion for sdk command
+        '^sdk (.*)' { sdkTabExpansion($lastBlock) }
         # Fall back on existing tab expansion
         default { if (Test-Path Function:\$tabExpansionBackup) { & $tabExpansionBackup $line $lastWord } }
     }
 }
 
 $Script:PSDK_TAB_COMMANDS = @('install','uninstall','rm','list','use','default','current','version','broadcast','help','offline','selfupdate','flush')
-function psdkTabExpansion($lastBlock) {
-    if ( !($lastBlock -match '^psdk\s+(?<cmd>\S+)?(?<args> .*)?$') ) {
+function sdkTabExpansion($lastBlock) {
+    if ( !($lastBlock -match '^sdk\s+(?<cmd>\S+)?(?<args> .*)?$') ) {
         return
     }
     $command = $Matches['cmd']
@@ -87,4 +87,4 @@ function Get-PSDKTabExpansion-Clear($Arguments) {
 }
 
 Export-ModuleMember TabExpansion
-Export-ModuleMember psdkTabExpansion
+Export-ModuleMember sdkTabExpansion
