@@ -186,7 +186,7 @@ function Test-Candidate-Version-Available($Candidate, $Version) {
 
     if ( $UseDefault ) {
         Write-Verbose 'Try to get default version from remote'
-        return Invoke-API-Call "candidates/$Candidate/default"
+        return Invoke-API-Call "candidates/default/$Candidate"
     }
 
     $VersionAvailable = Invoke-API-Call "candidates/validate/$Candidate/$Version/cygwin"
