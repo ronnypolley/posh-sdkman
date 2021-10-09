@@ -493,7 +493,7 @@ Describe 'Test-Candidate-Version-Available select or vadidates a version for a c
         BeforeAll {
             Mock Test-Candidate-Present -verifiable -parameterFilter { $Candidate -eq 'grails' }
             Mock Get-Online-Mode { return $true }
-            Mock Invoke-API-Call { return 2.2 } -parameterFilter { $Path -eq 'candidates/grails/default' }
+            Mock Invoke-API-Call { return 2.2 } -parameterFilter { $Path -eq 'candidates/default/grails' }
         }
 
     
