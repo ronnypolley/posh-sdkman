@@ -1,9 +1,5 @@
 name: Pester
-on:
-  push:
-    branches: [ develop, main, feature/*, hotfix/*, release/* ]
-  pull_request:
-    branches: [ main ]
+on: [push, pull_request]
 jobs:
   # test-pwsh:
   #   strategy:
