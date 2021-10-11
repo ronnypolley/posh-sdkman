@@ -9,11 +9,7 @@
 
 name: PSScriptAnalyzer
 
-on:
-  push:
-    branches: [ main develop feature/* release/* hotfix/* ]
-  pull_request:
-    branches: [ * ]
+on: [push, pull_request]
   schedule:
     - cron: '28 20 * * 1,3,5'
     
