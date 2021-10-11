@@ -24,7 +24,7 @@ jobs:
     - name: Run Pester tests (PowerShell)
       run: |
         Write-host $PSVersionTable.PSVersion.Major $PSVersionTable.PSRemotingProtocolVersion.Minor
-        Install-Module -Name Pester -RequiredVersion 5.2.2 -Confirm:$false -Force
+        Install-Module -Name Pester -RequiredVersion 5.3.1 -Confirm:$false -Force
         $pesterConfig = New-PesterConfiguration
         $pesterConfig.CodeCoverage.Enabled = $true
         Set-Location -Path .\Tests\
