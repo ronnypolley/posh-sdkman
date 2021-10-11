@@ -3,7 +3,7 @@ on:
   push:
     branches: [ develop, main, feature/*, hotfix/*, release/* ]
   pull_request:
-    branches: [ main ]
+    branches: [ * ]
 jobs:
   # test-pwsh:
   #   strategy:
