@@ -414,7 +414,7 @@ function Install-Remote-Version($Candidate, $Version) {
     } else {
 		Test-Online-Mode
         Write-Output "`nDownloading: $Candidate $Version`n"
-        Get-File-From-Url "$Script:PSDK_SERVICE/broker/download/$Candidate/$Version`/cygwin" $archive
+        Get-File-From-Url "$Script:PSDK_SERVICE/broker/download/$Candidate/$Version`/cygwin" $archive $Candidate $Version
     }
 
     Write-Output "Installing: $Candidate $Version"
@@ -443,7 +443,7 @@ function Install-Remote-Version($Candidate, $Version) {
     Write-Output "Done installing!"
 }
 
-function Get-File-From-Url($Url, $TargetFile) {
+function Get-File-From-Url($Url, $TargetFile, $Candidate, $Version) {
 	<#
 		Adepted from http://blogs.msdn.com/b/jasonn/archive/2008/06/13/downloading-files-from-the-internet-in-powershell-with-progress.aspx
 	#>
