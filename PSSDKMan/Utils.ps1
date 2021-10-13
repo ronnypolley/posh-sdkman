@@ -1,4 +1,4 @@
-﻿function Write-Offline-Broadcast() {
+function Write-Offline-Broadcast() {
     Write-Output @"
 ==== BROADCAST =================================================================
 
@@ -414,7 +414,7 @@ function Install-Remote-Version($Candidate, $Version) {
     } else {
 		Test-Online-Mode
         Write-Output "`nDownloading: $Candidate $Version`n"
-        Get-File-From-Url "$Script:PSDK_SERVICE/broker/download/$Candidate/$Version`/cygwin" $archive
+        Get-File-From-Url "$Script:PSDK_SERVICE/broker/download/$Candidate/$Version`/cygwin" $archive $Candidate $Version
     }
 
     Write-Output "Installing: $Candidate $Version"
@@ -443,11 +443,13 @@ function Install-Remote-Version($Candidate, $Version) {
     Write-Output "Done installing!"
 }
 
-function Get-File-From-Url($Url, $TargetFile) {
+function Get-File-From-Url($Url, $TargetFile, $Candidate, $Version) {
 	<#
 		Adepted from http://blogs.msdn.com/b/jasonn/archive/2008/06/13/downloading-files-from-the-internet-in-powershell-with-progress.aspx
 	#>
     Write-Verbose "Try to download $Url with HttpWebRequest"
+    $tempProgressPreference = $ProgressPreference
+    $ProgressPreference = 'Continue'
 	$uri = New-Object "System.Uri" $Url
     $request = [System.Net.HttpWebRequest]::Create($uri)
     $request.set_Timeout(15000)
@@ -455,7 +457,7 @@ function Get-File-From-Url($Url, $TargetFile) {
 	$totalLength = [System.Math]::Floor($response.get_ContentLength()/1024)
 	$responseStream = $response.GetResponseStream()
     $targetStream = New-Object -TypeName System.IO.FileStream -ArgumentList $targetFile, Create
-	$buffer = new-object byte[] 10KB
+	$buffer = new-object byte[] 1000KB
     $count = $responseStream.Read($buffer,0,$buffer.length)
     $downloadedBytes = $count
 	while ($count -gt 0)
@@ -463,15 +465,17 @@ function Get-File-From-Url($Url, $TargetFile) {
         if ($totalLength -lt 0) {
             $totalLength = [System.Math]::Floor($response.get_ContentLength()/1024)
         }
-        [System.Console]::CursorLeft = 0
-        [System.Console]::Write("Downloaded {0}K of {1}K", [System.Math]::Floor($downloadedBytes/1024), $totalLength)
+        $currentPercentage = ([System.Math]::Floor(($downloadedBytes/1024)* 100/ $totalLength) )
+        Write-Progress -Activity "Download $Candidate $Version" -Status "Downloaded $([System.Math]::Ceiling($downloadedBytes/1024))kB of $([System.Math]::Ceiling($totalLength))kB ($currentPercentage %)" -PercentComplete $currentPercentage
         $targetStream.Write($buffer, 0, $count)
         $count = $responseStream.Read($buffer,0,$buffer.length)
         $downloadedBytes = $downloadedBytes + $count
     }
+    Write-Progress -Activity "Download $Candidate $Version" -Completed
     $targetStream.Flush()
     $targetStream.Close()
     $targetStream.Dispose()
     $responseStream.Dispose()
     Write-Output ''
+    $ProgressPreference = $tempProgressPreference
 }
