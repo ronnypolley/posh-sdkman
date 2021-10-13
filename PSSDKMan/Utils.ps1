@@ -457,7 +457,7 @@ function Get-File-From-Url($Url, $TargetFile, $Candidate, $Version) {
 	$totalLength = [System.Math]::Floor($response.get_ContentLength()/1024)
 	$responseStream = $response.GetResponseStream()
     $targetStream = New-Object -TypeName System.IO.FileStream -ArgumentList $targetFile, Create
-	$buffer = new-object byte[] 10KB
+	$buffer = new-object byte[] 1000KB
     $count = $responseStream.Read($buffer,0,$buffer.length)
     $downloadedBytes = $count
 	while ($count -gt 0)
