@@ -465,12 +465,13 @@ function Get-File-From-Url($Url, $TargetFile, $Candidate, $Version) {
         if ($totalLength -lt 0) {
             $totalLength = [System.Math]::Floor($response.get_ContentLength()/1024)
         }
-        [System.Console]::CursorLeft = 0
-        [System.Console]::Write("Downloaded {0}K of {1}K", [System.Math]::Floor($downloadedBytes/1024), $totalLength)
+        $currentPercentage = ([System.Math]::Floor(($downloadedBytes/1024)* 100/ $totalLength) )
+        Write-Progress -Activity "Download $Candidate $Version" -Status "Downloaded $([System.Math]::Ceiling($downloadedBytes/1024))kB of $([System.Math]::Ceiling($totalLength))kB ($currentPercentage %)" -PercentComplete $currentPercentage
         $targetStream.Write($buffer, 0, $count)
         $count = $responseStream.Read($buffer,0,$buffer.length)
         $downloadedBytes = $downloadedBytes + $count
     }
+    Write-Progress -Activity "Download $Candidate $Version" -Completed
     $targetStream.Flush()
     $targetStream.Close()
     $targetStream.Dispose()
