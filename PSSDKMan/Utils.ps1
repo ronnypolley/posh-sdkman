@@ -1,4 +1,4 @@
-﻿function Write-Offline-Broadcast() {
+function Write-Offline-Broadcast() {
     Write-Output @"
 ==== BROADCAST =================================================================
 
@@ -448,6 +448,8 @@ function Get-File-From-Url($Url, $TargetFile) {
 		Adepted from http://blogs.msdn.com/b/jasonn/archive/2008/06/13/downloading-files-from-the-internet-in-powershell-with-progress.aspx
 	#>
     Write-Verbose "Try to download $Url with HttpWebRequest"
+    $tempProgressPreference = $ProgressPreference
+    $ProgressPreference = 'Continue'
 	$uri = New-Object "System.Uri" $Url
     $request = [System.Net.HttpWebRequest]::Create($uri)
     $request.set_Timeout(15000)
@@ -474,4 +476,5 @@ function Get-File-From-Url($Url, $TargetFile) {
     $targetStream.Dispose()
     $responseStream.Dispose()
     Write-Output ''
+    $ProgressPreference = $tempProgressPreference
 }
