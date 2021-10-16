@@ -422,6 +422,9 @@ function Install-Remote-Version($Candidate, $Version) {
     # create temp dir if necessary
     if ( !(Test-Path $Script:PSDK_TEMP_PATH) ) {
         New-Item -ItemType Directory $Script:PSDK_TEMP_PATH | Out-Null
+    } else {
+        # clean existing temp dir
+        Remove-Item "$Script:PSDK_TEMP_PATH\*.*" -Recurse -Force
     }
 
     # unzip downloaded archive
@@ -439,7 +442,7 @@ function Install-Remote-Version($Candidate, $Version) {
     # when Unzip was done by via -com shell.application
     # Move-Item "$Script:PSDK_TEMP_PATH\*-$Version" "$Global:PSDK_DIR\$Candidate\$Version"
     Copy-Item -Path "$Script:PSDK_TEMP_PATH\$((Get-ChildItem -Directory $Script:PSDK_TEMP_PATH).name)\*" -Destination "$Global:PSDK_DIR\$Candidate\$Version" -Recurse
-    Remove-Item "$Script:PSDK_TEMP_PATH\*-$Version" -Recurse -Force
+    Remove-Item "$Script:PSDK_TEMP_PATH\*.*" -Recurse -Force
     Write-Output "Done installing!"
 }
 
