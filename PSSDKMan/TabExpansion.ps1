@@ -66,12 +66,16 @@ function Search-PSDKTabExpansion-Candidate($Command, $LastBlock) {
     $arguments = $arguments.TrimStart()
     # Help add correct parameters
     switch -regex ($command) {
-        #'^i(nstall)?'    { Search-PSDKTabExpansion-Version $candidate $arguments }
+        '^i(nstall)?'    { Search-PSDKTabExpansion-Online-Version $candidate $arguments }
         '^(uninstall|rm)'{ Search-PSDKTabExpansion-Version $candidate $arguments }
         '^u(se)?'        { Search-PSDKTabExpansion-Version $candidate $arguments }
         '^d(efault)?'    { Search-PSDKTabExpansion-Version $candidate $arguments }
         default          {}
     }
+}
+
+function Search-PSDKTabExpansion-Online-Version ($Candidate, $LastBlock) {
+    Get-Online-Candidate-Version-List $Candidate | Where-Object { $_.toLower().Contains($LastBlock) }
 }
 
 function Search-PSDKTabExpansion-Version($Candidate, $LastBlock) {
