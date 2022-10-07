@@ -1191,6 +1191,38 @@ Describe 'Write-Version-List' {
     }
 }
 
+Describe 'Get-Version-List' {
+    Context 'Returns Rest-API-Call response' {
+
+        BeforeAll {
+            Mock Get-Current-Candidate-Version { '1.1.1' } -parameterFilter { $Candidate -eq 'grails' }
+            Mock Get-Installed-Candidate-Version-List { return '1.1.1', '2.2.2', '2.3.0' } -parameterFilter { $Candidate -eq 'grails' }
+            Mock Invoke-API-Call { 'bla' } -parameterFilter { $Path -eq 'candidates/grails/cygwin/versions/list?current=1.1.1&installed=1.1.1,2.2.2,2.3.0' }
+        }
+
+        It 'returns bla' {
+            Get-Version-List grails | Should -Be 'bla'
+            Assert-MockCalled Invoke-API-Call 1
+        }
+    }
+
+}
+
+Describe 'Get-Online-Candidate-Version-List' {
+    Context 'Returns array of possible candidates to install' {
+        BeforeAll {
+            Mock Get-Current-Candidate-Version { '1.1.1' } -parameterFilter { $Candidate -eq 'grails' }
+            Mock Get-Installed-Candidate-Version-List { return '1.1.1', '2.2.2', '2.3.0' } -parameterFilter { $Candidate -eq 'grails' }
+            Mock Invoke-API-Call { '1.1.1, 2.3.0, 4.0.0-foo | 5.foo-bla' } -parameterFilter { $Path -eq 'candidates/grails/cygwin/versions/list?current=1.1.1&installed=1.1.1,2.2.2,2.3.0' }
+        }
+
+        It 'get an array from the string' {
+            Get-Online-Candidate-Version-List grails | Should -Be @('1.1.1', '2.3.0', '4.0.0-foo', '5.foo-bla')
+            Assert-MockCalled Invoke-API-Call 1
+        }
+    }
+}
+
 Describe 'Install-Local-Version' {
     Context 'LocalPath is no directory' {
         It 'throws an error' {

@@ -258,6 +258,12 @@ function Get-Installed-Candidate-Version-List($Candidate) {
     return Get-ChildItem "$Global:PSDK_DIR\$Candidate" | ?{ $_.PSIsContainer -and $_.Name -ne 'current' } | Foreach { $_.Name }
 }
 
+function Get-Online-Candidate-Version-List($Candidate) {
+    $versions = Select-String "\d+(\.\w*\d*)*(-(\w|\d)*)?" -InputObject (Get-Version-List $Candidate) -AllMatches
+    $resultVersions =  $versions.Matches.Captures |  ForEach-Object { Write-Output $_.Value }
+    return $resultVersions
+}
+
 function Set-Env-Candidate-Version($Candidate, $Version) {
     $candidateEnv = ([string]$candidate).ToUpper() + "_HOME"
     $candidateDir = "$Global:PSDK_DIR\$candidate"
@@ -382,11 +388,16 @@ function Write-Offline-Version-List($Candidate) {
 }
 
 function Write-Version-List($Candidate) {
+    Write-Verbose 'Write version list from API to CLI'
+    Write-Output (Get-Version-List $Candidate)
+}
+
+function Get-Version-List($Candidate) {
     Write-Verbose 'Get version list from API'
 
     $current = Get-Current-Candidate-Version $Candidate
     $versions = (Get-Installed-Candidate-Version-List $Candidate) -join ','
-    Invoke-API-Call "candidates/$Candidate/cygwin/versions/list?current=$current&installed=$versions" | Write-Output
+    return Invoke-API-Call "candidates/$Candidate/cygwin/versions/list?current=$current&installed=$versions"
 }
 
 function Install-Local-Version($Candidate, $Version, $LocalPath) {
