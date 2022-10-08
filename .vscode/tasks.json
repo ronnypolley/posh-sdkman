@@ -1,0 +1,13 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Run Pester",
+            "type": "shell",
+            "command": "$config = New-PesterConfiguration;$config.CodeCoverage.Enabled=$true;Set-Location ${workspaceFolder}/Tests/; Invoke-Pester -Configuration $config",
+            "group": "test"
+        }
+    ]
+}

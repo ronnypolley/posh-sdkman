@@ -2,10 +2,10 @@
 	Paragon for the installation script is PsGet
 #>
 
-function Install-Posh-Gvm() {
-    $poshGvmZipUrl = 'https://github.com/flofreud/posh-gvm/archive/master.zip'
+function Install-posh-sdk() {
+    $poshSDKZipUrl = 'https://github.com/ronnypolley/posh-sdkman/archive/master.zip'
 
-    $poshGvmPath = Find-Module-Location
+    $poshSDKPath = Find-Module-Location
 
     try {
         # create temp dir
@@ -14,29 +14,29 @@ function Install-Posh-Gvm() {
         New-Item -ItemType Directory $tempDir | Out-Null
 
         # download current version
-        $poshGvmZip = "$tempDir\posh-gvm-master.zip"
-        Write-Output "Downloading posh-gvm from $poshGvmZipUrl"
+        $poshSDKZip = "$tempDir\posh-sdk-master.zip"
+        Write-Output "Downloading posh-sdk from $poshSDKZipUrl"
 
         $client = (New-Object Net.WebClient)
         $client.Proxy.Credentials = [System.Net.CredentialCache]::DefaultNetworkCredentials
-        $client.DownloadFile($poshGvmZipUrl, $poshGvmZip)
+        $client.DownloadFile($poshSDKZipUrl, $poshSDKZip)
 
         # unzip archive
         $shell = New-Object -com shell.application
-        $shell.namespace($tempDir).copyhere($shell.namespace($poshGvmZip).items(), 0x14)
+        $shell.namespace($tempDir).copyhere($shell.namespace($poshSDKZip).items(), 0x14)
 
         # check if unzip successfully
-        if ( Test-Path "$tempDir\posh-gvm-master" ) {
-            if ( !(Test-Path $poshGvmPath) ) {
-               New-Item -ItemType Directory $poshGvmPath | Out-Null
+        if ( Test-Path "$tempDir\posh-sdk-master" ) {
+            if ( !(Test-Path $poshSDKPath) ) {
+               New-Item -ItemType Directory $poshSDKPath | Out-Null
             }
 
-            Copy-Item "$tempDir\posh-gvm-master\*" $poshGvmPath -Force -Recurse
-            Write-Output "posh-gvm installed!"
-            Write-Output "Please see https://github.com/flofreud/posh-gvm#usage for details to get started."
-            Write-Warning "Execute 'Import-Module posh-gvm -Force' so changes take effect!"
+            Copy-Item "$tempDir\posh-sdk-master\*" $poshSDKPath -Force -Recurse
+            Write-Output "posh-sdk installed!"
+            Write-Output "Please see https://github.com/ronnypolley/posh-sdkman#usage for details to get started."
+            Write-Warning "Execute 'Import-Module posh-sdk -Force' so changes take effect!"
         } else {
-            Write-Warning 'Could not unzip archive containing posh-gvm. Most likely the archive is currupt. Please try to install again.'
+            Write-Warning 'Could not unzip archive containing posh-sdk. Most likely the archive is currupt. Please try to install again.'
         }
     } finally {
         # clear temp dir
@@ -45,7 +45,7 @@ function Install-Posh-Gvm() {
 }
 
 function Find-Module-Location {
-    $moduleDescriptor = Get-Module posh-gvm
+    $moduleDescriptor = Get-Module posh-sdk
 
     if ( $moduleDescriptor ) {
         return (Get-Item ($moduleDescriptor).Path).Directory.FullName
@@ -58,8 +58,8 @@ function Find-Module-Location {
             $targetModulePath = $modulePaths | Select-Object -Index 0
         }
 
-        return "$targetModulePath\posh-gvm"
+        return "$targetModulePath\posh-sdk"
     }
 }
 
-Install-Posh-Gvm
+Install-posh-sdk
