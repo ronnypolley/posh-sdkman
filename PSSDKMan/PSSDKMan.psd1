@@ -7,9 +7,9 @@
 @{
     RootModule = 'posh-sdk.psm1'
 
-    ModuleVersion = '1.3.0'
+    ModuleVersion = '2.0.0'
 
-    #GUID = ""
+    GUID = "564414f7-a83e-4f90-85b7-a1affca03d50"
 
     Author = 'Ronny Polley'
 
