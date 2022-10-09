@@ -31,8 +31,8 @@ Requirements:
 
 ### With PsGet
 
-1. Execute `Install-Module posh-sdk`
-2. Execute `Import-Module posh-sdk`(best add it to your profile.ps1)
+1. Execute `Install-Module -Name Posh-SDKMan`
+2. Execute `Import-Module Posh-SDKMan`(best add it to your profile.ps1)
 3. Execute `sdk help` to get started!
 
 ### Via short script
