@@ -35,7 +35,7 @@ Requirements:
 2. Execute `Import-Module Posh-SDKMan`(best add it to your profile.ps1)
 3. Execute `sdk help` to get started!
 
-### Via short script
+### Via short script (currently not working)
 
 1. Execute `(new-object Net.WebClient).DownloadString('https://raw.githubusercontent.com/ronnypolley/posh-sdkman/main/PSSDKMan/GetPoshSDK.ps1') | iex`
 2. Execute `Import-Module posh-sdk`(best add it to your profile.ps1)
