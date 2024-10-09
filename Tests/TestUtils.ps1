@@ -22,7 +22,7 @@ function Mock-PSDK-Dir {
     $tempDir = [System.IO.Path]::GetTempPath()
     $testPath = "$tempDir\$randomName"
     New-Item -ItemType Directory "$testPath\.posh-sdk"
-    $Global:PSDK_DIR = (Get-Item "$testPath\.posh-sdk").FullName
+    $Global:PSDK_DIR = (Get-Item "$testPath\.posh-sdk" -Force).FullName
     New-Item -ItemType Directory "$Global:PSDK_DIR\grails" | Out-Null
 }
 
