@@ -11,8 +11,7 @@ jobs:
      - uses: actions/checkout@v4
      - name: Run Pester tests (pwsh)
        run: |
-         Write-host $env
-         Write-host $env:Temp
+         dir env:
          Write-host $PSVersionTable.PSVersion.Major $PSVersionTable.PSRemotingProtocolVersion.Minor
          Install-Module -Name Pester -RequiredVersion 5.6.1 -Confirm:$false -Force
          Set-Location -Path .\Tests\
