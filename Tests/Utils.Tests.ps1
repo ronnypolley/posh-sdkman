@@ -761,7 +761,9 @@ Describe 'Set-Junction-Via-Mklink' {
         }
 
         AfterAll {
-            Remove-Item -Path "$Global:PSDK_DIR\grails\bla" -Recurse
+            if (Test-Path "$Global:PSDK_DIR\grails\bla") {
+                Remove-Item -Path "$Global:PSDK_DIR\grails\bla" -Recurse
+            }
             Reset-PSDK-Dir
         }
     }
