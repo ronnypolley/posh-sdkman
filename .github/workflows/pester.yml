@@ -1,33 +1,35 @@
 name: Pester
 on: [push, pull_request, workflow_dispatch]
 jobs:
-  # test-pwsh:
-  #   strategy:
-  #     matrix:
-  #       platform: [ubuntu-latest, macos-latest, windows-latest]
-  #   runs-on: ${{ matrix.platform }}
-  #   steps:
-  #   - uses: actions/checkout@v4
-  #   - name: Run Pester tests (pwsh)
-  #     run: |
-  #       Write-host $PSVersionTable.PSVersion.Major $PSVersionTable.PSRemotingProtocolVersion.Minor
-  #       Install-Module -Name Pester -RequiredVersion 5.2.2 -Confirm:$false -Force
-  #       Set-Location -Path .\Tests\
-  #       Invoke-Pester
-  #       if ($Error[0].Fullyqualifiederrorid -eq 'PesterAssertionFailed') {exit 1}
-  #     shell: pwsh
+   test-pwsh:
+     strategy:
+       fail-fast: false
+       matrix:
+         platform: [ubuntu-latest, macos-latest, windows-latest]
+     runs-on: ${{ matrix.platform }}
+     steps:
+     - uses: actions/checkout@v4
+     - name: Run Pester tests (pwsh)
+       run: |
+         dir env:
+         Write-host $PSVersionTable.PSVersion.Major $PSVersionTable.PSRemotingProtocolVersion.Minor
+         Install-Module -Name Pester -RequiredVersion 5.6.1 -Confirm:$false -Force
+         Set-Location -Path .\Tests\
+         Invoke-Pester
+         if ($Error[0].Fullyqualifiederrorid -eq 'PesterAssertionFailed') {exit 1}
+       shell: pwsh
   
-  test-posh:
-    runs-on: windows-latest
-    steps:
-    - uses: actions/checkout@v4
-    - name: Run Pester tests (PowerShell)
-      run: |
-        Write-host $PSVersionTable.PSVersion.Major $PSVersionTable.PSRemotingProtocolVersion.Minor
-        Install-Module -Name Pester -RequiredVersion 5.6.1 -Confirm:$false -Force
-        $pesterConfig = New-PesterConfiguration
-        $pesterConfig.CodeCoverage.Enabled = $true
-        Set-Location -Path .\Tests\
-        Invoke-Pester -Configuration $pesterConfig
-        if ($Error[0].Fullyqualifiederrorid -eq 'PesterAssertionFailed') {exit 1}
-      shell: powershell
+   test-posh:
+     runs-on: windows-latest
+     steps:
+     - uses: actions/checkout@v4
+     - name: Run Pester tests (PowerShell)
+       run: |
+         Write-host $PSVersionTable.PSVersion.Major $PSVersionTable.PSRemotingProtocolVersion.Minor
+         Install-Module -Name Pester -RequiredVersion 5.6.1 -Confirm:$false -Force
+         $pesterConfig = New-PesterConfiguration
+         $pesterConfig.CodeCoverage.Enabled = $true
+         Set-Location -Path .\Tests\
+         Invoke-Pester -Configuration $pesterConfig
+         if ($Error[0].Fullyqualifiederrorid -eq 'PesterAssertionFailed') {exit 1}
+       shell: powershell

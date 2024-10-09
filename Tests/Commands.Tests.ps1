@@ -10,7 +10,7 @@ Describe 'sdk' {
         BeforeAll {
             $Script:PSDK_FORCE_OFFLINE = $true
             Mock-PSDK-Dir
-            Remove-Item $Global:PSDK_DIR -Recurse
+            Remove-Item $Global:PSDK_DIR -Recurse -Force
             Mock Initialize-Posh-SDK -verifiable
             Mock Initialize-Candidate-Cache -verifiable
             Mock Show-Help

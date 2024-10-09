@@ -287,8 +287,7 @@ function Set-Junction-Via-Mklink($Link, $Target) {
     if ( Test-Path $Link ) {
         (Get-Item $Link).Delete()
     }
-
-    Invoke-Expression -Command "cmd.exe /c mklink /J '$Link' '$Target'" | Out-Null
+    New-Item -Path $Link -ItemType SymbolicLink -Value $Target | Out-Null
 }
 
 function Get-Online-Mode() {
