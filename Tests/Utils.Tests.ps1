@@ -781,7 +781,7 @@ Describe 'Get-Junction-Target' {
         }
 
         AfterAll {
-            (Get-Item "$Global:PSDK_DIR\grails\bla" -Force).Delete()
+            (Get-Item "$Global:PSDK_DIR\grails\bla").Delete()
             Reset-PSDK-Dir
         }
     }
