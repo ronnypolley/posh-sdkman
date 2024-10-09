@@ -287,7 +287,7 @@ function Set-Junction-Via-Mklink($Link, $Target) {
     if ( Test-Path $Link ) {
         (Get-Item $Link).Delete()
     }
-    if ($IsWindows) {
+    if ($PSVersionTable.Platform -eq "Win32NT") {
         Invoke-Expression -Command "cmd.exe /c mklink /J '$Link' '$Target'" | Out-Null
     } else {
         Invoke-Expression -Command "ln -s '$Link' '$Target'" | Out-Null
