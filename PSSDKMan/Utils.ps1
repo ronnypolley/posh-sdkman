@@ -290,7 +290,7 @@ function Set-Junction-Via-Mklink($Link, $Target) {
     if ($Env:OS -eq "Windows_NT") {
         Invoke-Expression -Command "cmd.exe /c mklink /J '$Link' '$Target'" | Out-Null
     } else {
-        Invoke-Expression -Command "ln -s '$Link' '$Target'" | Out-Null
+        New-Item -Path $Link -ItemType SymbolicLink -Value $Target | Out-Null
     }
 }
 
