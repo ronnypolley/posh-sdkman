@@ -18,7 +18,7 @@ function Mock-Api-Call-Grails-1.1.1-Available($Available) {
 
 function Mock-PSDK-Dir {
     $Script:backup_PSDK_DIR = $Global:PSDK_DIR
-    $randomName = (-join ((65..90) + (97..122) | Get-Random -Count 5 | % {[char]$_}))
+    $randomName = (-join ((65..90) + (97..122) | Get-Random -Count 5 | ForEach-Object {[char]$_}))
     $tempDir = [System.IO.Path]::GetTempPath()
     $testPath = "$tempDir\$randomName"
     New-Item -ItemType Directory "$testPath\.posh-sdk"
