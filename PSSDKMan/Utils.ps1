@@ -287,8 +287,11 @@ function Set-Junction-Via-Mklink($Link, $Target) {
     if ( Test-Path $Link ) {
         (Get-Item $Link).Delete()
     }
-
-    Invoke-Expression -Command "cmd.exe /c mklink /J '$Link' '$Target'" | Out-Null
+    if ($IsWindows) {
+        Invoke-Expression -Command "cmd.exe /c mklink /J '$Link' '$Target'" | Out-Null
+    } else {
+        Invoke-Expression -Command "ln -s '$Link' '$Target'" | Out-Null
+    }
 }
 
 function Get-Online-Mode() {
