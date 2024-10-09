@@ -287,11 +287,7 @@ function Set-Junction-Via-Mklink($Link, $Target) {
     if ( Test-Path $Link ) {
         (Get-Item $Link).Delete()
     }
-    if ($Env:OS -eq "Windows_NT") {
-        Invoke-Expression -Command "cmd.exe /c mklink /J '$Link' '$Target'" | Out-Null
-    } else {
-        New-Item -Path $Link -ItemType SymbolicLink -Value $Target | Out-Null
-    }
+    New-Item -Path $Link -ItemType SymbolicLink -Value $Target | Out-Null
 }
 
 function Get-Online-Mode() {
