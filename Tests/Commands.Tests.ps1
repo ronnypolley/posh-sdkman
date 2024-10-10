@@ -43,15 +43,15 @@ Describe 'sdk' {
         BeforeEach {
             sdk
         }
-        
+
         It 'initalize posh-sdk' {
             Assert-VerifiableMock
         }
-        
+
         It 'does not init again' {
             Assert-MockCalled Initialize-Posh-SDK 0
         }
-        
+
         It 'prints help' {
             Assert-MockCalled Show-Help 1
         }
@@ -67,12 +67,12 @@ Describe 'sdk' {
             $Script:PSDK_FORCE_OFFLINE = $true
         }
 
-    
+
         It 'does not load broadcast message from api' {
             sdk
             Assert-MockCalled Test-Available-Broadcast 0
         }
-    
+
         It 'performs default command actions' {
             sdk
             Assert-VerifiableMock
@@ -92,12 +92,12 @@ Describe 'sdk' {
             $Script:PSDK_FORCE_OFFLINE = $false
         }
 
-    
+
         It 'does not load broadcast message from api' {
             sdk offline
             Assert-MockCalled Test-Available-Broadcast 0
         }
-        
+
         It 'performs offline command actions' {
             sdk offline
             Assert-VerifiableMock
@@ -114,7 +114,7 @@ Describe 'sdk' {
             Mock Install-Candidate-Version -verifiable -parameterFilter { $Candidate -eq 'grails' -and $Version -eq '2.2.2' -and $InstallPath -eq '\bla' }
         }
 
-    
+
         It 'checks for new broadcast, inits the Candidate-Cache and calls install-command' {
             sdk i grails 2.2.2 \bla
             Assert-VerifiableMock
@@ -131,7 +131,7 @@ Describe 'sdk' {
             Mock Install-Candidate-Version -verifiable -parameterFilter { $Candidate -eq 'grails' -and $Version -eq '2.2.2' -and $InstallPath -eq '' }
         }
 
-    
+
         It 'checks for new broadcast, inits the Candidate-Cache and calls install-command' {
             sdk install grails 2.2.2
             Assert-VerifiableMock
@@ -148,7 +148,7 @@ Describe 'sdk' {
             Mock Uninstall-Candidate-Version -verifiable -parameterFilter { $Candidate -eq 'grails' -and $Version -eq '2.2.2' }
         }
 
-    
+
         It 'checks for new broadcast, inits the Candidate-Cache and calls uninstall-command' {
             sdk uninstall grails 2.2.2
             Assert-VerifiableMock
@@ -165,7 +165,7 @@ Describe 'sdk' {
             Mock Uninstall-Candidate-Version -verifiable -parameterFilter { $Candidate -eq 'grails' -and $Version -eq '2.2.1' }
         }
 
-    
+
         It 'checks for new broadcast, inits the Candidate-Cache and calls uninstall-command' {
             sdk rm grails 2.2.1
             Assert-VerifiableMock
@@ -182,7 +182,7 @@ Describe 'sdk' {
             Mock Show-Candidate-Versions -verifiable -parameterFilter { $Candidate -eq 'grails' }
         }
 
-    
+
         It 'checks for new broadcast, inits the Candidate-Cache and calls list-command' {
             sdk ls grails
             Assert-VerifiableMock
@@ -199,7 +199,7 @@ Describe 'sdk' {
             Mock Show-Candidate-Versions -verifiable -parameterFilter { $Candidate -eq 'grails' }
         }
 
-    
+
         It 'checks for new broadcast, inits the Candidate-Cache and calls list-command' {
             sdk list grails
             Assert-VerifiableMock
@@ -216,7 +216,7 @@ Describe 'sdk' {
             Mock Use-Candidate-Version -verifiable -parameterFilter { $Candidate -eq 'grails' -and $Version -eq '2.2.1' }
         }
 
-    
+
         It 'checks for new broadcast, inits the Candidate-Cache and calls use-command' {
             sdk u grails 2.2.1
             Assert-VerifiableMock
@@ -233,7 +233,7 @@ Describe 'sdk' {
             Mock Use-Candidate-Version -verifiable -parameterFilter { $Candidate -eq 'grails' -and $Version -eq '2.2.1' }
         }
 
-    
+
         It 'checks for new broadcast, inits the Candidate-Cache and calls use-command' {
             sdk use grails 2.2.1
             Assert-VerifiableMock
@@ -250,7 +250,7 @@ Describe 'sdk' {
             Mock Set-Default-Version -verifiable -parameterFilter { $Candidate -eq 'grails' -and $Version -eq '2.2.1' }
         }
 
-    
+
         It 'checks for new broadcast, inits the Candidate-Cache and calls default-command' {
             sdk d grails 2.2.1
             Assert-VerifiableMock
@@ -267,7 +267,7 @@ Describe 'sdk' {
             Mock Set-Default-Version -verifiable -parameterFilter { $Candidate -eq 'grails' -and $Version -eq '2.2.1' }
         }
 
-    
+
         It 'checks for new broadcast, inits the Candidate-Cache and calls default-command' {
             sdk default grails 2.2.1
             Assert-VerifiableMock
@@ -284,7 +284,7 @@ Describe 'sdk' {
             Mock Show-Current-Version -verifiable -parameterFilter { $Candidate -eq 'grails' }
         }
 
-    
+
         It 'checks for new broadcast, inits the Candidate-Cache and calls current-command' {
             sdk c grails
             Assert-VerifiableMock
@@ -301,7 +301,7 @@ Describe 'sdk' {
             Mock Show-Current-Version -verifiable -parameterFilter { $Candidate -eq 'grails' }
         }
 
-    
+
         It 'checks for new broadcast, inits the Candidate-Cache and calls current-command' {
             sdk current grails
             Assert-VerifiableMock
@@ -318,7 +318,7 @@ Describe 'sdk' {
             Mock Show-Posh-SDK-Version -verifiable
         }
 
-    
+
         It 'checks for new broadcast, inits the Candidate-Cache and calls version-command' {
             sdk v
             Assert-VerifiableMock
@@ -335,7 +335,7 @@ Describe 'sdk' {
             Mock Show-Posh-SDK-Version -verifiable
         }
 
-    
+
         It 'checks for new broadcast, inits the Candidate-Cache and calls version-command' {
             sdk version
             Assert-VerifiableMock
@@ -352,7 +352,7 @@ Describe 'sdk' {
             Mock Show-Broadcast-Message -verifiable
         }
 
-    
+
         It 'checks for new broadcast, inits the Candidate-Cache and calls broadcast-command' {
             sdk b
             Assert-VerifiableMock
@@ -369,7 +369,7 @@ Describe 'sdk' {
             Mock Show-Broadcast-Message -verifiable
         }
 
-    
+
         It 'checks for new broadcast, inits the Candidate-Cache and calls broadcast-command' {
             sdk broadcast
             Assert-VerifiableMock
@@ -386,7 +386,7 @@ Describe 'sdk' {
             Mock Show-Help -verifiable
         }
 
-    
+
         It 'checks for new broadcast, inits the Candidate-Cache and calls help-command' {
             sdk h
             Assert-VerifiableMock
@@ -403,7 +403,7 @@ Describe 'sdk' {
             Mock Show-Help -verifiable
         }
 
-    
+
         It 'checks for new broadcast, inits the Candidate-Cache and calls help-command' {
             sdk help
             Assert-VerifiableMock
@@ -420,7 +420,7 @@ Describe 'sdk' {
             Mock Set-Offline-Mode -verifiable -parameterFilter { $Flag -eq 'enable' }
         }
 
-    
+
         It 'checks for new broadcast, inits the Candidate-Cache and calls offline-command' {
             sdk offline enable
             Assert-VerifiableMock
@@ -437,7 +437,7 @@ Describe 'sdk' {
             Mock Invoke-Self-Update -verifiable
         }
 
-    
+
         It 'checks for new broadcast, inits the Candidate-Cache and calls selfupdate-command' {
             sdk selfupdate
             Assert-VerifiableMock
@@ -454,7 +454,7 @@ Describe 'sdk' {
             Mock Clear-Cache -verifiable -parameterFilter { $DataType -eq 'version' }
         }
 
-    
+
         It 'checks for new broadcast, inits the Candidate-Cache and calls flush-command' {
             sdk flush version
             Assert-VerifiableMock
@@ -642,15 +642,15 @@ Describe 'Uninstall-Candidate-Version' {
             BeforeEach {
                 Uninstall-Candidate-Version grails 24.3
             }
-    
+
             It 'delete the current-junction' {
                 Test-Path "$Global:PSDK_DIR\grails\current" | Should -Be $false
             }
-    
+
             It 'delete the version' {
                 Test-Path "$Global:PSDK_DIR\grails\24.3" | Should -Be $false
             }
-    
+
             It "checks different preconditions correctly" {
                 Assert-VerifiableMock
             }
@@ -862,7 +862,7 @@ Describe 'Show-Posh-SDK-Version' {
             Mock Write-Output -verifiable
         }
 
-    
+
         It 'write the version message to output' {
             Show-Posh-SDK-Version
             Assert-VerifiableMock
@@ -878,7 +878,7 @@ Describe 'Show-Broadcast-Message' {
             Mock Write-Output -verifiable
         }
 
-        
+
         It 'Write broadcast message to output' {
             Show-Broadcast-Message
             Assert-VerifiableMock
@@ -946,7 +946,7 @@ Describe 'Clear-Cache' {
             Mock Write-Output -verifiable
         }
 
-    
+
         It 'deletes the file and writes flush message' {
             Clear-Cache candidates
             Assert-VerifiableMock
@@ -960,7 +960,7 @@ Describe 'Clear-Cache' {
             Mock Write-Warning -verifiable
         }
 
-    
+
         It 'writes warning about non existing file' {
             Clear-Cache candidates
             Assert-VerifiableMock
@@ -975,7 +975,7 @@ Describe 'Clear-Cache' {
             Mock Write-Output -verifiable
         }
 
-    
+
         It 'deletes the file and writes flush message' {
             Clear-Cache broadcast
             Assert-VerifiableMock
@@ -989,7 +989,7 @@ Describe 'Clear-Cache' {
             Mock Write-Warning -verifiable
         }
 
-    
+
         It 'writes warning about non existing file' {
             Clear-Cache broadcast
             Assert-VerifiableMock
@@ -1004,7 +1004,7 @@ Describe 'Clear-Cache' {
             Mock Write-Output -verifiable
         }
 
-    
+
         It 'deletes the file and writes flush message' {
             Clear-Cache version
             Assert-VerifiableMock
@@ -1018,7 +1018,7 @@ Describe 'Clear-Cache' {
             Mock Write-Warning -verifiable
         }
 
-    
+
         It 'writes warning about non existing file' {
             Clear-Cache version
             Assert-VerifiableMock
@@ -1031,7 +1031,7 @@ Describe 'Clear-Cache' {
             Mock Clear-Directory -verifiable -parameterFilter { $Path -eq 'archives' }
         }
 
-    
+
         It 'cleanup archives directory' {
             Clear-Cache archives
             Assert-VerifiableMock
@@ -1044,7 +1044,7 @@ Describe 'Clear-Cache' {
             Mock Clear-Directory -verifiable -parameterFilter { $Path -eq 'temp' }
         }
 
-    
+
         It 'cleanup temp directory' {
             Clear-Cache temp
             Assert-VerifiableMock
@@ -1060,7 +1060,7 @@ Describe 'Clear-Cache' {
         BeforeEach {
             Clear-Cache tmp
         }
-    
+
         It 'cleanup temp directory' {
             Assert-VerifiableMock
         }
@@ -1079,10 +1079,11 @@ Describe 'Show-Help' {
             Mock Write-Output -verifiable
         }
 
-        
+
         It 'write the help to the output' {
             Show-Help
             Assert-VerifiableMock
         }
     }
 }
+
