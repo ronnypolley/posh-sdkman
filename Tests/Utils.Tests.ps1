@@ -1,4 +1,4 @@
-﻿BeforeAll {
+BeforeAll {
     . ..\PSSDKMan\Utils.ps1
     . .\TestUtils.ps1
 }
@@ -12,7 +12,7 @@ Describe 'Test-SDKMAN-API-Version' {
             Mock Invoke-API-Call { throw 'error' }  -parameterFilter { $Path -eq 'app/Version' }
             Test-SDKMAN-API-Version
         }
-        
+
         It 'the error handling set the app in offline mode' {
             $Script:PSDK_AVAILABLE | Should -Be $false
         }
@@ -32,7 +32,7 @@ Describe 'Test-SDKMAN-API-Version' {
             Mock Invoke-API-Call { 1.2.2 } -parameterFilter { $Path -eq 'app/Version' }
             Mock Invoke-Self-Update
 
-            Test-SDKMAN-API-Version 
+            Test-SDKMAN-API-Version
         }
 
         It 'do nothing' {
@@ -83,7 +83,7 @@ Describe 'Test-SDKMAN-API-Version' {
             Mock Invoke-API-Call { '1.2.3' } -parameterFilter { $Path -eq 'broker/download/sdkman/version/stable' }
             Mock Invoke-Self-Update -verifiable
 
-            Test-SDKMAN-API-Version 
+            Test-SDKMAN-API-Version
         }
 
         It 'updates self' {
@@ -201,7 +201,7 @@ Describe 'Test-New-Posh-SDK-Version-Available' {
 
             Mock Invoke-RestMethod { '1.1.1' } -parameterFilter { $Uri -eq 'blub' }
         }
-        
+
         It 'returns $false' {
             $result = Test-New-Posh-SDK-Version-Available
             $result | Should -Be $false
@@ -209,14 +209,14 @@ Describe 'Test-New-Posh-SDK-Version-Available' {
     }
 
     Context 'Version service error' {
-        BeforeAll { 
+        BeforeAll {
             $Script:PSDK_VERSION_SERVICE = 'blub'
             $Script:PSDK_VERSION_PATH = 'TestDrive:VERSION.txt'
             Set-Content $Script:PSDK_VERSION_PATH '1.1.1'
 
             Mock Invoke-RestMethod { throw 'error' } -parameterFilter { $Uri -eq 'blub' }
         }
-        
+
         It 'returns $false' {
             $result = Test-New-Posh-SDK-Version-Available
             $result | Should -Be $false
@@ -226,8 +226,8 @@ Describe 'Test-New-Posh-SDK-Version-Available' {
 
 Describe 'Get-SDKMAN-API-Version' {
     Context 'No cached version' {
-        BeforeAll { 
-            $Script:PSDK_API_VERSION_PATH = 'TestDrive:version.txt' 
+        BeforeAll {
+            $Script:PSDK_API_VERSION_PATH = 'TestDrive:version.txt'
         }
 
         It 'returns `$null' {
@@ -282,13 +282,13 @@ Describe 'Test-Available-Broadcast' {
             Mock Write-Online-Broadcast
 
         }
-        
+
         It 'does announce offline mode' {
             Test-Available-Broadcast
             Assert-MockCalled Write-Offline-Broadcast 1
             Assert-MockCalled Write-Online-Broadcast 0
         }
-        
+
         It 'does not call Resolve-Broadcast' {
             Test-Available-Broadcast
             Assert-MockCalled Resolve-Broadcast 0
@@ -306,13 +306,13 @@ Describe 'Test-Available-Broadcast' {
             Mock Write-Online-Broadcast
 
         }
-        
+
         It 'does not announce any mode changes' {
             Test-Available-Broadcast
             Assert-MockCalled Write-Offline-Broadcast 0
             Assert-MockCalled Write-Online-Broadcast 0
         }
-        
+
         It 'does not call Resolve-Broadcast' {
             Test-Available-Broadcast
             Assert-MockCalled Resolve-Broadcast 0
@@ -330,13 +330,13 @@ Describe 'Test-Available-Broadcast' {
             Mock Write-Online-Broadcast
 
         }
-        
+
         It 'does announce online mode' {
             Test-Available-Broadcast
             Assert-MockCalled Write-Offline-Broadcast 0
             Assert-MockCalled Write-Online-Broadcast 1
         }
-        
+
         It 'calls Resolve-Broadcast' {
             Test-Available-Broadcast
             Assert-VerifiableMock
@@ -399,7 +399,7 @@ Describe 'Test-Candidate-Present checks if candidate parameter is valid' {
     It 'throws an error if no candidate is provided' {
         { Test-Candidate-Present } | Should -Throw
     }
-    
+
     It 'throws error if candidate unknown' {
         $Script:SDK_CANDIDATES = @('grails', 'groovy')
         { Test-Candidate-Present java } | Should -Throw
@@ -496,7 +496,7 @@ Describe 'Test-Candidate-Version-Available select or vadidates a version for a c
             Mock Invoke-API-Call { return 2.2 } -parameterFilter { $Path -eq 'candidates/default/grails' }
         }
 
-    
+
         It 'the API default is returned' {
             $result = Test-Candidate-Version-Available grails
             $result | Should -Be 2.2
@@ -515,12 +515,12 @@ Describe 'Test-Candidate-Version-Available select or vadidates a version for a c
             Mock-Api-Call-Grails-1.1.1-Available $true
         }
 
-    
+
         It 'returns the version' {
             $result = Test-Candidate-Version-Available grails 1.1.1
             $result | Should -Be 1.1.1
         }
-        
+
         It 'check candidate parameter' {
             Test-Candidate-Version-Available grails 1.1.1
             Assert-VerifiableMock
@@ -623,7 +623,7 @@ Describe 'Test-Candidate-Version-Locally-Available throws error message if not a
     }
 
     Context 'Version is available' {
-        
+
         It 'not throws any error' {
             Mock-Grails-1.1.1-Locally-Available $true
             { Test-Candidate-Version-Locally-Available grails 1.1.1 } | Should -Not -Throw
@@ -639,7 +639,7 @@ Describe 'Test-Is-Candidate-Version-Locally-Available check the path exists' {
     }
 
     Context 'COC path for grails 1.1.1 is missing' {
-        
+
         it 'returns $false' {
             Mock-PSDK-Dir
             Test-Is-Candidate-Version-Locally-Available grails 1.1.1 | Should -Be $false
@@ -649,7 +649,7 @@ Describe 'Test-Is-Candidate-Version-Locally-Available check the path exists' {
     }
 
     Context 'COC path for grails 1.1.1 exists' {
-        
+
         it 'returns $true' {
             Mock-PSDK-Dir
             New-Item -ItemType Directory "$Global:PSDK_DIR\grails\1.1.1" | Out-Null
@@ -738,7 +738,7 @@ Describe 'Set-Junction-Via-Mklink' {
         }
 
         It 'creates a junction to the target location' {
-            (Get-Junction-Target "$Global:PSDK_DIR\grails\bla").FullName -eq "$Global:PSDK_DIR\grails\1.3.7" 
+            (Get-Junction-Target "$Global:PSDK_DIR\grails\bla").FullName -eq "$Global:PSDK_DIR\grails\1.3.7"
         }
 
         AfterAll {
@@ -804,7 +804,7 @@ Describe 'Get-Junction-Target' {
 
 Describe 'Get-Online-Mode check the state variables for PSDK-API availablitiy and for force offline mode' {
     Context 'PSDK-Api unavailable but may be connected' {
-        
+
         It 'returns $false' {
             $Script:PSDK_AVAILABLE = $false
             $Script:PSDK_FORCE_OFFLINE = $false
@@ -813,7 +813,7 @@ Describe 'Get-Online-Mode check the state variables for PSDK-API availablitiy an
     }
 
     Context 'PSDK-Api unavailable and may not be connected' {
-        
+
         It 'returns $false' {
             $Script:PSDK_AVAILABLE = $false
             $Script:PSDK_FORCE_OFFLINE = $true
@@ -822,7 +822,7 @@ Describe 'Get-Online-Mode check the state variables for PSDK-API availablitiy an
     }
 
     Context 'PSDK-Api is available and may not be connected' {
-        
+
         It 'returns $false' {
             $Script:PSDK_AVAILABLE = $true
             $Script:PSDK_FORCE_OFFLINE = $true
@@ -831,7 +831,7 @@ Describe 'Get-Online-Mode check the state variables for PSDK-API availablitiy an
     }
 
     Context 'PSDK-Api is available and may be connected' {
-        
+
         It 'returns $true' {
             $Script:PSDK_AVAILABLE = $true
             $Script:PSDK_FORCE_OFFLINE = $false
@@ -843,7 +843,7 @@ Describe 'Get-Online-Mode check the state variables for PSDK-API availablitiy an
 
 Describe 'Test-Online-Mode throws an error when offline' {
     Context 'Offline' {
-        
+
         It 'throws an error' {
             Mock Get-Online-Mode { return $false }
             { Test-Online-Mode } | Should -Throw
@@ -851,7 +851,7 @@ Describe 'Test-Online-Mode throws an error when offline' {
     }
 
     Context 'Online' {
-        
+
         It 'throws no error' {
             Mock Get-Online-Mode { return $true }
             { Test-Online-Mode } | Should -Not -Throw
@@ -861,7 +861,7 @@ Describe 'Test-Online-Mode throws an error when offline' {
 
 Describe 'Invoke-API-Call helps doing calls to the PSDK-Api' {
     Context 'Successful API call only with API path' {
-        
+
         It 'returns the result from Invoke-RestMethod' {
             $Script:PSDK_SERVICE = 'blub'
             Mock Invoke-RestMethod { 'called' } -parameterFilter { $Uri -eq 'blub/na/rock' }
@@ -1167,7 +1167,7 @@ Describe 'Write-Offline-Version-List' {
             Mock Get-Current-Candidate-Version { 1.1.1 } -parameterFilter { $Candidate -eq 'grails' }
             Mock Get-Installed-Candidate-Version-List { 1.1.1, 2.2.2, 2.3.0 } -parameterFilter { $Candidate -eq 'grails' }
         }
-        
+
         It 'Outputs 11 lines' {
             Write-Offline-Version-List grails
             Assert-MockCalled Write-Output 11
@@ -1183,7 +1183,7 @@ Describe 'Write-Version-List' {
             Mock Get-Installed-Candidate-Version-List { return '1.1.1', '2.2.2', '2.3.0' } -parameterFilter { $Candidate -eq 'grails' }
             Mock Invoke-API-Call { 'bla' } -parameterFilter { $Path -eq 'candidates/grails/cygwin/versions/list?current=1.1.1&installed=1.1.1,2.2.2,2.3.0' }
         }
-        
+
         It 'writes to host' {
             Write-Version-List grails
             Assert-MockCalled Write-Output 1
@@ -1330,3 +1330,4 @@ Describe 'Install-Remote-Version' {
         }
     }
 }
+
