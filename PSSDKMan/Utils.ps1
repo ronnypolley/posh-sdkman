@@ -255,7 +255,7 @@ function Test-Is-Candidate-Version-Locally-Available($Candidate, $Version) {
 }
 
 function Get-Installed-Candidate-Version-List($Candidate) {
-    return Get-ChildItem "$Global:PSDK_DIR\$Candidate" | ?{ $_.PSIsContainer -and $_.Name -ne 'current' } | ForEach-Object { $_.Name }
+    return Get-ChildItem "$Global:PSDK_DIR\$Candidate" | Where-Object{ $_.PSIsContainer -and $_.Name -ne 'current' } | ForEach-Object { $_.Name }
 }
 
 function Get-Online-Candidate-Version-List($Candidate) {
