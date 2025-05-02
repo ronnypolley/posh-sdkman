@@ -581,7 +581,7 @@ Describe 'Get-Env-Candidate-Version reads the version set in $Candidate-Home' {
         BeforeAll {
             Get-Mocked-PSDK-Dir
             New-Item -ItemType Directory "$Global:PSDK_DIR\grails\2.2.1" | Out-Null
-            Mock-Grails-Home 2.2.1
+            Initialize-Mocked-Grails-Home 2.2.1
         }
 
         It 'returns the set version' {
@@ -600,7 +600,7 @@ Describe 'Get-Env-Candidate-Version reads the version set in $Candidate-Home' {
             New-Item -ItemType Directory "$Global:PSDK_DIR\grails\2.2.1" | Out-Null
             Set-Junction-Via-Mklink "$Global:PSDK_DIR\grails\current" "$Global:PSDK_DIR\grails\2.2.1"
 
-            Mock-Grails-Home current
+            Initialize-Mocked-Grails-Home current
         }
 
         It 'returns the version linked to current' {
@@ -687,7 +687,7 @@ Describe 'Set-Env-Candidate-Version' {
             New-Item -ItemType Directory "$Global:PSDK_DIR\grails\1.3.7" | Out-Null
             New-Item -ItemType Directory "$Global:PSDK_DIR\grails\2.2.1" | Out-Null
             Set-Junction-Via-Mklink "$Global:PSDK_DIR\grails\current" "$Global:PSDK_DIR\grails\2.2.1"
-            Mock-Grails-Home current
+            Initialize-Mocked-Grails-Home current
             $Global:backupPATH = $env:Path
 
             Set-Env-Candidate-Version grails 1.3.7
