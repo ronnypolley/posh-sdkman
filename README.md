@@ -1,6 +1,7 @@
 # posh-sdk - the POwerSHell The Software Development Kit Manager
 
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/ronnypolley/posh-sdkman/badge)](https://scorecard.dev/viewer/?uri=github.com/ronnypolley/posh-sdkman)
+[![OpenSSF Best Practices](https://www.bestpractices.dev/projects/10509/badge)](https://www.bestpractices.dev/projects/10509)
 
 posh-sdk is a clone of the [SDK CLI](https://github.com/sdkman/sdkman-cli). In most aspects its an 1:1 copy of the BASH based version.
 
