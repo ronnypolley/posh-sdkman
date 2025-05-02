@@ -1,6 +1,6 @@
 ﻿. ..\PSSDKMan\Utils.ps1
 
-function Mock-Grails-1.1.1-Locally-Available($Available) {
+function Get-Mocked-Grails-1.1.1-Locally-Available($Available) {
     if ( $Available ) {
         Mock Test-Is-Candidate-Version-Locally-Available { return $true }  -parameterFilter { $Candidate -eq 'grails' -and $Version -eq '1.1.1' }
     } else {
@@ -8,7 +8,7 @@ function Mock-Grails-1.1.1-Locally-Available($Available) {
     }
 }
 
-function Mock-Api-Call-Grails-1.1.1-Available($Available) {
+function Get-Mocked-Api-Call-Grails-1.1.1-Available($Available) {
     if ( $Available ) {
         Mock Invoke-API-Call { return $true } -parameterFilter { $Path -eq 'candidates/validate/grails/1.1.1/cygwin' }
     } else {
@@ -16,7 +16,7 @@ function Mock-Api-Call-Grails-1.1.1-Available($Available) {
     }
 }
 
-function Mock-PSDK-Dir {
+function Get-Mocked-PSDK-Dir {
     $Script:backup_PSDK_DIR = $Global:PSDK_DIR
     $randomName = (-join ((65..90) + (97..122) | Get-Random -Count 5 | ForEach-Object {[char]$_}))
     $tempDir = [System.IO.Path]::GetTempPath()
@@ -45,7 +45,7 @@ function Reset-Grails-Home {
 }
 
 function Mock-Dispatcher-Test([switch]$Offline) {
-    Mock-PSDK-Dir
+    Get-Mocked-PSDK-Dir
     $Script:PSDK_FORCE_OFFLINE = $false
     $Script:FIRST_RUN = $false
     if ( !($Offline) ) {
