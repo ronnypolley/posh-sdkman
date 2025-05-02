@@ -110,7 +110,7 @@ Describe 'sdk' {
 
     Context 'posh-sdk online and command i called' {
         BeforeAll {
-            Mock-Dispatcher-Test
+            Setup-Mocked-Dispatcher-Test
             Mock Install-Candidate-Version -verifiable -parameterFilter { $Candidate -eq 'grails' -and $Version -eq '2.2.2' -and $InstallPath -eq '\bla' }
         }
 
@@ -127,7 +127,7 @@ Describe 'sdk' {
 
     Context 'posh-sdk online and command install called' {
         BeforeAll {
-            Mock-Dispatcher-Test
+            Setup-Mocked-Dispatcher-Test
             Mock Install-Candidate-Version -verifiable -parameterFilter { $Candidate -eq 'grails' -and $Version -eq '2.2.2' -and $InstallPath -eq '' }
         }
 
@@ -144,7 +144,7 @@ Describe 'sdk' {
 
     Context 'posh-sdk online and command uninstall called' {
         BeforeAll {
-            Mock-Dispatcher-Test
+            Setup-Mocked-Dispatcher-Test
             Mock Uninstall-Candidate-Version -verifiable -parameterFilter { $Candidate -eq 'grails' -and $Version -eq '2.2.2' }
         }
 
@@ -161,7 +161,7 @@ Describe 'sdk' {
 
     Context 'posh-sdk online and command rm called' {
         BeforeAll {
-            Mock-Dispatcher-Test
+            Setup-Mocked-Dispatcher-Test
             Mock Uninstall-Candidate-Version -verifiable -parameterFilter { $Candidate -eq 'grails' -and $Version -eq '2.2.1' }
         }
 
@@ -178,7 +178,7 @@ Describe 'sdk' {
 
     Context 'posh-sdk online and command ls called' {
         BeforeAll {
-            Mock-Dispatcher-Test
+            Setup-Mocked-Dispatcher-Test
             Mock Show-Candidate-Versions -verifiable -parameterFilter { $Candidate -eq 'grails' }
         }
 
@@ -195,7 +195,7 @@ Describe 'sdk' {
 
     Context 'posh-sdk online and command list called' {
         BeforeAll {
-            Mock-Dispatcher-Test
+            Setup-Mocked-Dispatcher-Test
             Mock Show-Candidate-Versions -verifiable -parameterFilter { $Candidate -eq 'grails' }
         }
 
@@ -212,7 +212,7 @@ Describe 'sdk' {
 
     Context 'posh-sdk online and command u called' {
         BeforeAll {
-            Mock-Dispatcher-Test
+            Setup-Mocked-Dispatcher-Test
             Mock Use-Candidate-Version -verifiable -parameterFilter { $Candidate -eq 'grails' -and $Version -eq '2.2.1' }
         }
 
@@ -229,7 +229,7 @@ Describe 'sdk' {
 
     Context 'posh-sdk online and command use called' {
         BeforeAll {
-            Mock-Dispatcher-Test
+            Setup-Mocked-Dispatcher-Test
             Mock Use-Candidate-Version -verifiable -parameterFilter { $Candidate -eq 'grails' -and $Version -eq '2.2.1' }
         }
 
@@ -246,7 +246,7 @@ Describe 'sdk' {
 
     Context 'posh-sdk online and command d called' {
         BeforeAll {
-            Mock-Dispatcher-Test
+            Setup-Mocked-Dispatcher-Test
             Mock Set-Default-Version -verifiable -parameterFilter { $Candidate -eq 'grails' -and $Version -eq '2.2.1' }
         }
 
@@ -263,7 +263,7 @@ Describe 'sdk' {
 
     Context 'posh-sdk online and command default called' {
         BeforeAll {
-            Mock-Dispatcher-Test
+            Setup-Mocked-Dispatcher-Test
             Mock Set-Default-Version -verifiable -parameterFilter { $Candidate -eq 'grails' -and $Version -eq '2.2.1' }
         }
 
@@ -280,7 +280,7 @@ Describe 'sdk' {
 
     Context 'posh-sdk online and command c called' {
         BeforeAll {
-            Mock-Dispatcher-Test
+            Setup-Mocked-Dispatcher-Test
             Mock Show-Current-Version -verifiable -parameterFilter { $Candidate -eq 'grails' }
         }
 
@@ -297,7 +297,7 @@ Describe 'sdk' {
 
     Context 'posh-sdk online and command current called' {
         BeforeAll {
-            Mock-Dispatcher-Test
+            Setup-Mocked-Dispatcher-Test
             Mock Show-Current-Version -verifiable -parameterFilter { $Candidate -eq 'grails' }
         }
 
@@ -314,7 +314,7 @@ Describe 'sdk' {
 
     Context 'posh-sdk online and command v called' {
         BeforeAll {
-            Mock-Dispatcher-Test
+            Setup-Mocked-Dispatcher-Test
             Mock Show-Posh-SDK-Version -verifiable
         }
 
@@ -331,7 +331,7 @@ Describe 'sdk' {
 
     Context 'posh-sdk online and command version called' {
         BeforeAll {
-            Mock-Dispatcher-Test
+            Setup-Mocked-Dispatcher-Test
             Mock Show-Posh-SDK-Version -verifiable
         }
 
@@ -348,7 +348,7 @@ Describe 'sdk' {
 
     Context 'posh-sdk online and command b called' {
         BeforeAll {
-            Mock-Dispatcher-Test
+            Setup-Mocked-Dispatcher-Test
             Mock Show-Broadcast-Message -verifiable
         }
 
@@ -365,7 +365,7 @@ Describe 'sdk' {
 
     Context 'posh-sdk online and command broadcast called' {
         BeforeAll {
-            Mock-Dispatcher-Test
+            Setup-Mocked-Dispatcher-Test
             Mock Show-Broadcast-Message -verifiable
         }
 
@@ -382,7 +382,7 @@ Describe 'sdk' {
 
     Context 'posh-sdk online and command h called' {
         BeforeAll {
-            Mock-Dispatcher-Test
+            Setup-Mocked-Dispatcher-Test
             Mock Show-Help -verifiable
         }
 
@@ -399,7 +399,7 @@ Describe 'sdk' {
 
     Context 'posh-sdk online and command help called' {
         BeforeAll {
-            Mock-Dispatcher-Test
+            Setup-Mocked-Dispatcher-Test
             Mock Show-Help -verifiable
         }
 
@@ -416,7 +416,7 @@ Describe 'sdk' {
 
     Context 'posh-sdk online and command offline called' {
         BeforeAll {
-            Mock-Dispatcher-Test -Offline
+            Setup-Mocked-Dispatcher-Test -Offline
             Mock Set-Offline-Mode -verifiable -parameterFilter { $Flag -eq 'enable' }
         }
 
@@ -433,7 +433,7 @@ Describe 'sdk' {
 
     Context 'posh-sdk online and command selfupdate called' {
         BeforeAll {
-            Mock-Dispatcher-Test
+            Setup-Mocked-Dispatcher-Test
             Mock Invoke-Self-Update -verifiable
         }
 
@@ -450,7 +450,7 @@ Describe 'sdk' {
 
     Context 'posh-sdk online and command flush called' {
         BeforeAll {
-            Mock-Dispatcher-Test
+            Setup-Mocked-Dispatcher-Test
             Mock Clear-Cache -verifiable -parameterFilter { $DataType -eq 'version' }
         }
 

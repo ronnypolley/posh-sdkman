@@ -35,7 +35,7 @@ function Reset-PSDK-Dir {
     $Global:PSDK_DIR = $Script:backup_PSDK_DIR
 }
 
-function Mock-Grails-Home($Version) {
+function Setup-Mocked-Grails-Home($Version) {
     $Script:backup_GRAILS_HOME = [System.Environment]::GetEnvironmentVariable('GRAILS_HOME')
     [System.Environment]::SetEnvironmentVariable('GRAILS_HOME', "$Global:PSDK_DIR\grails\$Version")
 }
@@ -44,7 +44,7 @@ function Reset-Grails-Home {
     [System.Environment]::SetEnvironmentVariable('GRAILS_HOME', $Script:backup_GRAILS_HOME)
 }
 
-function Mock-Dispatcher-Test([switch]$Offline) {
+function Setup-Mocked-Dispatcher-Test([switch]$Offline) {
     Get-Mocked-PSDK-Dir
     $Script:PSDK_FORCE_OFFLINE = $false
     $Script:FIRST_RUN = $false
