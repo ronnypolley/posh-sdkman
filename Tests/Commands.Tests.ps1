@@ -9,7 +9,7 @@ Describe 'sdk' {
     Context 'No posh-sdk dir available' {
         BeforeAll {
             $Script:PSDK_FORCE_OFFLINE = $true
-            Mock-PSDK-Dir
+            Get-Mocked-PSDK-Dir
             Remove-Item $Global:PSDK_DIR -Recurse -Force
             Mock Initialize-Posh-SDK -verifiable
             Mock Initialize-Candidate-Cache -verifiable
@@ -34,7 +34,7 @@ Describe 'sdk' {
     Context 'posh-sdk dir available' {
         BeforeAll {
             $Script:PSDK_FORCE_OFFLINE = $true
-            Mock-PSDK-Dir
+            Get-Mocked-PSDK-Dir
             Mock Initialize-Posh-SDK
             Mock Initialize-Candidate-Cache -verifiable
             Mock Show-Help
@@ -60,7 +60,7 @@ Describe 'sdk' {
 
     Context 'posh-sdk is forced offline' {
         BeforeAll {
-            Mock-PSDK-Dir
+            Get-Mocked-PSDK-Dir
             Mock Initialize-Candidate-Cache -verifiable
             Mock Test-Available-Broadcast
             Mock Show-Help -verifiable
@@ -85,7 +85,7 @@ Describe 'sdk' {
 
     Context 'posh-sdk offline command called' {
         BeforeAll {
-            Mock-PSDK-Dir
+            Get-Mocked-PSDK-Dir
             Mock Initialize-Candidate-Cache -verifiable
             Mock Test-Available-Broadcast
             Mock Set-Offline-Mode -verifiable
@@ -617,7 +617,7 @@ Describe 'Uninstall-Candidate-Version' {
 
     Context 'To be uninstalled Version is current version' {
         BeforeAll {
-            Mock-PSDK-Dir
+            Get-Mocked-PSDK-Dir
         }
 
         BeforeEach {
@@ -663,7 +663,7 @@ Describe 'Uninstall-Candidate-Version' {
 
     Context 'To be uninstalled version is installed' {
         BeforeAll {
-            Mock-PSDK-Dir
+            Get-Mocked-PSDK-Dir
             New-Item -ItemType Directory "$Global:PSDK_DIR\grails\24.3" | Out-Null
 
             Mock Test-Candidate-Present -verifiable -parameterFilter { $Candidate -eq 'grails' }

@@ -425,7 +425,7 @@ Describe 'Test-Candidate-Version-Available select or vadidates a version for a c
     Context 'When grails version 1.1.1 is locally available' {
         BeforeAll {
             Mock Test-Candidate-Present -verifiable -parameterFilter { $Candidate -eq 'grails' }
-            Mock-Grails-1.1.1-Locally-Available $true
+            Get-Mocked-Grails-1.1.1-Locally-Available $true
         }
 
         It 'check candidate parameter' {
@@ -443,7 +443,7 @@ Describe 'Test-Candidate-Version-Available select or vadidates a version for a c
         BeforeAll {
             Mock Test-Candidate-Present -verifiable -parameterFilter { $Candidate -eq 'grails' }
             Mock Get-Online-Mode { return $false }
-            Mock-Grails-1.1.1-Locally-Available $false
+            Get-Mocked-Grails-1.1.1-Locally-Available $false
         }
 
         It 'throws an error' {
@@ -512,7 +512,7 @@ Describe 'Test-Candidate-Version-Available select or vadidates a version for a c
         BeforeAll {
             Mock Test-Candidate-Present -verifiable -parameterFilter { $Candidate -eq 'grails' }
             Mock Get-Online-Mode { return $true }
-            Mock-Api-Call-Grails-1.1.1-Available $true
+            Get-Mocked-Api-Call-Grails-1.1.1-Available $true
         }
 
 
@@ -531,7 +531,7 @@ Describe 'Test-Candidate-Version-Available select or vadidates a version for a c
         BeforeAll {
             Mock Test-Candidate-Present -verifiable -parameterFilter { $Candidate -eq 'grails' }
             Mock Get-Online-Mode { return $true }
-            Mock-Api-Call-Grails-1.1.1-Available $false
+            Get-Mocked-Api-Call-Grails-1.1.1-Available $false
         }
 
         It 'throws an error' {
@@ -547,7 +547,7 @@ Describe 'Test-Candidate-Version-Available select or vadidates a version for a c
 Describe 'Get-Current-Candidate-Version reads the currently linked version' {
     Context 'When current is not defined' {
         BeforeAll {
-            Mock-PSDK-Dir
+            Get-Mocked-PSDK-Dir
         }
 
         It 'returns $null if current not defined' {
@@ -561,7 +561,7 @@ Describe 'Get-Current-Candidate-Version reads the currently linked version' {
 
     Context 'When current is defined' {
         BeforeAll {
-            Mock-PSDK-Dir
+            Get-Mocked-PSDK-Dir
             New-Item -ItemType Directory "$Global:PSDK_DIR\grails\2.2.2" | Out-Null
             Set-Junction-Via-Mklink "$Global:PSDK_DIR\grails\current" "$Global:PSDK_DIR\grails\2.2.2"
         }
@@ -579,7 +579,7 @@ Describe 'Get-Current-Candidate-Version reads the currently linked version' {
 Describe 'Get-Env-Candidate-Version reads the version set in $Candidate-Home' {
     Context 'When GRAILS_HOME is set to a specific version' {
         BeforeAll {
-            Mock-PSDK-Dir
+            Get-Mocked-PSDK-Dir
             New-Item -ItemType Directory "$Global:PSDK_DIR\grails\2.2.1" | Out-Null
             Mock-Grails-Home 2.2.1
         }
@@ -596,7 +596,7 @@ Describe 'Get-Env-Candidate-Version reads the version set in $Candidate-Home' {
 
     Context 'When GRAILS_HOME is set to current' {
         BeforeAll {
-            Mock-PSDK-Dir
+            Get-Mocked-PSDK-Dir
             New-Item -ItemType Directory "$Global:PSDK_DIR\grails\2.2.1" | Out-Null
             Set-Junction-Via-Mklink "$Global:PSDK_DIR\grails\current" "$Global:PSDK_DIR\grails\2.2.1"
 
@@ -617,7 +617,7 @@ Describe 'Get-Env-Candidate-Version reads the version set in $Candidate-Home' {
 Describe 'Test-Candidate-Version-Locally-Available throws error message if not available' {
     Context 'Version not available' {
         It 'throws an error' {
-            Mock-Grails-1.1.1-Locally-Available $false
+            Get-Mocked-Grails-1.1.1-Locally-Available $false
             { Test-Candidate-Version-Locally-Available grails 1.1.1 } | Should -Throw
         }
     }
@@ -625,7 +625,7 @@ Describe 'Test-Candidate-Version-Locally-Available throws error message if not a
     Context 'Version is available' {
 
         It 'not throws any error' {
-            Mock-Grails-1.1.1-Locally-Available $true
+            Get-Mocked-Grails-1.1.1-Locally-Available $true
             { Test-Candidate-Version-Locally-Available grails 1.1.1 } | Should -Not -Throw
         }
     }
@@ -641,7 +641,7 @@ Describe 'Test-Is-Candidate-Version-Locally-Available check the path exists' {
     Context 'COC path for grails 1.1.1 is missing' {
 
         it 'returns $false' {
-            Mock-PSDK-Dir
+            Get-Mocked-PSDK-Dir
             Test-Is-Candidate-Version-Locally-Available grails 1.1.1 | Should -Be $false
             Reset-PSDK-Dir
         }
@@ -651,7 +651,7 @@ Describe 'Test-Is-Candidate-Version-Locally-Available check the path exists' {
     Context 'COC path for grails 1.1.1 exists' {
 
         it 'returns $true' {
-            Mock-PSDK-Dir
+            Get-Mocked-PSDK-Dir
             New-Item -ItemType Directory "$Global:PSDK_DIR\grails\1.1.1" | Out-Null
             Test-Is-Candidate-Version-Locally-Available grails 1.1.1 | Should -Be $true
             Reset-PSDK-Dir
@@ -663,7 +663,7 @@ Describe 'Test-Is-Candidate-Version-Locally-Available check the path exists' {
 Describe 'Get-Installed-Candidate-Version-List' {
     Context 'Version 1.1, 1.3.7 and 2.2.1 of grails installed' {
         BeforeAll {
-            Mock-PSDK-Dir
+            Get-Mocked-PSDK-Dir
             New-Item -ItemType Directory "$Global:PSDK_DIR\grails\1.1" | Out-Null
             New-Item -ItemType Directory "$Global:PSDK_DIR\grails\1.3.7" | Out-Null
             New-Item -ItemType Directory "$Global:PSDK_DIR\grails\2.2.1" | Out-Null
@@ -683,7 +683,7 @@ Describe 'Get-Installed-Candidate-Version-List' {
 Describe 'Set-Env-Candidate-Version' {
     Context 'Env-Version of grails is current' {
         BeforeAll {
-            Mock-PSDK-Dir
+            Get-Mocked-PSDK-Dir
             New-Item -ItemType Directory "$Global:PSDK_DIR\grails\1.3.7" | Out-Null
             New-Item -ItemType Directory "$Global:PSDK_DIR\grails\2.2.1" | Out-Null
             Set-Junction-Via-Mklink "$Global:PSDK_DIR\grails\current" "$Global:PSDK_DIR\grails\2.2.1"
@@ -712,7 +712,7 @@ Describe 'Set-Env-Candidate-Version' {
 Describe 'Set-Linked-Candidate-Version' {
     Context 'In a initialized PSDK-Dir' {
         BeforeAll {
-            Mock-PSDK-Dir
+            Get-Mocked-PSDK-Dir
             Mock Set-Junction-Via-Mklink -verifiable -parameterFilter { $Candidate -eq 'grails' -and $Version -eq '2.2.1' }
 
             Set-Linked-Candidate-Version grails 2.2.1
@@ -731,7 +731,7 @@ Describe 'Set-Linked-Candidate-Version' {
 Describe 'Set-Junction-Via-Mklink' {
     Context 'No junction for the link-path exists' {
         BeforeAll {
-            Mock-PSDK-Dir
+            Get-Mocked-PSDK-Dir
             New-Item -ItemType Directory "$Global:PSDK_DIR\grails\1.3.7" | Out-Null
 
             Set-Junction-Via-Mklink "$Global:PSDK_DIR\grails\bla" "$Global:PSDK_DIR\grails\1.3.7"
@@ -749,7 +749,7 @@ Describe 'Set-Junction-Via-Mklink' {
 
     Context 'A Junction for the link-path exists' {
         BeforeAll {
-            Mock-PSDK-Dir
+            Get-Mocked-PSDK-Dir
             New-Item -ItemType Directory "$Global:PSDK_DIR\grails\1.3.7" | Out-Null
             New-Item -ItemType Directory "$Global:PSDK_DIR\grails\1.3.8" | Out-Null
             Set-Junction-Via-Mklink "$Global:PSDK_DIR\grails\bla" "$Global:PSDK_DIR\grails\1.3.8"
@@ -770,7 +770,7 @@ Describe 'Set-Junction-Via-Mklink' {
 Describe 'Get-Junction-Target' {
     Context 'Provided path is a junction' {
         BeforeAll {
-            Mock-PSDK-Dir
+            Get-Mocked-PSDK-Dir
             New-Item -ItemType Directory "$Global:PSDK_DIR\grails\1.3.7" | Out-Null
 
             Set-Junction-Via-Mklink "$Global:PSDK_DIR\grails\bla" "$Global:PSDK_DIR\grails\1.3.7"
@@ -788,7 +788,7 @@ Describe 'Get-Junction-Target' {
 
     Context 'Provided path is no junction' {
         BeforeAll {
-            Mock-PSDK-Dir
+            Get-Mocked-PSDK-Dir
             New-Item -ItemType Directory "$Global:PSDK_DIR\grails\1.3.7" | Out-Null
         }
 
@@ -948,7 +948,7 @@ Describe 'Clear-Directory' {
 Describe 'Resolve-Broadcast' {
     Context 'Cache broadcast message different than new broadcast' {
         BeforeAll {
-            Mock-PSDK-Dir
+            Get-Mocked-PSDK-Dir
             $Script:PSDK_BROADCAST_PATH = "$Global:PSDK_DIR\broadcast.txt"
             Set-Content $Script:PSDK_BROADCAST_PATH 'Old Broadcast message'
             Mock Write-Output -verifiable -parameterFilter { $InputObject -eq 'New Broadcast message' }
@@ -972,7 +972,7 @@ Describe 'Resolve-Broadcast' {
 
     Context 'No cached broadcast message' {
         BeforeAll {
-            Mock-PSDK-Dir
+            Get-Mocked-PSDK-Dir
 
             $Script:PSDK_BROADCAST_PATH = "$Global:PSDK_DIR\broadcast.txt"
             Mock Write-Output -verifiable -parameterFilter { $InputObject -eq 'New Broadcast message' }
@@ -995,7 +995,7 @@ Describe 'Resolve-Broadcast' {
 
     Context 'b do not print the new broadcast message' {
         BeforeAll {
-            Mock-PSDK-Dir
+            Get-Mocked-PSDK-Dir
 
             $Script:PSDK_BROADCAST_PATH = "$Global:PSDK_DIR\broadcast.txt"
             Mock Write-Output -verifiable
@@ -1018,7 +1018,7 @@ Describe 'Resolve-Broadcast' {
 
     Context 'Broadcast do nOt print the new broadcast message' {
         BeforeAll {
-            Mock-PSDK-Dir
+            Get-Mocked-PSDK-Dir
 
             $Script:PSDK_BROADCAST_PATH = "$Global:PSDK_DIR\broadcast.txt"
             Mock Write-Output -verifiable
@@ -1041,7 +1041,7 @@ Describe 'Resolve-Broadcast' {
 
     Context 'selfupdate do not print the new broadcast message' {
         BeforeAll {
-            Mock-PSDK-Dir
+            Get-Mocked-PSDK-Dir
 
             $Script:PSDK_BROADCAST_PATH = "$Global:PSDK_DIR\broadcast.txt"
             Mock Write-Output -verifiable
@@ -1064,7 +1064,7 @@ Describe 'Resolve-Broadcast' {
 
     Context 'flush do not print the new broadcast message' {
         BeforeAll {
-            Mock-PSDK-Dir
+            Get-Mocked-PSDK-Dir
 
             $Script:PSDK_BROADCAST_PATH = "$Global:PSDK_DIR\broadcast.txt"
             Mock Write-Output -verifiable
@@ -1089,7 +1089,7 @@ Describe 'Resolve-Broadcast' {
 Describe 'Initialize-Candidate-Cache' {
     Context 'Candidate cache file does not exists' {
         BeforeAll {
-            Mock-PSDK-Dir
+            Get-Mocked-PSDK-Dir
             $Script:PSDK_CANDIDATES_PATH = "$Global:PSDK_DIR\candidates.txt"
         }
 
@@ -1104,7 +1104,7 @@ Describe 'Initialize-Candidate-Cache' {
 
     Context 'Candidate cache file does exists' {
         BeforeAll {
-            Mock-PSDK-Dir
+            Get-Mocked-PSDK-Dir
             $Script:PSDK_CANDIDATES_PATH = "$Global:PSDK_DIR\candidates.txt"
             Set-Content $Script:PSDK_CANDIDATES_PATH 'grails,groovy,test'
             $Script:SDK_CANDIDATES = $null
@@ -1125,7 +1125,7 @@ Describe 'Initialize-Candidate-Cache' {
 Describe 'Update-Candidate-Cache' {
     Context 'Checks online mode and than get version and candidates from api' {
         BeforeAll {
-            Mock-PSDK-Dir
+            Get-Mocked-PSDK-Dir
 
             $Script:PSDK_API_VERSION_PATH = "$Global:PSDK_DIR\version.txt"
             $Script:PSDK_CANDIDATES_PATH = "$Global:PSDK_DIR\candidates.txt"
@@ -1249,7 +1249,7 @@ Describe 'Install-Local-Version' {
 Describe 'Install-Remote-Version' {
     Context 'Install of a valid version without local archive' {
         BeforeAll {
-            Mock-PSDK-Dir
+            Get-Mocked-PSDK-Dir
 
             Mock Write-Output
             Mock Test-Online-Mode -verifiable
@@ -1278,7 +1278,7 @@ Describe 'Install-Remote-Version' {
 
     Context 'Install of a valid version with local archive' {
         BeforeAll {
-            Mock-PSDK-Dir
+            Get-Mocked-PSDK-Dir
 
             Mock Write-Output
             Mock Get-File-From-Url
@@ -1306,7 +1306,7 @@ Describe 'Install-Remote-Version' {
 
     Context 'Install of a currupt archive' {
         BeforeAll {
-            Mock-PSDK-Dir
+            Get-Mocked-PSDK-Dir
 
             Mock Write-Output
             Mock Get-File-From-Url

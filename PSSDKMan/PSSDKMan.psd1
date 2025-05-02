@@ -7,7 +7,7 @@
 @{
     RootModule = 'posh-sdk.psm1'
 
-    ModuleVersion = '1.3.0'
+    ModuleVersion = '2.0.0'
 
     #GUID = ""
 
