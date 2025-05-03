@@ -39,7 +39,7 @@ jobs:
          $pesterConfig.TestResult.Enabled = $true
          $pesterConfig.Run.PassThru = $true
          Set-Location -Path .\Tests\
-         Invoke-Pester -Configuration $config | Export-JUnitReport -Path .\testResults.xml
+         Invoke-Pester -Configuration $pesterConfig | Export-JUnitReport -Path .\testResults.xml
          if ($Error[0].Fullyqualifiederrorid -eq 'PesterAssertionFailed') {exit 1}
        shell: powershell
      - name: Upload coverage reports to Codecov
