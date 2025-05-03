@@ -33,7 +33,21 @@ jobs:
        run: |
          Write-host $PSVersionTable.PSVersion.Major $PSVersionTable.PSRemotingProtocolVersion.Minor
          Install-Module -Name Pester -RequiredVersion 5.7.1 -Confirm:$false -Force
+         $pesterConfig = New-PesterConfiguration
+         $pesterConfig.CodeCoverage.Enabled = $true
+         $pesterConfig.CodeCoverage.Path="..\PSSDKMan\"
+         $pesterConfig.TestResult.Enabled = $true
+         $pesterConfig.Run.PassThru = $true
          Set-Location -Path .\Tests\
-         Invoke-Pester
+         Invoke-Pester -Configuration $config | Export-JUnitReport -Path .\testResults.xml
          if ($Error[0].Fullyqualifiederrorid -eq 'PesterAssertionFailed') {exit 1}
        shell: powershell
+     - name: Upload coverage reports to Codecov
+       uses: codecov/codecov-action@ad3126e916f78f00edff4ed0317cf185271ccc2d # v5.4.2
+       with:
+         token: ${{ secrets.CODECOV_TOKEN }}
+     - name: Upload test results to Codecov
+       if: ${{ !cancelled() }}
+       uses: codecov/test-results-action@f2dba722c67b86c6caa034178c6e4d35335f6706 # v1.1.0
+       with:
+         token: ${{ secrets.CODECOV_TOKEN }}
