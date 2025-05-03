@@ -18,6 +18,17 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+      - name: Run Pester tests (PowerShell)
+        run: |
+          Write-host $PSVersionTable.PSVersion.Major $PSVersionTable.PSRemotingProtocolVersion.Minor
+          Install-Module -Name Pester -RequiredVersion 5.7.1 -Confirm:$false -Force
+          $pesterConfig = New-PesterConfiguration
+          $pesterConfig.CodeCoverage.Enabled = $true
+          $pesterConfig.TestEnabled = $true
+          Set-Location -Path .\Tests\
+          Invoke-Pester -Configuration $pesterConfig
+          if ($Error[0].Fullyqualifiederrorid -eq 'PesterAssertionFailed') {exit 1}
+        shell: powershell
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@aa494459d7c39c106cc77b166de8b4250a32bb97 # v5.1.0
         env:
