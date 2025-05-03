@@ -3,6 +3,7 @@
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/ronnypolley/posh-sdkman/badge)](https://scorecard.dev/viewer/?uri=github.com/ronnypolley/posh-sdkman)
 [![OpenSSF Best Practices](https://www.bestpractices.dev/projects/10509/badge)](https://www.bestpractices.dev/projects/10509)
 [![codecov](https://codecov.io/gh/ronnypolley/posh-sdkman/graph/badge.svg?token=1NFCQOZ9W5)](https://codecov.io/gh/ronnypolley/posh-sdkman)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=ronnypolley_posh-sdkman&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=ronnypolley_posh-sdkman)
 
 posh-sdk is a clone of the [SDK CLI](https://github.com/sdkman/sdkman-cli). In most aspects its an 1:1 copy of the BASH based version.
 
