@@ -33,10 +33,7 @@ jobs:
        run: |
          Write-host $PSVersionTable.PSVersion.Major $PSVersionTable.PSRemotingProtocolVersion.Minor
          Install-Module -Name Pester -RequiredVersion 5.7.1 -Confirm:$false -Force
-         $pesterConfig = New-PesterConfiguration
-         $pesterConfig.CodeCoverage.Enabled = $true
-         $pesterConfig.TestResult.Enabled = $true
          Set-Location -Path .\Tests\
-         Invoke-Pester -Configuration $pesterConfig
+         Invoke-Pester
          if ($Error[0].Fullyqualifiederrorid -eq 'PesterAssertionFailed') {exit 1}
        shell: powershell
