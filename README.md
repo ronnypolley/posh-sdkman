@@ -84,7 +84,7 @@ By default posh-sdk put all the data (inclusive the to be installed executables)
 
     $Global:PSDK_DIR = <path>
 
-n your profile BEFORE the `Import-Module posh-sdk` line.
+in your profile BEFORE the `Import-Module posh-sdk` line.
 
 Similar to the BASH client you can configure posh-sdk to automatically set new installed versions as default version. You do this by adding:
 
