@@ -266,9 +266,9 @@ function Get-Online-Candidate-Version-List($Candidate) {
 
 function Set-Env-Candidate-Version($Candidate, $Version) {
     $candidateEnv = ([string]$candidate).ToUpper() + "_HOME"
-    $candidateDir = Join-Path $Global:PSDK_DIR -ChildPath $candidate
-    $candidateHome = Join-Path $candidateDir -ChildPath $Version
-    $candidateBin = Join-Path $candidateHome -ChildPath "bin"
+    $candidateDir = "$Global:PSDK_DIR\$candidate"
+    $candidateHome = "$candidateDir\$Version"
+    $candidateBin = "$candidateHome\bin"
 
     if ( !([Environment]::GetEnvironmentVariable($candidateEnv) -eq $candidateHome) ) {
         [Environment]::SetEnvironmentVariable($candidateEnv, $candidateHome)
