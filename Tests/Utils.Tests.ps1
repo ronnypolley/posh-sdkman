@@ -694,11 +694,11 @@ Describe 'Set-Env-Candidate-Version' {
         }
 
         It 'sets GRAILS_HOME' {
-            $env:GRAILS_HOME | Should -Be "$Global:PSDK_DIR\grails\1.3.7"
+            [System.IO.Path]::GetFullPath($env:GRAILS_HOME) | Should -Be "$Global:PSDK_DIR\grails\1.3.7"
         }
 
         It 'extends the Path' {
-            ($env:Path -split ";") | Should -Contain "$Global:PSDK_DIR\grails\1.3.7\bin"
+            $env:Path -split ";" | Where-Object Length -NotMatch 0 | ForEach-Object {[System.IO.Path]::GetFullPath($_)} | Should -Contain "$Global:PSDK_DIR\grails\1.3.7\bin"
         }
 
         AfterAll {
@@ -717,11 +717,11 @@ Describe 'Set-Env-Candidate-Version' {
         }
 
         It 'sets GRAILS_HOME' {
-            $env:GRAILS_HOME | Should -BeExactly "$Global:PSDK_DIR\grails\1.3.7"
+            [System.IO.Path]::GetFullPath($env:GRAILS_HOME) | Should -BeExactly "$Global:PSDK_DIR\grails\1.3.7"
         }
 
         It 'not extends the Path' {
-            ($env:Path -split ";") | Should -Not -Contain "$Global:PSDK_DIR\grails\1.3.7\bin"
+            $env:Path -split ";" | Where-Object Length -NotMatch 0 | ForEach-Object {[System.IO.Path]::GetFullPath($_)} | Should -Not -Contain "$Global:PSDK_DIR\grails\1.3.7\bin"
         }
 
         AfterAll {
