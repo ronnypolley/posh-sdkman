@@ -694,11 +694,11 @@ Describe 'Set-Env-Candidate-Version' {
         }
 
         It 'sets GRAILS_HOME' {
-            $env:GRAILS_HOME -eq "$Global:PSDK_DIR\grails\1.3.7"
+            $env:GRAILS_HOME | Should -Be "$Global:PSDK_DIR\grails\1.3.7"
         }
 
         It 'extends the Path' {
-            $env:Path -eq "$Global:PSDK_DIR\grails\1.3.7\bin"
+            ($env:Path -split ";") | Should -Contain "$Global:PSDK_DIR\grails\1.3.7\bin"
         }
 
         AfterAll {
@@ -707,6 +707,29 @@ Describe 'Set-Env-Candidate-Version' {
             Reset-PSDK-Dir
         }
     }
+
+     Context 'Tool should not be added to $env:Path if not installed' {
+        BeforeAll {
+            Get-Mocked-PSDK-Dir
+            $Global:backupPATH = $env:Path
+
+            Set-Env-Candidate-Version grails 1.3.7
+        }
+
+        It 'sets GRAILS_HOME' {
+            $env:GRAILS_HOME | Should -BeExactly "$Global:PSDK_DIR\grails\1.3.7"
+        }
+
+        It 'not extends the Path' {
+            ($env:Path -split ";") | Should -Not -Contain "$Global:PSDK_DIR\grails\1.3.7\bin"
+        }
+
+        AfterAll {
+            $env:Path = $Global:backupPATH
+            Reset-Grails-Home
+            Reset-PSDK-Dir
+        }
+     }
 }
 
 Describe 'Set-Linked-Candidate-Version' {
