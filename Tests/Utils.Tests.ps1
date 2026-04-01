@@ -694,11 +694,11 @@ Describe 'Set-Env-Candidate-Version' {
         }
 
         It 'sets GRAILS_HOME' {
-            $env:GRAILS_HOME | Should -Be (Join-Path -Path $Global:PSDK_DIR -ChildPath "grails", "1.3.7")
+            $env:GRAILS_HOME | Should -Be (Join-Path $Global:PSDK_DIR "grails" "1.3.7")
         }
 
         It 'extends the Path' {
-            ($env:Path -split ";") | Should -Contain (Join-Path -Path $Global:PSDK_DIR -ChildPath "grails", "1.3.7", "bin")
+            ($env:Path -split ";") | Should -Contain (Join-Path $Global:PSDK_DIR "grails" "1.3.7" "bin")
         }
 
         AfterAll {
@@ -717,11 +717,11 @@ Describe 'Set-Env-Candidate-Version' {
         }
 
         It 'sets GRAILS_HOME' {
-            $env:GRAILS_HOME | Should -BeExactly (Join-Path -Path $Global:PSDK_DIR -ChildPath "grails", "1.3.7")
+            $env:GRAILS_HOME | Should -BeExactly (Join-Path $Global:PSDK_DIR "grails" "1.3.7")
         }
 
         It 'not extends the Path' {
-            ($env:Path -split ";") | Should -Not -Contain (Join-Path -Path $Global:PSDK_DIR -ChildPath "grails", "1.3.7", "bin")
+            ($env:Path -split ";") | Should -Not -Contain (Join-Path $Global:PSDK_DIR "grails" "1.3.7" "bin")
         }
 
         AfterAll {
