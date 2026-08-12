@@ -274,6 +274,11 @@ function Set-Env-Candidate-Version($Candidate, $Version) {
         [Environment]::SetEnvironmentVariable($candidateEnv, $candidateHome)
     }
 
+    if ( !(Test-Path $candidateDir) -or @(Get-ChildItem $candidateDir).Count -eq 0 ) {
+        Write-Verbose "Candidate directory $candidateDir does not exist or is empty. Skip setting environment variable for $Candidate."
+        return
+    }
+
     $env:PATH = "$candidateBin;$env:PATH"
 }
 
